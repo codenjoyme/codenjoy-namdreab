@@ -47,7 +47,7 @@ import static org.mockito.Mockito.*;
 /**
  * ®author Kors
  */
-public class SnakeMultiplayerTest {
+public class MultiplayerTest {
     private SnakeBoard game;
     private Dice dice;
 

@@ -36,14 +36,14 @@ import com.codenjoy.dojo.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.codenjoy.dojo.snakebattle.model.SnakeMultiplayerTest.verifyEvents;
+import static com.codenjoy.dojo.snakebattle.model.MultiplayerTest.verifyEvents;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 /**
  * @author Kors
  */
-public class SnakeBoardTest {
+public class GameTest {
 
     private SnakeBoard game;
     private Hero hero;
