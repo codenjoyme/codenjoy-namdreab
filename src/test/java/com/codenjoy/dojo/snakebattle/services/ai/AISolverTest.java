@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.snakebattle.client.ai;
+package com.codenjoy.dojo.snakebattle.services.ai;
 
 /*-
  * #%L
@@ -34,6 +34,7 @@ import com.codenjoy.dojo.snakebattle.model.board.SnakeBoard;
 import com.codenjoy.dojo.snakebattle.model.hero.Hero;
 import com.codenjoy.dojo.snakebattle.model.level.LevelImpl;
 import com.codenjoy.dojo.snakebattle.services.GameSettings;
+import com.codenjoy.dojo.snakebattle.services.ai.AISolver;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.snakebattle.client.ai;
+package com.codenjoy.dojo.snakebattle.services.ai;
 
 /*-
  * #%L

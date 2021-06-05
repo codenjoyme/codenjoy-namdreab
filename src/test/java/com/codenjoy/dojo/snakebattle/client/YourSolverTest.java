@@ -42,7 +42,7 @@ import static org.mockito.Mockito.when;
  *         Затем создавай свои тесты, улучшай бота и проверяй что не испортил предыдущие достижения.
  */
 
-public class SolverTest {
+public class YourSolverTest {
 
     private Dice dice;
     private Solver ai;
