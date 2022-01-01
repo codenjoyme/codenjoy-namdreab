@@ -13,7 +13,7 @@
     <artifactId>${module.name}-engine</artifactId>
 
     <properties>
-        <module.name>snakebattle</module.name>
+        <module.name>namdreab</module.name>
     </properties>
 
     <repositories>
