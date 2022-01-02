@@ -47,7 +47,7 @@ import static com.codenjoy.dojo.namdreab.model.hero.Hero.NEXT_TICK;
 import static com.codenjoy.dojo.namdreab.services.Event.Type.*;
 import static java.util.stream.Collectors.toList;
 
-public class Namdreab extends RoundField<Player> implements Field {
+public class Namdreab extends RoundField<Player, Hero> implements Field {
 
     private List<Wall> walls;
     private List<StartFloor> starts;
