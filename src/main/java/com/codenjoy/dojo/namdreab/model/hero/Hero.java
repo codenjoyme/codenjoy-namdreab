@@ -190,11 +190,7 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
     }
 
     @Override
-    public void tick() {
-        if (!isActiveAndAlive()) {
-            return;
-        }
-
+    public void tickHero() {
         applyNewDirection();
 
         reduceIfShould();
