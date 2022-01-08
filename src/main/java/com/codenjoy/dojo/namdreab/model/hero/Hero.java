@@ -28,7 +28,7 @@ import com.codenjoy.dojo.namdreab.model.board.Field;
 import com.codenjoy.dojo.namdreab.services.Event;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
-import com.codenjoy.dojo.services.State;
+import com.codenjoy.dojo.services.printer.state.State;
 import com.codenjoy.dojo.services.round.RoundPlayerHero;
 
 import java.util.Collections;
