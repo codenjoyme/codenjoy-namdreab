@@ -466,4 +466,8 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
     public int scores() {
         return size();
     }
+
+    public void clearScores() {
+        // TODO когда буду переводить эту игру, обнулить очки
+    }
 }
