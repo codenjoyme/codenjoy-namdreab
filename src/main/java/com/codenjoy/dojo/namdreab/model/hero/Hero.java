@@ -35,7 +35,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.codenjoy.dojo.namdreab.model.DirectionUtils.getPointAt;
+import static com.codenjoy.dojo.namdreab.model.hero.BodyDirection.*;
+import static com.codenjoy.dojo.namdreab.services.Event.Type.DIE;
 import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.*;
 import static com.codenjoy.dojo.services.Direction.*;
 import static java.util.stream.Collectors.toList;
@@ -182,7 +183,7 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
 
     @Override
     public void die() {
-        die(Event.Type.DIE);
+        die(DIE);
     }
 
     Direction getDirection() {
@@ -196,7 +197,7 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
         reduceIfShould();
         count();
 
-        Point next = getNextPoint();
+        Point next = direction.change(head());
         if (isMe(next) && !isFlying())
             selfReduce(next);
 
@@ -305,10 +306,6 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
         }
     }
 
-    public Point getNextPoint() {
-        return getPointAt(head(), direction);
-    }
-
     private void grow() {
         growBy--;
         elements.addFirst(new Tail(lastTailPosition, this));
@@ -341,28 +338,28 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
             return nextPrev;
         }
 
-        if (orientation(prev, curr) == BodyDirection.HORIZONTAL) {
+        if (orientation(prev, curr) == HORIZONTAL) {
             boolean clockwise = curr.getY() < next.getY() ^ curr.getX() > prev.getX();
             if (curr.getY() < next.getY()) {
-                return (clockwise) ? BodyDirection.TURNED_RIGHT_UP : BodyDirection.TURNED_LEFT_UP;
+                return (clockwise) ? TURNED_RIGHT_UP : TURNED_LEFT_UP;
             } else {
-                return (clockwise) ? BodyDirection.TURNED_LEFT_DOWN : BodyDirection.TURNED_RIGHT_DOWN;
+                return (clockwise) ? TURNED_LEFT_DOWN : TURNED_RIGHT_DOWN;
             }
         } else {
             boolean clockwise = curr.getX() < next.getX() ^ curr.getY() < prev.getY();
             if (curr.getX() < next.getX()) {
-                return (clockwise) ? BodyDirection.TURNED_RIGHT_DOWN : BodyDirection.TURNED_RIGHT_UP;
+                return (clockwise) ? TURNED_RIGHT_DOWN : TURNED_RIGHT_UP;
             } else {
-                return (clockwise) ? BodyDirection.TURNED_LEFT_UP : BodyDirection.TURNED_LEFT_DOWN;
+                return (clockwise) ? TURNED_LEFT_UP : TURNED_LEFT_DOWN;
             }
         }
     }
 
     private BodyDirection orientation(Point curr, Point next) {
         if (curr.getX() == next.getX()) {
-            return BodyDirection.VERTICAL;
+            return VERTICAL;
         } else if (curr.getY() == next.getY()) {
-            return BodyDirection.HORIZONTAL;
+            return HORIZONTAL;
         } else {
             return null;
         }

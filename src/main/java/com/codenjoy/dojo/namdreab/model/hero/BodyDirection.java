@@ -24,6 +24,11 @@ package com.codenjoy.dojo.namdreab.model.hero;
 
 
 public enum BodyDirection {
-    HORIZONTAL, VERTICAL,
-    TURNED_LEFT_UP, TURNED_LEFT_DOWN, TURNED_RIGHT_UP, TURNED_RIGHT_DOWN
+
+    HORIZONTAL,
+    VERTICAL,
+    TURNED_LEFT_UP,
+    TURNED_LEFT_DOWN,
+    TURNED_RIGHT_UP,
+    TURNED_RIGHT_DOWN
 }
