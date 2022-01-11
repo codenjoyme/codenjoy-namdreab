@@ -23,9 +23,8 @@ package com.codenjoy.dojo.namdreab.model;
  */
 
 
-import com.codenjoy.dojo.namdreab.model.items.hero.BodyDirection;
-import com.codenjoy.dojo.namdreab.model.items.hero.Tail;
-import com.codenjoy.dojo.namdreab.model.items.hero.TailDirection;
+import com.codenjoy.dojo.games.namdreab.Element;
+import com.codenjoy.dojo.namdreab.model.items.Tail;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.printer.state.State;
@@ -35,7 +34,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.codenjoy.dojo.namdreab.model.items.hero.BodyDirection.*;
+import static com.codenjoy.dojo.games.namdreab.Element.BodyDirection.*;
+import static com.codenjoy.dojo.games.namdreab.Element.TailDirection.*;
 import static com.codenjoy.dojo.namdreab.services.Event.Type.DIE;
 import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.*;
 import static com.codenjoy.dojo.services.Direction.*;
@@ -344,12 +344,12 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
         return elements;
     }
 
-    public BodyDirection bodyDirection(Tail curr) {
+    public Element.BodyDirection bodyDirection(Tail curr) {
         int currIndex = getBodyIndex(curr);
         Point prev = elements.get(currIndex - 1);
         Point next = elements.get(currIndex + 1);
 
-        BodyDirection nextPrev = orientation(next, prev);
+        Element.BodyDirection nextPrev = orientation(next, prev);
         if (nextPrev != null) {
             return nextPrev;
         }
@@ -371,7 +371,7 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
         }
     }
 
-    private BodyDirection orientation(Point curr, Point next) {
+    private Element.BodyDirection orientation(Point curr, Point next) {
         if (curr.getX() == next.getX()) {
             return VERTICAL;
         } else if (curr.getY() == next.getY()) {
@@ -381,14 +381,14 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
         }
     }
 
-    public TailDirection tailDirection() {
+    public Element.TailDirection tailDirection() {
         Point body = elements.get(1);
         Point tail = getTailPoint();
 
         if (body.getX() == tail.getX()) {
-            return (body.getY() < tail.getY()) ? TailDirection.VERTICAL_UP : TailDirection.VERTICAL_DOWN;
+            return (body.getY() < tail.getY()) ? VERTICAL_UP : VERTICAL_DOWN;
         } else {
-            return (body.getX() < tail.getX()) ? TailDirection.HORIZONTAL_RIGHT : TailDirection.HORIZONTAL_LEFT;
+            return (body.getX() < tail.getX()) ? HORIZONTAL_RIGHT : HORIZONTAL_LEFT;
         }
     }
 

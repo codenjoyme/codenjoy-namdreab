@@ -24,7 +24,7 @@ package com.codenjoy.dojo.namdreab.model;
 
 
 import com.codenjoy.dojo.namdreab.TestGameSettings;
-import com.codenjoy.dojo.namdreab.model.items.hero.Tail;
+import com.codenjoy.dojo.namdreab.model.items.Tail;
 import com.codenjoy.dojo.namdreab.services.GameSettings;
 import com.codenjoy.dojo.services.Point;
 import org.junit.Before;
