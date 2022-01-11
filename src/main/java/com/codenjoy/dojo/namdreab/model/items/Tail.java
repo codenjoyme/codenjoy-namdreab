@@ -48,33 +48,36 @@ public class Tail extends PointImpl implements State<Element, Player> {
     public Element state(Player player, Object... alsoAtPoint) {
         Hero hero = player.getHero();
         Tail other = higher(Arrays.asList(alsoAtPoint));
-        return other.heroPart(other.hero.equals(hero));
+        Element element = other.heroPart();
+        return other.hero.equals(hero)
+                ? element
+                : element.enemyHero();
     }
 
-    private Element heroPart(boolean itsMe) {
+    private Element heroPart() {
         if (isHead()) {
             if (hero.isAlive()) {
                 if (!hero.isActive()) {
-                    return itsMe ? HEAD_SLEEP : ENEMY_HEAD_SLEEP;
+                    return HEAD_SLEEP;
                 } else if (hero.isFlying()) {
-                    return itsMe ? HEAD_FLY : ENEMY_HEAD_FLY;
+                    return HEAD_FLY;
                 } else if (hero.isFury()) {
-                    return itsMe ? HEAD_EVIL : ENEMY_HEAD_EVIL;
+                    return HEAD_EVIL;
                 } else {
-                    return Element.head(hero.direction(), itsMe);
+                    return Element.head(hero.direction());
                 }
             } else {
-                return itsMe ? HEAD_DEAD : ENEMY_HEAD_DEAD;
+                return HEAD_DEAD;
             }
         }
         if (isTail()) {
             if (hero.isActive()) {
-                return Element.tail(hero.tailDirection(), itsMe);
+                return Element.tail(hero.tailDirection());
             } else {
-                return itsMe ? TAIL_INACTIVE : ENEMY_TAIL_INACTIVE;
+                return TAIL_INACTIVE;
             }
         }
-        return Element.body(hero.bodyDirection(this), itsMe);
+        return Element.body(hero.bodyDirection(this));
     }
 
     private Tail higher(List<Object> elements) {
