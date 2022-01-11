@@ -450,12 +450,6 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
         elements.addFirst(new Tail(part, this));
     }
 
-    public void addTail(List<Point> tail) {
-        elements.addAll(tail.stream()
-                .map(pt -> new Tail(pt, this))
-                .collect(toList()));
-    }
-
     public int getBodyIndex(Point pt) {
         // возможны наложения элементов по pt, а потому надо вначале искать по ==
         for (int index = 0; index < elements.size(); index++) {

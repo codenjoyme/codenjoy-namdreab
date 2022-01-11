@@ -40,42 +40,50 @@ public class Tail extends PointImpl implements State<Element, Player> {
     private Hero hero;
 
     public Tail(Point pt, Hero hero) {
-        super(pt.getX(), pt.getY());
+        super(pt);
         this.hero = hero;
     }
 
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
         Hero hero = player.getHero();
-        Tail other = higher(Arrays.asList(alsoAtPoint));
-        Element element = other.heroPart();
-        return other.hero.equals(hero)
+        Tail tail = higher(Arrays.asList(alsoAtPoint));
+        Element element = tail.state();
+        return tail.belongsTo(hero)
                 ? element
                 : element.enemyHero();
     }
 
-    private Element heroPart() {
+    private boolean belongsTo(Hero hero) {
+        return this.hero.equals(hero);
+    }
+
+    private Element state() {
         if (isHead()) {
-            if (hero.isAlive()) {
-                if (!hero.isActive()) {
-                    return HEAD_SLEEP;
-                } else if (hero.isFlying()) {
-                    return HEAD_FLY;
-                } else if (hero.isFury()) {
-                    return HEAD_EVIL;
-                } else {
-                    return Element.head(hero.direction());
-                }
-            } else {
+            if (!hero.isAlive()) {
                 return HEAD_DEAD;
             }
+
+            if (!hero.isActive()) {
+                return HEAD_SLEEP;
+            }
+
+            if (hero.isFlying()) {
+                return HEAD_FLY;
+            }
+
+            if (hero.isFury()) {
+                return HEAD_EVIL;
+            }
+
+            return Element.head(hero.direction());
         }
         if (isTail()) {
-            if (hero.isActive()) {
-                return Element.tail(hero.tailDirection());
-            } else {
+            if (!hero.isActive()) {
                 return TAIL_INACTIVE;
             }
+
+            return Element.tail(hero.tailDirection());
         }
         return Element.body(hero.bodyDirection(this));
     }
