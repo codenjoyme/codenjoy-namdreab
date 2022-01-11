@@ -56,22 +56,38 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
     private int furyCount;
     private boolean leaveApples;
     private Point lastTailPosition;
+    private int score;
 
-    public Hero(Point xy) {
+    public Hero(Point pt) {
         this(RIGHT);
-        elements.add(new Tail(xy.getX() - 1, xy.getY(), this));
-        elements.add(new Tail(xy, this));
+        elements.add(new Tail(pt.getX() - 1, pt.getY(), this));
+        elements.add(new Tail(pt, this));
     }
 
     public Hero(Direction direction) {
-        elements = new LinkedList<>();
-        growBy = 0;
-        leaveApples = false;
         this.direction = direction;
+        elements = new LinkedList<>();
+
+        clearScores();
+    }
+
+    public void clearScores() {
+        growBy = 0;
+        score = 0;
+        leaveApples = false;
         newDirection = null;
         stonesCount = 0;
         flyingCount = 0;
         furyCount = 0;
+    }
+
+    public void addScore(int added) {
+        score = Math.max(0, score + added);
+    }
+
+    @Override
+    public int scores() {
+        return score;
     }
 
     public List<Tail> body() {
@@ -456,14 +472,5 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
 
     public void setDirection(Direction direction) {
         this.direction = direction;
-    }
-
-    @Override
-    public int scores() {
-        return size();
-    }
-
-    public void clearScores() {
-        // TODO когда буду переводить эту игру, обнулить очки
     }
 }

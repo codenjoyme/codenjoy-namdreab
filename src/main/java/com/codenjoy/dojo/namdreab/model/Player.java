@@ -27,17 +27,28 @@ import com.codenjoy.dojo.namdreab.model.items.hero.Hero;
 import com.codenjoy.dojo.namdreab.services.GameSettings;
 import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.services.event.Calculator;
 import com.codenjoy.dojo.services.round.RoundGamePlayer;
 
 public class Player extends RoundGamePlayer<Hero, Field> {
 
+    private Calculator<Integer> calculator;
+
     public Player(EventListener listener, GameSettings settings) {
         super(listener, settings);
+        calculator = settings().calculator();
     }
 
     public void start(int round, Object startEvent) {
         super.start(round, startEvent);
         hero.clearScores();
+    }
+
+    @Override
+    public Hero createHero(Point pt) {
+        Hero hero = new Hero(pt);
+        hero.setPlayer(this);
+        return hero;
     }
 
     @Override
@@ -49,9 +60,12 @@ public class Player extends RoundGamePlayer<Hero, Field> {
     }
 
     @Override
-    public Hero createHero(Point pt) {
-        Hero hero = new Hero(pt);
-        hero.setPlayer(this);
-        return hero;
+    public void event(Object event) {
+        hero.addScore(calculator.score(event));
+        super.event(event);
+    }
+
+    private GameSettings settings() {
+        return (GameSettings) settings;
     }
 }
