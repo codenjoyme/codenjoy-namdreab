@@ -39,7 +39,6 @@ import static com.codenjoy.dojo.games.namdreab.Element.TailDirection.*;
 import static com.codenjoy.dojo.namdreab.services.Event.Type.DIE;
 import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.*;
 import static com.codenjoy.dojo.services.Direction.*;
-import static java.util.stream.Collectors.toList;
 
 public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tail>, Player> {
 
@@ -48,7 +47,7 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
     public static final boolean NOW = true;
     public static final boolean NEXT_TICK = !NOW;
 
-    private LinkedList<Tail> elements;
+    private LinkedList<Tail> body;
     private Direction direction;
     private Direction newDirection;
     private int growBy;
@@ -61,13 +60,13 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
 
     public Hero(Point pt) {
         this(RIGHT);
-        elements.add(new Tail(LEFT.change(pt), this));
-        elements.add(new Tail(pt, this));
+        body.add(new Tail(LEFT.change(pt), this));
+        body.add(new Tail(pt, this));
     }
 
     public Hero(Direction direction) {
         this.direction = direction;
-        elements = new LinkedList<>();
+        body = new LinkedList<>();
 
         clearScores();
     }
@@ -92,17 +91,17 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
     }
 
     public List<Tail> body() {
-        return elements;
+        return body;
     }
 
     public List<Tail> reversedBody() {
-        return new LinkedList<>(elements){{
+        return new LinkedList<>(body){{
             Collections.reverse(this);
         }};
     }
 
     public Point getTailPoint() {
-        return elements.getFirst();
+        return body.getFirst();
     }
 
     @Override
@@ -133,21 +132,21 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
     }
 
     public int size() {
-        return elements == null ? 0 : elements.size();
+        return body == null ? 0 : body.size();
     }
 
     public Point head() {
-        if (elements.isEmpty())
+        if (body.isEmpty())
             return pt(-1, -1);
-        return elements.getLast();
+        return body.getLast();
     }
 
     public Point neck() {
-        if (elements.size() <= 1) {
+        if (body.size() <= 1) {
             return pt(-1, -1);
         }
-        int last = elements.size() - 1;
-        return elements.get(last - 1);
+        int last = body.size() - 1;
+        return body.get(last - 1);
     }
 
     @Override
@@ -277,10 +276,10 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
 
     private void reduceIfShould() {
         if (growBy < 0) {
-            if (growBy < -elements.size()) {
+            if (growBy < -body.size()) {
                 die();
             } else {
-                elements = new LinkedList<>(elements.subList(-growBy, elements.size()));
+                body = new LinkedList<>(body.subList(-growBy, body.size()));
                 // TODO тут тоже надо по идее lastTailPosition = getTailPoint();
             }
             growBy = 0;
@@ -290,14 +289,14 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
     private void selfReduce(Point from) {
         if (from.equals(getTailPoint()))
             return;
-        elements = new LinkedList<>(elements.subList(elements.indexOf(from), elements.size()));
+        body = new LinkedList<>(body.subList(body.indexOf(from), body.size()));
         // TODO тут тоже надо по идее lastTailPosition = getTailPoint();
     }
 
     public int reduceFrom(Point from) {
         int was = size();
         lastTailPosition = from;
-        elements = new LinkedList<>(elements.subList(elements.indexOf(from) + 1, elements.size()));
+        body = new LinkedList<>(body.subList(body.indexOf(from) + 1, body.size()));
         if (size() < MINIMUM_LENGTH) {
             die();
             return was; // TODO я не нашел случая когда это может случиться
@@ -313,7 +312,7 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
             return was;
         } else {
             if (now) {
-                elements = new LinkedList<>(elements.subList(len, elements.size()));
+                body = new LinkedList<>(body.subList(len, body.size()));
                 // TODO тут тоже надо по идее lastTailPosition = getTailPoint();
             } else {
                 growBy = -len;
@@ -324,13 +323,13 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
 
     private void grow() {
         growBy--;
-        elements.addFirst(new Tail(lastTailPosition, this));
+        body.addFirst(new Tail(lastTailPosition, this));
     }
 
     private void go(Point newLocation) {
         lastTailPosition = getTailPoint();
-        elements.add(new Tail(newLocation, this));
-        elements.removeFirst();
+        body.add(new Tail(newLocation, this));
+        body.removeFirst();
     }
 
     public boolean isHeadIntersect(Hero enemy) {
@@ -341,13 +340,13 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
 
     @Override
     public LinkedList<Tail> state(Player player, Object... alsoAtPoint) {
-        return elements;
+        return body;
     }
 
     public Element.BodyDirection bodyDirection(Tail curr) {
         int currIndex = getBodyIndex(curr);
-        Point prev = elements.get(currIndex - 1);
-        Point next = elements.get(currIndex + 1);
+        Point prev = body.get(currIndex - 1);
+        Point next = body.get(currIndex + 1);
 
         Element.BodyDirection nextPrev = orientation(next, prev);
         if (nextPrev != null) {
@@ -382,7 +381,7 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
     }
 
     public Element.TailDirection tailDirection() {
-        Point body = elements.get(1);
+        Point body = this.body.get(1);
         Point tail = getTailPoint();
 
         if (body.getX() == tail.getX()) {
@@ -397,7 +396,7 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
     }
 
     public boolean isMe(Point next) {
-        return elements.contains(next);
+        return body.contains(next);
     }
 
     public boolean itsMyTail(Point point) {
@@ -409,8 +408,8 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
     }
 
     public void clear() {
-        List<Point> points = new LinkedList<>(elements);
-        elements = new LinkedList<>();
+        List<Point> points = new LinkedList<>(body);
+        body = new LinkedList<>();
         if (leaveApples) {
             points.forEach(e -> field.setApple(e));
             leaveApples = false;
@@ -447,17 +446,17 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
     }
 
     public void addTail(Point part) {
-        elements.addFirst(new Tail(part, this));
+        body.addFirst(new Tail(part, this));
     }
 
     public int getBodyIndex(Point pt) {
         // возможны наложения элементов по pt, а потому надо вначале искать по ==
-        for (int index = 0; index < elements.size(); index++) {
-            if (elements.get(index) == pt) {
+        for (int index = 0; index < body.size(); index++) {
+            if (body.get(index) == pt) {
                 return index;
             }
         }
-        return elements.indexOf(pt);
+        return body.indexOf(pt);
     }
 
     @Override
