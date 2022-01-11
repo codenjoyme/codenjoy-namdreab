@@ -59,7 +59,7 @@ public class BoardAddObjectsTest {
     private void givenFl(String board) {
         Level level = new Level(board);
         GameSettings settings = new TestGameSettings();
-        game = new Namdreab(level, mock(Dice.class), settings);
+        game = new Namdreab(mock(Dice.class), level, settings);
         Hero hero = level.hero(game);
         EventListener listener = mock(EventListener.class);
         Player player = new Player(listener, settings);

@@ -27,6 +27,7 @@ import com.codenjoy.dojo.client.ClientBoard;
 import com.codenjoy.dojo.client.Solver;
 import com.codenjoy.dojo.games.namdreab.Board;
 import com.codenjoy.dojo.games.namdreab.Element;
+import com.codenjoy.dojo.namdreab.model.Level;
 import com.codenjoy.dojo.namdreab.model.Player;
 import com.codenjoy.dojo.namdreab.model.Namdreab;
 import com.codenjoy.dojo.namdreab.services.ai.AISolver;
@@ -36,6 +37,7 @@ import com.codenjoy.dojo.services.PlayerScores;
 import com.codenjoy.dojo.services.event.ScoresImpl;
 import com.codenjoy.dojo.services.multiplayer.GameField;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
+import com.codenjoy.dojo.services.multiplayer.LevelProgress;
 import com.codenjoy.dojo.services.multiplayer.MultiplayerType;
 import com.codenjoy.dojo.services.printer.CharElement;
 import com.codenjoy.dojo.services.settings.Parameter;
@@ -50,7 +52,8 @@ public class GameRunner extends AbstractGameType<GameSettings> {
     }
 
     public GameField createGame(int levelNumber, GameSettings settings) {
-        return new Namdreab(settings.level(), getDice(), settings);
+        Level level = settings.level(levelNumber, getDice(), Level::new);
+        return new Namdreab(getDice(), level, settings);
     }
 
     @Override
@@ -60,7 +63,8 @@ public class GameRunner extends AbstractGameType<GameSettings> {
 
     @Override
     public Parameter<Integer> getBoardSize(GameSettings settings) {
-        return v(settings.level().size());
+        // TODO точно так норм, левел вернется рендомный, а что если они будут разного размера?
+        return v(settings.level(LevelProgress.levelsStartsFrom1, getDice(), Level::new).size());
     }
 
     @Override

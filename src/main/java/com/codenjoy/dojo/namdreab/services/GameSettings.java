@@ -24,6 +24,7 @@ package com.codenjoy.dojo.namdreab.services;
 
 import com.codenjoy.dojo.namdreab.model.Level;
 import com.codenjoy.dojo.services.event.Calculator;
+import com.codenjoy.dojo.services.level.LevelsSettings;
 import com.codenjoy.dojo.services.multiplayer.MultiplayerSettings;
 import com.codenjoy.dojo.services.round.RoundSettings;
 import com.codenjoy.dojo.services.settings.SettingsImpl;
@@ -37,7 +38,8 @@ import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.*;
 public class GameSettings extends SettingsImpl
         implements SettingsReader<GameSettings>,
                    RoundSettings<GameSettings>,
-                   MultiplayerSettings<GameSettings> {
+                   MultiplayerSettings<GameSettings>,
+                   LevelsSettings<GameSettings> {
 
     public enum Keys implements Key {
 
@@ -49,8 +51,7 @@ public class GameSettings extends SettingsImpl
         GOLD_SCORE("[Score] Gold score"),
         DIE_PENALTY("[Score] Die penalty"),
         STONE_SCORE("[Score] Stone score"),
-        EAT_SCORE("[Score] Eat enemy score"),
-        LEVEL_MAP("[Map] Map");
+        EAT_SCORE("[Score] Eat enemy score");
 
         private String key;
 
@@ -72,11 +73,11 @@ public class GameSettings extends SettingsImpl
     public GameSettings() {
         initRound();
         // сколько тиков на 1 раунд
-        timePerRound().update(300);
+        setTimePerRound(300);
         // сколько раундов (с тем же составом героев) на 1 матч
-        roundsPerMatch().update(3);
+        setRoundsPerMatch(3);
         // // сколько тиков должно пройти от начала раунда, чтобы засчитать победу
-        minTicksForWin().update(40);
+        setMinTicksForWin(40);
 
         integer(FLYING_COUNT, 10);
         integer(FURY_COUNT, 10);
@@ -89,41 +90,7 @@ public class GameSettings extends SettingsImpl
         integer(STONE_SCORE, 5);
         integer(EAT_SCORE, 10);
 
-        multiline(LEVEL_MAP,
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
-                "☼☼     ●   ○             ●   ☼\n" +
-                "☼#              ●            ☼\n" +
-                "☼☼  ○   ☼#         ○   ●     ☼\n" +
-                "☼☼                      ○    ☼\n" +
-                "☼# ○         ●               ☼\n" +
-                "☼☼                ☼#    ●   %☼\n" +
-                "☼☼  ●   ☼☼☼        ☼  ☼      ☼\n" +
-                "☼#      ☼      ○   ☼  ☼      ☼\n" +
-                "☼☼      ☼○         ☼  ☼      ☼\n" +
-                "☼☼      ☼☼☼               ●  ☼\n" +
-                "☼#              ☼#           ☼\n" +
-                "☼☼○         ●               $☼\n" +
-                "☼☼    ●              ☼       ☼\n" +
-                "☼#             ○             ☼\n" +
-                "☼☼         ●             ●   ☼\n" +
-                "☼☼   ○             ☼#        ☼\n" +
-                "☼#       ☼☼ ☼                ☼\n" +
-                "☼☼ ●        ☼     ●     ○    ☼\n" +
-                "☼☼       ☼☼ ☼                ☼\n" +
-                "☼#          ☼               @☼\n" +
-                "☼☼   ●     ☼#    ●     ●     ☼\n" +
-                "☼☼           ○               ☼\n" +
-                "☼#                  ☼☼☼      ☼\n" +
-                "☼☼                           ☼\n" +
-                "☼☼  ●   ○        ☼☼☼#    ○   ☼\n" +
-                "☼#           ●               ☼\n" +
-                "☼☼               ○      ●    ☼\n" +
-                "☼☼      ●         ●          ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
-    }
-
-    public Level level() {
-        return new Level(string(LEVEL_MAP));
+        Levels.setup(this);
     }
 
     public Calculator<Integer> calculator() {

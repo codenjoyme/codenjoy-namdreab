@@ -73,7 +73,7 @@ public class GameTest {
 
     private void given(String board) {
         Level level = new Level(board);
-        game = new Namdreab(level, dice, settings);
+        game = new Namdreab(dice, level, settings);
         hero = level.hero(game);
         listener = mock(EventListener.class);
         player = new Player(listener, settings);

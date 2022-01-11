@@ -29,11 +29,14 @@ import com.codenjoy.dojo.namdreab.services.GameRunner;
 import com.codenjoy.dojo.namdreab.services.GameSettings;
 import com.codenjoy.dojo.namdreab.services.ai.AISolver;
 import com.codenjoy.dojo.services.Dice;
+import com.codenjoy.dojo.services.multiplayer.LevelProgress;
 import com.codenjoy.dojo.utils.Smoke;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.function.Supplier;
+
+import static com.codenjoy.dojo.services.round.RoundSettings.Keys.ROUNDS_TIME_BEFORE_START;
 
 public class SmokeTest {
 
@@ -50,7 +53,7 @@ public class SmokeTest {
 
     @Test
     public void test() {
-        // about 11 sec
+        // about 5.5 sec
         int players = 5;
         int ticks = 1000;
 
@@ -65,9 +68,28 @@ public class SmokeTest {
 
                     @Override
                     public GameSettings getSettings() {
-                        GameSettings settings = super.getSettings();
-                        settings.setRoundsEnabled(true);
-                        return settings;
+                        return new TestGameSettings()
+                                .integer(ROUNDS_TIME_BEFORE_START, 5)
+                                .setLevelMaps(LevelProgress.levelsStartsFrom1,
+                                        "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+                                        "☼☼               ☼☼\n" +
+                                        "☼☼               ☼☼\n" +
+                                        "☼#       ☼       ☼☼\n" +
+                                        "☼☼       ☼       ☼☼\n" +
+                                        "☼☼   ☼☼☼☼☼☼☼☼☼   ☼☼\n" +
+                                        "☼#       ☼       ☼☼\n" +
+                                        "☼☼       ☼       ☼☼\n" +
+                                        "☼☼               ☼☼\n" +
+                                        "☼#               ☼☼\n" +
+                                        "☼☼               ☼☼\n" +
+                                        "☼☼       ☼       ☼☼\n" +
+                                        "☼#       ☼       ☼☼\n" +
+                                        "☼☼   ☼☼☼☼☼☼☼☼☼   ☼☼\n" +
+                                        "☼☼       ☼       ☼☼\n" +
+                                        "☼#       ☼       ☼☼\n" +
+                                        "☼☼               ☼☼\n" +
+                                        "☼☼               ☼☼\n" +
+                                        "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
                     }
                 },
                 players, solver, Board::new);

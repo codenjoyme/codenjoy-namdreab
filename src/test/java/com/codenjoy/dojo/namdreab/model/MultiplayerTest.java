@@ -92,7 +92,7 @@ public class MultiplayerTest {
     private void givenFl(String board) {
         Level level = new Level(board.replaceAll("\n", ""));
 
-        game = new Namdreab(level, dice,  settings);
+        game = new Namdreab(dice, level,  settings);
 
         hero = level.hero(game);
         hero.setActive(true);

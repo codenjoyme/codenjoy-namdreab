@@ -60,7 +60,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     private Dice dice;
     private GameSettings settings;
 
-    public Namdreab(Level level, Dice dice, GameSettings settings) {
+    public Namdreab(Dice dice, Level level, GameSettings settings) {
         super(START, WIN, settings);
         this.dice = dice;
         walls = level.walls();
