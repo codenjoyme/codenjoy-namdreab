@@ -61,7 +61,7 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
 
     public Hero(Point pt) {
         this(RIGHT);
-        elements.add(new Tail(pt.getX() - 1, pt.getY(), this));
+        elements.add(new Tail(LEFT.change(pt), this));
         elements.add(new Tail(pt, this));
     }
 

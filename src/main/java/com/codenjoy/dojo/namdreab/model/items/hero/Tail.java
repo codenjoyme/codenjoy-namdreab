@@ -45,11 +45,6 @@ public class Tail extends PointImpl implements State<Element, Player> {
         this.hero = hero;
     }
 
-    public Tail(int x, int y, Hero hero) {
-        super(x, y);
-        this.hero = hero;
-    }
-
     private Element getTail(TailDirection direction, boolean itIsMyHero) {
         if (itIsMyHero)
             return getMyTail(direction);
