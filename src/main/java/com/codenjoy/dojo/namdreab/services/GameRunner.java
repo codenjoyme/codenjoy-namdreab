@@ -51,14 +51,14 @@ public class GameRunner extends AbstractGameType<GameSettings> {
         return new GameSettings();
     }
 
-    public GameField createGame(int levelNumber, GameSettings settings) {
-        Level level = settings.level(levelNumber, getDice(), Level::new);
-        return new Namdreab(getDice(), level, settings);
-    }
-
     @Override
     public PlayerScores getPlayerScores(Object score, GameSettings settings) {
         return new ScoresImpl<>(Integer.parseInt(score.toString()), settings.calculator());
+    }
+
+    public GameField createGame(int levelNumber, GameSettings settings) {
+        Level level = settings.level(levelNumber, getDice(), Level::new);
+        return new Namdreab(getDice(), level, settings);
     }
 
     @Override
@@ -89,8 +89,7 @@ public class GameRunner extends AbstractGameType<GameSettings> {
 
     @Override
     public MultiplayerType getMultiplayerType(GameSettings settings) {
-        // TODO добавить LevelsSettings как в других играх
-        return settings.multiplayerType(1);
+        return settings.multiplayerType(settings.getLevelsCount());
     }
 
     @Override
