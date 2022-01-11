@@ -28,7 +28,7 @@ import com.codenjoy.dojo.client.Solver;
 import com.codenjoy.dojo.games.namdreab.Board;
 import com.codenjoy.dojo.games.namdreab.Element;
 import com.codenjoy.dojo.namdreab.model.Player;
-import com.codenjoy.dojo.namdreab.model.board.Namdreab;
+import com.codenjoy.dojo.namdreab.model.Namdreab;
 import com.codenjoy.dojo.namdreab.services.ai.AISolver;
 import com.codenjoy.dojo.services.AbstractGameType;
 import com.codenjoy.dojo.services.EventListener;

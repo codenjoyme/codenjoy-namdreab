@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.namdreab.model.objects;
+package com.codenjoy.dojo.namdreab.model.items;
 
 /*-
  * #%L
@@ -29,17 +29,14 @@ import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.printer.state.State;
 
-/**
- * Артефакт Стена на поле
- */
-public class Wall extends PointImpl implements State<Element, Player> {
+public class FuryPill extends PointImpl implements State<Element, Player> {
 
-    public Wall(Point point) {
+    public FuryPill(Point point) {
         super(point);
     }
 
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
-        return Element.WALL;
+        return Element.FURY_PILL;
     }
 }

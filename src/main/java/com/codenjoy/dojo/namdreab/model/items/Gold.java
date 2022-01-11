@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.namdreab.model.objects;
+package com.codenjoy.dojo.namdreab.model.items;
 
 /*-
  * #%L
@@ -29,17 +29,14 @@ import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.printer.state.State;
 
-/**
- * Артефакт "Пилюля полёта" на поле (позволяет преодолевать любые препядствия)
- */
-public class FlyingPill extends PointImpl implements State<Element, Player> {
+public class Gold extends PointImpl implements State<Element, Player> {
 
-    public FlyingPill(Point point) {
+    public Gold(Point point) {
         super(point);
     }
 
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
-        return Element.FLYING_PILL;
+        return Element.GOLD;
     }
 }

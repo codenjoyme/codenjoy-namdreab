@@ -28,8 +28,8 @@ import com.codenjoy.dojo.games.namdreab.Board;
 import com.codenjoy.dojo.namdreab.TestGameSettings;
 import com.codenjoy.dojo.namdreab.model.Level;
 import com.codenjoy.dojo.namdreab.model.Player;
-import com.codenjoy.dojo.namdreab.model.board.Namdreab;
-import com.codenjoy.dojo.namdreab.model.hero.Hero;
+import com.codenjoy.dojo.namdreab.model.Namdreab;
+import com.codenjoy.dojo.namdreab.model.items.hero.Hero;
 import com.codenjoy.dojo.namdreab.services.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Direction;
@@ -42,9 +42,6 @@ import static com.codenjoy.dojo.services.Direction.UP;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
-/**
- * @author Kors
- */
 public class AISolverTest {
 
     Solver<Board> solver;

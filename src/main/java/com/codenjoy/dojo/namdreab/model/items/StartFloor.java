@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.namdreab.model.objects;
+package com.codenjoy.dojo.namdreab.model.items;
 
 /*-
  * #%L
@@ -29,17 +29,14 @@ import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.printer.state.State;
 
-/**
- * Артефакт "Золото" на поле (добавляет очки)
- */
-public class Gold extends PointImpl implements State<Element, Player> {
+public class StartFloor extends PointImpl implements State<Element, Player> {
 
-    public Gold(Point point) {
+    public StartFloor(Point point) {
         super(point);
     }
 
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
-        return Element.GOLD;
+        return Element.START_FLOOR;
     }
 }

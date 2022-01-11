@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.namdreab.model.board;
+package com.codenjoy.dojo.namdreab.model.items;
 
 /*-
  * #%L
@@ -23,38 +23,20 @@ package com.codenjoy.dojo.namdreab.model.board;
  */
 
 
+import com.codenjoy.dojo.games.namdreab.Element;
 import com.codenjoy.dojo.namdreab.model.Player;
-import com.codenjoy.dojo.namdreab.model.hero.Hero;
 import com.codenjoy.dojo.services.Point;
-import com.codenjoy.dojo.services.round.RoundGameField;
+import com.codenjoy.dojo.services.PointImpl;
+import com.codenjoy.dojo.services.printer.state.State;
 
-import java.util.Optional;
+public class FlyingPill extends PointImpl implements State<Element, Player> {
 
-public interface Field extends RoundGameField<Player, Hero> {
+    public FlyingPill(Point point) {
+        super(point);
+    }
 
-    boolean isBarrier(Point p);
-
-    Optional<Point> freeRandom();
-
-    boolean isApple(Point p);
-
-    boolean isStone(Point p);
-
-    boolean isFlyingPill(Point p);
-
-    boolean isFuryPill(Point p);
-
-    boolean isGold(Point p);
-
-    void setApple(Point p);
-
-    boolean setStone(Point p);
-
-    void setFlyingPill(Point p);
-
-    void setFuryPill(Point p);
-
-    void setGold(Point p);
-
-    Hero enemyEatenWith(Hero h);
+    @Override
+    public Element state(Player player, Object... alsoAtPoint) {
+        return Element.FLYING_PILL;
+    }
 }

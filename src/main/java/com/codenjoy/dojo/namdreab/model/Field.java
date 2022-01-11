@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.namdreab.model.objects;
+package com.codenjoy.dojo.namdreab.model;
 
 /*-
  * #%L
@@ -23,23 +23,37 @@ package com.codenjoy.dojo.namdreab.model.objects;
  */
 
 
-import com.codenjoy.dojo.games.namdreab.Element;
-import com.codenjoy.dojo.namdreab.model.Player;
+import com.codenjoy.dojo.namdreab.model.items.hero.Hero;
 import com.codenjoy.dojo.services.Point;
-import com.codenjoy.dojo.services.PointImpl;
-import com.codenjoy.dojo.services.printer.state.State;
+import com.codenjoy.dojo.services.round.RoundGameField;
 
-/**
- * Артефакт "Яблоко" на поле (удлинняет змейку)
- */
-public class Apple extends PointImpl implements State<Element, Player> {
+import java.util.Optional;
 
-    public Apple(Point point) {
-        super(point);
-    }
+public interface Field extends RoundGameField<Player, Hero> {
 
-    @Override
-    public Element state(Player player, Object... alsoAtPoint) {
-        return Element.APPLE;
-    }
+    boolean isBarrier(Point p);
+
+    Optional<Point> freeRandom();
+
+    boolean isApple(Point p);
+
+    boolean isStone(Point p);
+
+    boolean isFlyingPill(Point p);
+
+    boolean isFuryPill(Point p);
+
+    boolean isGold(Point p);
+
+    void setApple(Point p);
+
+    boolean setStone(Point p);
+
+    void setFlyingPill(Point p);
+
+    void setFuryPill(Point p);
+
+    void setGold(Point p);
+
+    Hero enemyEatenWith(Hero h);
 }

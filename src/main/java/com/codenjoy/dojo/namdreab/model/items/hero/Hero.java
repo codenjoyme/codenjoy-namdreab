@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.namdreab.model.hero;
+package com.codenjoy.dojo.namdreab.model.items.hero;
 
 /*-
  * #%L
@@ -24,8 +24,7 @@ package com.codenjoy.dojo.namdreab.model.hero;
 
 
 import com.codenjoy.dojo.namdreab.model.Player;
-import com.codenjoy.dojo.namdreab.model.board.Field;
-import com.codenjoy.dojo.namdreab.services.Event;
+import com.codenjoy.dojo.namdreab.model.Field;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.printer.state.State;
@@ -35,7 +34,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.codenjoy.dojo.namdreab.model.hero.BodyDirection.*;
+import static com.codenjoy.dojo.namdreab.model.items.hero.BodyDirection.*;
 import static com.codenjoy.dojo.namdreab.services.Event.Type.DIE;
 import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.*;
 import static com.codenjoy.dojo.services.Direction.*;

@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.namdreab.model.hero;
+package com.codenjoy.dojo.namdreab.model.items.hero;
 
 /*-
  * #%L

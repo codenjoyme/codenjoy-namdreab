@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.namdreab.model.board;
+package com.codenjoy.dojo.namdreab.model;
 
 /*-
  * #%L
@@ -23,10 +23,8 @@ package com.codenjoy.dojo.namdreab.model.board;
  */
 
 
-import com.codenjoy.dojo.namdreab.model.Level;
-import com.codenjoy.dojo.namdreab.model.Player;
-import com.codenjoy.dojo.namdreab.model.hero.Hero;
-import com.codenjoy.dojo.namdreab.model.objects.*;
+import com.codenjoy.dojo.namdreab.model.items.*;
+import com.codenjoy.dojo.namdreab.model.items.hero.Hero;
 import com.codenjoy.dojo.namdreab.services.Event;
 import com.codenjoy.dojo.namdreab.services.GameSettings;
 import com.codenjoy.dojo.services.BoardUtils;
@@ -43,7 +41,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import static com.codenjoy.dojo.namdreab.model.hero.Hero.NEXT_TICK;
+import static com.codenjoy.dojo.namdreab.model.items.hero.Hero.NEXT_TICK;
 import static com.codenjoy.dojo.namdreab.services.Event.Type.*;
 import static java.util.stream.Collectors.toList;
 

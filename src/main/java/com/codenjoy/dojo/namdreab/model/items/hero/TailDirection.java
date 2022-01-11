@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.namdreab.model.objects;
+package com.codenjoy.dojo.namdreab.model.items.hero;
 
 /*-
  * #%L
@@ -23,23 +23,11 @@ package com.codenjoy.dojo.namdreab.model.objects;
  */
 
 
-import com.codenjoy.dojo.games.namdreab.Element;
-import com.codenjoy.dojo.namdreab.model.Player;
-import com.codenjoy.dojo.services.Point;
-import com.codenjoy.dojo.services.PointImpl;
-import com.codenjoy.dojo.services.printer.state.State;
 
-/**
- * Артефакт "Камень" на поле
- */
-public class Stone extends PointImpl implements State<Element, Player> {
+public enum TailDirection {
 
-    public Stone(Point point) {
-        super(point);
-    }
-
-    @Override
-    public Element state(Player player, Object... alsoAtPoint) {
-        return Element.STONE;
-    }
+    HORIZONTAL_RIGHT,
+    HORIZONTAL_LEFT,
+    VERTICAL_UP,
+    VERTICAL_DOWN
 }
