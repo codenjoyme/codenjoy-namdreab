@@ -198,24 +198,23 @@ public class Tail extends PointImpl implements State<Element, Player> {
 
     private Tail higher(List<Object> elements) {
         return elements.stream()
-                .filter(p -> p instanceof Tail)
-                .map(p -> (Tail)p)
-                .sorted((t1, t2) -> {
+                .filter(element -> element instanceof Tail)
+                .map(element -> (Tail) element)
+                .min((t1, t2) -> {
                     boolean isHead1 = t1.isHead();
                     boolean isHead2 = t2.isHead();
                     if (isHead1 && isHead2) {
                         return 0;
                     }
 
-                    if (isHead1 && !isHead2) {
+                    if (isHead1) {
                         return -1;
                     }
-                    if (!isHead1 && isHead2) {
+                    if (isHead2) {
                         return 1;
                     }
                     return Integer.compare(t2.bodyIndex(), t1.bodyIndex());
                 })
-                .findFirst()
                 .orElse(this);
     }
 
@@ -230,5 +229,4 @@ public class Tail extends PointImpl implements State<Element, Player> {
     private boolean isTail() {
         return hero.itsMyTail(this);
     }
-
 }
