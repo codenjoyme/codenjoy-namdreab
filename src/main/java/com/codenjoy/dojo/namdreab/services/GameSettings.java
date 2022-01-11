@@ -22,24 +22,17 @@ package com.codenjoy.dojo.namdreab.services;
  * #L%
  */
 
-import com.codenjoy.dojo.namdreab.model.Level;
 import com.codenjoy.dojo.services.event.Calculator;
-import com.codenjoy.dojo.services.level.LevelsSettings;
-import com.codenjoy.dojo.services.multiplayer.MultiplayerSettings;
-import com.codenjoy.dojo.services.round.RoundSettings;
+import com.codenjoy.dojo.services.event.ScoresImpl;
+import com.codenjoy.dojo.services.settings.AllSettings;
 import com.codenjoy.dojo.services.settings.SettingsImpl;
-import com.codenjoy.dojo.services.settings.SettingsReader;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.*;
 
-public class GameSettings extends SettingsImpl
-        implements SettingsReader<GameSettings>,
-                   RoundSettings<GameSettings>,
-                   MultiplayerSettings<GameSettings>,
-                   LevelsSettings<GameSettings> {
+public class GameSettings extends SettingsImpl implements AllSettings<GameSettings> {
 
     public enum Keys implements Key {
 
@@ -51,7 +44,8 @@ public class GameSettings extends SettingsImpl
         GOLD_SCORE("[Score] Gold score"),
         DIE_PENALTY("[Score] Die penalty"),
         STONE_SCORE("[Score] Stone score"),
-        EAT_SCORE("[Score] Eat enemy score");
+        EAT_SCORE("[Score] Eat enemy score"),
+        SCORE_COUNTING_TYPE(ScoresImpl.SCORE_COUNTING_TYPE.key());
 
         private String key;
 
@@ -71,7 +65,8 @@ public class GameSettings extends SettingsImpl
     }
     
     public GameSettings() {
-        initRound();
+        initAll();
+
         // сколько тиков на 1 раунд
         setTimePerRound(300);
         // сколько раундов (с тем же составом героев) на 1 матч
