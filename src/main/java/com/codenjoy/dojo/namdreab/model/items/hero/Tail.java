@@ -45,14 +45,13 @@ public class Tail extends PointImpl implements State<Element, Player> {
         this.hero = hero;
     }
 
-    private Element getTail(TailDirection direction, boolean itIsMyHero) {
-        if (itIsMyHero)
-            return getMyTail(direction);
-        else
-            return getEnemyTail(direction);
+    private Element tail(TailDirection direction, boolean itIsMyHero) {
+        return itIsMyHero
+                ? myTail(direction)
+                : enemyTail(direction);
     }
 
-    private Element getMyTail(TailDirection direction) {
+    private Element myTail(TailDirection direction) {
         switch (direction) {
             case VERTICAL_DOWN:
                 return TAIL_END_DOWN;
@@ -67,7 +66,7 @@ public class Tail extends PointImpl implements State<Element, Player> {
         }
     }
 
-    private Element getEnemyTail(TailDirection direction) {
+    private Element enemyTail(TailDirection direction) {
         switch (direction) {
             case VERTICAL_DOWN:
                 return ENEMY_TAIL_END_DOWN;
@@ -82,14 +81,13 @@ public class Tail extends PointImpl implements State<Element, Player> {
         }
     }
 
-    private Element getHead(Direction direction, boolean itIsMyHero) {
-        if (itIsMyHero)
-            return getMyHead(direction);
-        else
-            return getEnemyHead(direction);
+    private Element head(Direction direction, boolean itIsMyHero) {
+        return itIsMyHero
+                ? myHead(direction)
+                : enemyHead(direction);
     }
 
-    private Element getMyHead(Direction direction) {
+    private Element myHead(Direction direction) {
         switch (direction) {
             case DOWN:
                 return HEAD_DOWN;
@@ -104,7 +102,7 @@ public class Tail extends PointImpl implements State<Element, Player> {
         }
     }
 
-    private Element getEnemyHead(Direction direction) {
+    private Element enemyHead(Direction direction) {
         switch (direction) {
             case DOWN:
                 return ENEMY_HEAD_DOWN;
@@ -119,14 +117,13 @@ public class Tail extends PointImpl implements State<Element, Player> {
         }
     }
 
-    private Element getBody(BodyDirection bodyDirection, boolean itIsMyHero) {
-        if (itIsMyHero)
-            return getMyBody(bodyDirection);
-        else
-            return getEnemyBody(bodyDirection);
+    private Element body(BodyDirection bodyDirection, boolean itIsMyHero) {
+        return itIsMyHero
+                ? myBody(bodyDirection)
+                : enemyBody(bodyDirection);
     }
 
-    private Element getMyBody(BodyDirection bodyDirection) {
+    private Element myBody(BodyDirection bodyDirection) {
         switch (bodyDirection) {
             case HORIZONTAL:
                 return BODY_HORIZONTAL;
@@ -145,7 +142,7 @@ public class Tail extends PointImpl implements State<Element, Player> {
         }
     }
 
-    private Element getEnemyBody(BodyDirection bodyDirection) {
+    private Element enemyBody(BodyDirection bodyDirection) {
         switch (bodyDirection) {
             case HORIZONTAL:
                 return ENEMY_BODY_HORIZONTAL;
@@ -171,7 +168,7 @@ public class Tail extends PointImpl implements State<Element, Player> {
     }
 
     private Element heroPart(Hero hero, List<Object> alsoAtPoint) {
-        Tail higher = getHigher(alsoAtPoint);
+        Tail higher = higher(alsoAtPoint);
         Hero hero2 = higher.hero;
         boolean itsMe = hero.equals(hero2);
         if (higher.isHead()) {
@@ -183,7 +180,7 @@ public class Tail extends PointImpl implements State<Element, Player> {
                 } else if (hero2.isFury()) {
                     return itsMe ? HEAD_EVIL : ENEMY_HEAD_EVIL;
                 } else {
-                    return getHead(hero2.direction(), itsMe);
+                    return head(hero2.direction(), itsMe);
                 }
             } else {
                 return itsMe ? HEAD_DEAD : ENEMY_HEAD_DEAD;
@@ -191,15 +188,15 @@ public class Tail extends PointImpl implements State<Element, Player> {
         }
         if (higher.isTail()) {
             if (hero2.isActive()) {
-                return getTail(hero2.tailDirection(), itsMe);
+                return tail(hero2.tailDirection(), itsMe);
             } else {
                 return itsMe ? TAIL_INACTIVE : ENEMY_TAIL_INACTIVE;
             }
         }
-        return getBody(hero2.bodyDirection(higher), itsMe);
+        return body(hero2.bodyDirection(higher), itsMe);
     }
 
-    private Tail getHigher(List<Object> elements) {
+    private Tail higher(List<Object> elements) {
         return elements.stream()
                 .filter(p -> p instanceof Tail)
                 .map(p -> (Tail)p)
@@ -216,13 +213,13 @@ public class Tail extends PointImpl implements State<Element, Player> {
                     if (!isHead1 && isHead2) {
                         return 1;
                     }
-                    return Integer.compare(t2.getBodyIndex(), t1.getBodyIndex());
+                    return Integer.compare(t2.bodyIndex(), t1.bodyIndex());
                 })
                 .findFirst()
                 .orElse(this);
     }
 
-    private int getBodyIndex() {
+    private int bodyIndex() {
         return hero.getBodyIndex(this);
     }
 
