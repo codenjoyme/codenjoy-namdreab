@@ -42,6 +42,7 @@ import java.util.stream.Stream;
 
 import static com.codenjoy.dojo.namdreab.model.Hero.NEXT_TICK;
 import static com.codenjoy.dojo.namdreab.services.Event.Type.*;
+import static java.util.function.Predicate.not;
 import static java.util.stream.Collectors.toList;
 
 public class Namdreab extends RoundField<Player, Hero> implements Field {
@@ -479,9 +480,9 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
             @Override
             public void addAll(Player player, Consumer<Iterable<? extends Point>> processor) {
                 processor.accept(new LinkedHashSet<>(){{
-                    drawHeroes(hero -> !hero.isAlive(), hero -> Arrays.asList(hero.head()));
-                    drawHeroes(hero -> hero.isFlying(), hero -> hero.reversedBody());
-                    drawHeroes(hero -> !hero.isFlying(), hero -> hero.reversedBody());
+                    drawHeroes(not(Hero::isAlive),  hero -> Arrays.asList(hero.head()));
+                    drawHeroes(Hero::isFlying,      Hero::reversedBody);
+                    drawHeroes(not(Hero::isFlying), Hero::reversedBody);
 
                     addAll(getWalls());
                     addAll(getApples());
@@ -492,8 +493,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                     addAll(getStarts());
 
                     for (Point p : this.toArray(new Point[0])) {
-                    if (p.isOutOf(Namdreab.this.size())) {
-                                remove(p);
+                        if (p.isOutOf(Namdreab.this.size())) {
+                            remove(p);
                         }
                     }
                 }
