@@ -47,11 +47,11 @@ public class Tail extends PointImpl implements State<Element, Player> {
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
         Hero hero = player.getHero();
-        return higher(Arrays.asList(alsoAtPoint)).heroPart(hero);
+        Tail other = higher(Arrays.asList(alsoAtPoint));
+        return other.heroPart(other.hero.equals(hero));
     }
 
-    private Element heroPart(Hero h) {
-        boolean itsMe = h.equals(hero);
+    private Element heroPart(boolean itsMe) {
         if (isHead()) {
             if (hero.isAlive()) {
                 if (!hero.isActive()) {
