@@ -2247,7 +2247,7 @@ public class MultiplayerTest {
                 "☼♥     ☼" +
                 "☼☼☼☼☼☼☼☼");
 
-        assertTrue(game.getFuryPills().isEmpty());
+        assertTrue(game.furyPills().isEmpty());
         verifyAllEvents("");
     }
 
@@ -2308,7 +2308,7 @@ public class MultiplayerTest {
                 "☼♣     ☼" +
                 "☼☼☼☼☼☼☼☼");
 
-        assertTrue(game.getFuryPills().isEmpty());
+        assertTrue(game.furyPills().isEmpty());
         verifyAllEvents("");
     }
 
@@ -2369,7 +2369,7 @@ public class MultiplayerTest {
                 "☼▼     ☼" +
                 "☼☼☼☼☼☼☼☼");
 
-        assertTrue(game.getApples().isEmpty());
+        assertTrue(game.apples().isEmpty());
         verifyAllEvents("");
     }
 
@@ -2429,7 +2429,7 @@ public class MultiplayerTest {
                 "☼˅     ☼" +
                 "☼☼☼☼☼☼☼☼");
 
-        assertTrue(game.getApples().isEmpty());
+        assertTrue(game.apples().isEmpty());
         verifyAllEvents("");
     }
 
@@ -2494,7 +2494,7 @@ public class MultiplayerTest {
                 "☼▼     ☼" +
                 "☼☼☼☼☼☼☼☼");
 
-        assertEquals("[]", game.getStones().toString());
+        assertEquals("[]", game.stones().toString());
         verifyAllEvents("");
     }
 
@@ -2554,7 +2554,7 @@ public class MultiplayerTest {
                 "☼˅     ☼" +
                 "☼☼☼☼☼☼☼☼");
 
-        assertEquals("[]", game.getStones().toString());
+        assertEquals("[]", game.stones().toString());
         verifyAllEvents("");
     }
 
@@ -2639,7 +2639,7 @@ public class MultiplayerTest {
                 "☼      ☼" +
                 "☼☼☼☼☼☼☼☼");
 
-        assertTrue(game.getApples().isEmpty());
+        assertTrue(game.apples().isEmpty());
         verifyAllEvents("");
     }
 
@@ -2699,7 +2699,7 @@ public class MultiplayerTest {
                 "☼      ☼" +
                 "☼☼☼☼☼☼☼☼");
 
-        assertTrue(game.getApples().isEmpty());
+        assertTrue(game.apples().isEmpty());
         verifyAllEvents("");
     }
 

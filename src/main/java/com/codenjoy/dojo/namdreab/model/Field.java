@@ -44,15 +44,15 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     boolean isGold(Point p);
 
-    void setApple(Point p);
+    void addApple(Point p);
 
-    boolean setStone(Point p);
+    boolean addStone(Point p);
 
-    void setFlyingPill(Point p);
+    void addFlyingPill(Point p);
 
-    void setFuryPill(Point p);
+    void addFuryPill(Point p);
 
-    void setGold(Point p);
+    void addGold(Point p);
 
     Hero enemyEatenWith(Hero h);
 }

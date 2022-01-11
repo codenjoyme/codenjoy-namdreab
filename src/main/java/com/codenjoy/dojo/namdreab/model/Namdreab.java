@@ -42,6 +42,7 @@ import java.util.stream.Stream;
 
 import static com.codenjoy.dojo.namdreab.model.Hero.NEXT_TICK;
 import static com.codenjoy.dojo.namdreab.services.Event.Type.*;
+import static com.codenjoy.dojo.services.Direction.LEFT;
 import static java.util.function.Predicate.not;
 import static java.util.stream.Collectors.toList;
 
@@ -108,23 +109,23 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         }
 
         if (i == 42 && furyPills.size() < max) {
-            setFuryPill(pt.get());
+            addFuryPill(pt.get());
         }
 
         if (i == 32 && flyingPills.size() < max) {
-            setFlyingPill(pt.get());
+            addFlyingPill(pt.get());
         }
 
         if (i == 21 && gold.size() < max*2) {
-            setGold(pt.get());
+            addGold(pt.get());
         }
 
         if ((i == 11 && stones.size() < size / 2) || stones.isEmpty()) {
-            setStone(pt.get());
+            addStone(pt.get());
         }
 
         if ((i < 10 && apples.size() < max*10) || apples.size() < max*2) {
-            setApple(pt.get());
+            addApple(pt.get());
         }
     }
 
@@ -171,9 +172,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
 
         public boolean alreadyCut(Hero pray) {
             return info.stream()
-                    .filter(info -> info.pray == pray)
-                    .findAny()
-                    .isPresent();
+                    .anyMatch(info -> info.pray == pray);
         }
 
         public void forEach(Reduce action) {
@@ -275,8 +274,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public boolean isBarrier(Point p) {
-        return p.isOutOf(size) || walls.contains(p) || starts.contains(p);
+    public boolean isBarrier(Point pt) {
+        return pt.isOutOf(size) || walls.contains(pt) || starts.contains(pt);
     }
 
     @Override
@@ -296,13 +295,13 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     public boolean isFree(Point pt) {
-        return isFreeOfObjects(pt) && freeOfHero(pt);
+        return isFreeOfObjects(pt)
+                && freeOfHero(pt);
     }
 
     public boolean isFreeForStone(Point pt) {
-        Point leftSide = pt.copy();
-        leftSide.move(Direction.LEFT);
-        return isFree(pt) && !starts.contains(leftSide);
+        return isFree(pt)
+                && !starts.contains(LEFT.change(pt));
     }
 
     public boolean isFreeOfObjects(Point pt) {
@@ -316,52 +315,55 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     private boolean freeOfHero(Point pt) {
-        for (Hero h : getHeroes()) {
-            if (h != null && h.body().contains(pt) &&
-                    !pt.equals(h.getTailPoint()))
+        for (Hero hero : heroes()) {
+            if (hero != null
+                    && hero.body().contains(pt)
+                    && !hero.tail().equals(pt))
+            {
                 return false;
+            }
         }
         return true;
     }
 
     @Override
-    public boolean isApple(Point p) {
-        return apples.contains(p);
+    public boolean isApple(Point pt) {
+        return apples.contains(pt);
     }
 
     @Override
-    public boolean isStone(Point p) {
-        return stones.contains(p);
+    public boolean isStone(Point pt) {
+        return stones.contains(pt);
     }
 
     @Override
-    public boolean isFlyingPill(Point p) {
-        return flyingPills.contains(p);
+    public boolean isFlyingPill(Point pt) {
+        return flyingPills.contains(pt);
     }
 
     @Override
-    public boolean isFuryPill(Point p) {
-        return furyPills.contains(p);
+    public boolean isFuryPill(Point pt) {
+        return furyPills.contains(pt);
     }
 
     @Override
-    public boolean isGold(Point p) {
-        return gold.contains(p);
+    public boolean isGold(Point pt) {
+        return gold.contains(pt);
     }
 
     @Override
-    public Hero enemyEatenWith(Hero me) {
-        return aliveEnemies(me)
+    public Hero enemyEatenWith(Hero hero) {
+        return aliveEnemies(hero)
                 .filter(h -> !h.isFlying())
-                .filter(h -> h.body().contains(me.head()))
+                .filter(h -> h.body().contains(hero.head()))
                 .findFirst()
                 .orElse(null);
     }
 
-    private Stream<Hero> aliveEnemies(Hero me) {
+    private Stream<Hero> aliveEnemies(Hero hero) {
         return aliveActive().stream()
                 .map(GamePlayer::getHero)
-                .filter(h -> !h.equals(me));
+                .filter(h -> !h.equals(hero));
     }
 
     private Hero enemyCrossedWith(Hero me) {
@@ -372,58 +374,63 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     public void addToPoint(Point p) {
-        if (p instanceof Apple)
-            setApple(p);
-        else if (p instanceof Stone)
-            setStone(p);
-        else if (p instanceof FlyingPill)
-            setFlyingPill(p);
-        else if (p instanceof FuryPill)
-            setFuryPill(p);
-        else if (p instanceof Gold)
-            setGold(p);
-        else
+        if (p instanceof Apple) {
+            addApple(p);
+        } else if (p instanceof Stone) {
+            addStone(p);
+        } else if (p instanceof FlyingPill) {
+            addFlyingPill(p);
+        } else if (p instanceof FuryPill) {
+            addFuryPill(p);
+        } else if (p instanceof Gold) {
+            addGold(p);
+        } else {
             fail("Невозможно добавить на поле объект типа " + p.getClass());
+        }
     }
 
     @Override
-    public void setApple(Point p) {
-        if (isFree(p))
-            apples.add(new Apple(p));
+    public void addApple(Point pt) {
+        if (isFree(pt)) {
+            apples.add(new Apple(pt));
+        }
     }
 
     @Override
-    public boolean setStone(Point p) {
-        if (isFreeForStone(p)) {
-            stones.add(new Stone(p));
+    public boolean addStone(Point pt) {
+        if (isFreeForStone(pt)) {
+            stones.add(new Stone(pt));
             return true;
         }
         return false;
     }
 
     @Override
-    public void setFlyingPill(Point p) {
-        if (isFree(p))
-            flyingPills.add(new FlyingPill(p));
+    public void addFlyingPill(Point pt) {
+        if (isFree(pt)) {
+            flyingPills.add(new FlyingPill(pt));
+        }
     }
 
     @Override
-    public void setFuryPill(Point p) {
-        if (isFree(p))
-            furyPills.add(new FuryPill(p));
+    public void addFuryPill(Point pt) {
+        if (isFree(pt)) {
+            furyPills.add(new FuryPill(pt));
+        }
     }
 
     @Override
-    public void setGold(Point p) {
-        if (isFree(p))
-            gold.add(new Gold(p));
+    public void addGold(Point pt) {
+        if (isFree(pt)) {
+            gold.add(new Gold(pt));
+        }
     }
 
-    public List<Apple> getApples() {
+    public List<Apple> apples() {
         return apples;
     }
 
-    public List<Hero> getHeroes() {
+    public List<Hero> heroes() {
         return players.stream()
                 .map(Player::getHero)
                 .collect(toList());
@@ -444,27 +451,27 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         return settings;
     }
 
-    public List<Wall> getWalls() {
+    public List<Wall> walls() {
         return walls;
     }
 
-    public List<StartFloor> getStarts() {
+    public List<StartFloor> starts() {
         return starts;
     }
 
-    public List<FlyingPill> getFlyingPills() {
+    public List<FlyingPill> flyingPills() {
         return flyingPills;
     }
 
-    public List<FuryPill> getFuryPills() {
+    public List<FuryPill> furyPills() {
         return furyPills;
     }
 
-    public List<Gold> getGold() {
+    public List<Gold> gold() {
         return gold;
     }
 
-    public List<Stone> getStones() {
+    public List<Stone> stones() {
         return stones;
     }
 
@@ -484,13 +491,13 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                     drawHeroes(Hero::isFlying,      Hero::reversedBody);
                     drawHeroes(not(Hero::isFlying), Hero::reversedBody);
 
-                    addAll(getWalls());
-                    addAll(getApples());
-                    addAll(getStones());
-                    addAll(getFlyingPills());
-                    addAll(getFuryPills());
-                    addAll(getGold());
-                    addAll(getStarts());
+                    addAll(walls());
+                    addAll(apples());
+                    addAll(stones());
+                    addAll(flyingPills());
+                    addAll(furyPills());
+                    addAll(gold());
+                    addAll(starts());
 
                     for (Point p : this.toArray(new Point[0])) {
                         if (p.isOutOf(Namdreab.this.size())) {
@@ -502,7 +509,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                     private void drawHeroes(Predicate<Hero> filter,
                                     Function<Hero, List<? extends Point>> getElements)
                     {
-                        Namdreab.this.getHeroes().stream()
+                        Namdreab.this.heroes().stream()
                                 .filter(filter)
                                 .sorted(Comparator.comparingInt(Hero::size))
                                         .forEach(hero -> addAll(getElements.apply(hero)));
@@ -516,7 +523,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         throw new RuntimeException(message);
     }
 
-    public Point getOn(Point pt) {
+    public Point getAt(Point pt) {
         if (apples.contains(pt)) {
             return new Apple(pt);
         }

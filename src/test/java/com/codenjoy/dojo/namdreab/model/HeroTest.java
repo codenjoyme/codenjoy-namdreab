@@ -265,6 +265,6 @@ public class HeroTest {
 
     // установка камней
     private void canSetStone(boolean enable) {
-        when(game.setStone(any(Point.class))).thenReturn(enable);
+        when(game.addStone(any(Point.class))).thenReturn(enable);
     }
 }

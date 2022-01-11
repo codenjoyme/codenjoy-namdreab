@@ -79,7 +79,7 @@ public class GameTest {
         player.setHero(hero);
         game.newGame(player);
         if (hero == null) {
-            hero = game.getHeroes().get(0);
+            hero = game.heroes().get(0);
         }
         hero.setActive(true);
     }

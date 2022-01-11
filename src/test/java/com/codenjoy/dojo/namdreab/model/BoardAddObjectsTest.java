@@ -126,26 +126,26 @@ public class BoardAddObjectsTest {
                 "☼ $●  ☼" +
                 "☼☼☼☼☼☼☼");
         int before = 1;
-        Point object = game.getOn(addition);
+        Point object = game.getAt(addition);
         game.addToPoint(addition);
         game.tick();
         int objectsAfter = 0;
         String objType = addition.getClass().toString().replaceAll(".*\\.", "");
         switch (objType) {
             case "Apple":
-                objectsAfter = game.getApples().size();
+                objectsAfter = game.apples().size();
                 break;
             case "Stone":
-                objectsAfter = game.getStones().size();
+                objectsAfter = game.stones().size();
                 break;
             case "FlyingPill":
-                objectsAfter = game.getFlyingPills().size();
+                objectsAfter = game.flyingPills().size();
                 break;
             case "FuryPill":
-                objectsAfter = game.getFuryPills().size();
+                objectsAfter = game.furyPills().size();
                 break;
             case "Gold":
-                objectsAfter = game.getGold().size();
+                objectsAfter = game.gold().size();
                 break;
             default:
                 fail("Отсутствуют действия на объект типа " + objType);

@@ -100,7 +100,7 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
         }};
     }
 
-    public Point getTailPoint() {
+    public Point tail() {
         return body.getFirst();
     }
 
@@ -189,8 +189,8 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
             return;
         }
         if (stonesCount > 0) {
-            Point to = getTailPoint();
-            if (field.setStone(to)) {
+            Point to = tail();
+            if (field.addStone(to)) {
                 stonesCount--;
             }
         }
@@ -287,7 +287,7 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
     }
 
     private void selfReduce(Point from) {
-        if (from.equals(getTailPoint()))
+        if (from.equals(tail()))
             return;
         body = new LinkedList<>(body.subList(body.indexOf(from), body.size()));
         // TODO тут тоже надо по идее lastTailPosition = getTailPoint();
@@ -327,7 +327,7 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
     }
 
     private void go(Point newLocation) {
-        lastTailPosition = getTailPoint();
+        lastTailPosition = tail();
         body.add(new Tail(newLocation, this));
         body.removeFirst();
     }
@@ -382,7 +382,7 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
 
     public Element.TailDirection tailDirection() {
         Point body = this.body.get(1);
-        Point tail = getTailPoint();
+        Point tail = tail();
 
         if (body.getX() == tail.getX()) {
             return (body.getY() < tail.getY()) ? VERTICAL_UP : VERTICAL_DOWN;
@@ -400,7 +400,7 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
     }
 
     public boolean itsMyTail(Point point) {
-        return getTailPoint() == point;
+        return tail() == point;
     }
 
     public void growBy(int val) {
@@ -411,7 +411,7 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
         List<Point> points = new LinkedList<>(body);
         body = new LinkedList<>();
         if (leaveApples) {
-            points.forEach(e -> field.setApple(e));
+            points.forEach(e -> field.addApple(e));
             leaveApples = false;
         }
         growBy = 0;
