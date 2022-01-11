@@ -27,6 +27,8 @@ import com.codenjoy.dojo.games.namdreab.Element;
 import com.codenjoy.dojo.namdreab.model.items.Tail;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.services.joystick.Act;
+import com.codenjoy.dojo.services.joystick.RoundsDirectionActJoystick;
 import com.codenjoy.dojo.services.printer.state.State;
 import com.codenjoy.dojo.services.round.RoundPlayerHero;
 
@@ -40,12 +42,16 @@ import static com.codenjoy.dojo.namdreab.services.Event.Type.DIE;
 import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.*;
 import static com.codenjoy.dojo.services.Direction.*;
 
-public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tail>, Player> {
+public class Hero extends RoundPlayerHero<Field>
+        implements RoundsDirectionActJoystick,
+                   State<LinkedList<Tail>, Player> {
 
     private static final int MINIMUM_LENGTH = 2;
 
     public static final boolean NOW = true;
     public static final boolean NEXT_TICK = !NOW;
+
+    private static final int ACT_SUICIDE = 0;
 
     private LinkedList<Tail> body;
     private Direction direction;
@@ -136,8 +142,9 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
     }
 
     public Point head() {
-        if (body.isEmpty())
+        if (body.isEmpty()) {
             return pt(-1, -1);
+        }
         return body.getLast();
     }
 
@@ -150,49 +157,28 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
     }
 
     @Override
-    public void down() {
-        setNewDirection(DOWN);
+    public void change(Direction direction) {
+        newDirection = direction;
     }
 
     @Override
-    public void up() {
-        setNewDirection(UP);
-    }
-
-    @Override
-    public void left() {
-        setNewDirection(LEFT);
-    }
-
-    @Override
-    public void right() {
-        setNewDirection(RIGHT);
-    }
-
-    private void setNewDirection(Direction d) {
-        if (!isActiveAndAlive()) {
-            return;
-        }
-        newDirection = d;
-    }
-
-    @Override
-    public void act(int... p) {
-        // TODO только если змейка жива, если она в загоне нельзя давать эту команду выполнять
-        if (p.length == 1 && p[0] == 0) {
+    public void act(Act act) {
+        // TODO test что только если змейка жива, если она в загоне нельзя давать эту команду выполнять
+        if (act.is(ACT_SUICIDE)) {
             die();
             leaveApples = true;
             return;
         }
 
-        if (!isActiveAndAlive()) {
-            return;
-        }
-        if (stonesCount > 0) {
+        if (act.is()) {
+            if (stonesCount <= 0) {
+                return;
+            }
             Point to = tail();
             if (field.addStone(to)) {
                 stonesCount--;
             }
+            return;
         }
     }
 
