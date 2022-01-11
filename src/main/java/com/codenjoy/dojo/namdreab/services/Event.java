@@ -55,19 +55,12 @@ public class Event implements EventObject<Event.Type, Integer> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Event events = (Event) o;
-        if (isEat()) {
-            return Objects.equals(type, events.type) &&
-                    value == events.value;
-        }
-        return Objects.equals(type, events.type);
+        return _equals(o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type);
+        return _hashCode();
     }
 
     @Override
