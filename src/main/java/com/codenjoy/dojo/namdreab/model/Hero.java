@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.namdreab.model.items.hero;
+package com.codenjoy.dojo.namdreab.model;
 
 /*-
  * #%L
@@ -23,8 +23,9 @@ package com.codenjoy.dojo.namdreab.model.items.hero;
  */
 
 
-import com.codenjoy.dojo.namdreab.model.Player;
-import com.codenjoy.dojo.namdreab.model.Field;
+import com.codenjoy.dojo.namdreab.model.items.hero.BodyDirection;
+import com.codenjoy.dojo.namdreab.model.items.hero.Tail;
+import com.codenjoy.dojo.namdreab.model.items.hero.TailDirection;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.printer.state.State;
@@ -201,7 +202,7 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
         die(DIE);
     }
 
-    Direction getDirection() {
+    public Direction direction() {
         return direction;
     }
 
@@ -343,7 +344,7 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
         return elements;
     }
 
-    BodyDirection getBodyDirection(Tail curr) {
+    public BodyDirection bodyDirection(Tail curr) {
         int currIndex = getBodyIndex(curr);
         Point prev = elements.get(currIndex - 1);
         Point next = elements.get(currIndex + 1);
@@ -380,7 +381,7 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
         }
     }
 
-    TailDirection getTailDirection() {
+    public TailDirection tailDirection() {
         Point body = elements.get(1);
         Point tail = getTailPoint();
 
@@ -391,15 +392,15 @@ public class Hero extends RoundPlayerHero<Field> implements State<LinkedList<Tai
         }
     }
 
-    boolean itsMyHead(Point point) {
+    public boolean itsMyHead(Point point) {
         return head() == point;
     }
 
-    boolean isMe(Point next) {
+    public boolean isMe(Point next) {
         return elements.contains(next);
     }
 
-    boolean itsMyTail(Point point) {
+    public boolean itsMyTail(Point point) {
         return getTailPoint() == point;
     }
 

@@ -23,7 +23,6 @@ package com.codenjoy.dojo.namdreab.model;
  */
 
 
-import com.codenjoy.dojo.namdreab.model.items.hero.Hero;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.round.RoundGameField;
 

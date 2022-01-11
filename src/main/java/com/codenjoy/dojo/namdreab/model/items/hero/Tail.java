@@ -24,6 +24,7 @@ package com.codenjoy.dojo.namdreab.model.items.hero;
 
 
 import com.codenjoy.dojo.games.namdreab.Element;
+import com.codenjoy.dojo.namdreab.model.Hero;
 import com.codenjoy.dojo.namdreab.model.Player;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
@@ -39,12 +40,12 @@ public class Tail extends PointImpl implements State<Element, Player> {
 
     private Hero hero;
 
-    Tail(Point pt, Hero hero) {
+    public Tail(Point pt, Hero hero) {
         super(pt.getX(), pt.getY());
         this.hero = hero;
     }
 
-    Tail(int x, int y, Hero hero) {
+    public Tail(int x, int y, Hero hero) {
         super(x, y);
         this.hero = hero;
     }
@@ -187,7 +188,7 @@ public class Tail extends PointImpl implements State<Element, Player> {
                 } else if (hero2.isFury()) {
                     return itsMe ? HEAD_EVIL : ENEMY_HEAD_EVIL;
                 } else {
-                    return getHead(hero2.getDirection(), itsMe);
+                    return getHead(hero2.direction(), itsMe);
                 }
             } else {
                 return itsMe ? HEAD_DEAD : ENEMY_HEAD_DEAD;
@@ -195,12 +196,12 @@ public class Tail extends PointImpl implements State<Element, Player> {
         }
         if (higher.isTail()) {
             if (hero2.isActive()) {
-                return getTail(hero2.getTailDirection(), itsMe);
+                return getTail(hero2.tailDirection(), itsMe);
             } else {
                 return itsMe ? TAIL_INACTIVE : ENEMY_TAIL_INACTIVE;
             }
         }
-        return getBody(hero2.getBodyDirection(higher), itsMe);
+        return getBody(hero2.bodyDirection(higher), itsMe);
     }
 
     private Tail getHigher(List<Object> elements) {

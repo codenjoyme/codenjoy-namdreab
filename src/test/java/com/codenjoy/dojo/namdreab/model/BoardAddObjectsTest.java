@@ -25,7 +25,6 @@ package com.codenjoy.dojo.namdreab.model;
 
 import com.codenjoy.dojo.namdreab.TestGameSettings;
 import com.codenjoy.dojo.namdreab.model.items.*;
-import com.codenjoy.dojo.namdreab.model.items.hero.Hero;
 import com.codenjoy.dojo.namdreab.services.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.EventListener;

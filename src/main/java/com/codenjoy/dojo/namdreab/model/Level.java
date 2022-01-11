@@ -25,7 +25,6 @@ package com.codenjoy.dojo.namdreab.model;
 
 import com.codenjoy.dojo.games.namdreab.Element;
 import com.codenjoy.dojo.namdreab.model.items.*;
-import com.codenjoy.dojo.namdreab.model.items.hero.Hero;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.field.AbstractLevel;

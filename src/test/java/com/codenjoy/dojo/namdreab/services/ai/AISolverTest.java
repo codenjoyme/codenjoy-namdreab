@@ -29,7 +29,7 @@ import com.codenjoy.dojo.namdreab.TestGameSettings;
 import com.codenjoy.dojo.namdreab.model.Level;
 import com.codenjoy.dojo.namdreab.model.Namdreab;
 import com.codenjoy.dojo.namdreab.model.Player;
-import com.codenjoy.dojo.namdreab.model.items.hero.Hero;
+import com.codenjoy.dojo.namdreab.model.Hero;
 import com.codenjoy.dojo.namdreab.services.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Direction;
