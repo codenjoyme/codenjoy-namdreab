@@ -60,8 +60,8 @@ public class HeroTest {
     }
 
     private void checkStartValues() {
-        assertTrue("Змейка мертва!", hero.isAlive());
-        assertTrue("Змейка не активна!", hero.isActive());
+        assertTrue("Бородач мертв!", hero.isAlive());
+        assertTrue("Бородач не активен!", hero.isActive());
     }
 
     private void heroIncreasing(int additionLength) {
@@ -69,7 +69,7 @@ public class HeroTest {
             heroIncreasing();
     }
 
-    // Проверка что змейка увеличивается
+    // Проверка что бородач растет
     @Test
     public void heroIncreasing() {
         int before = hero.size();
@@ -77,10 +77,10 @@ public class HeroTest {
         hero.tick();
         hero.eat();
         applesAtAllPoints(false);
-        assertEquals("Змейка не увеличилась!", before + 1, hero.size());
+        assertEquals("Голова бородача не увеличилась!", before + 1, hero.size());
     }
 
-    // Проверка что неактивная змейка ничего не делает
+    // Проверка что неактивный бородач ничего не делает
     @Test
     public void heroInactive() {
         hero.setActive(false);
@@ -88,32 +88,32 @@ public class HeroTest {
         // просто тик
         hero.tick();
         hero.eat();
-        assertEquals("Неактивная змейка изменилась!", startBody, hero.body());
-        assertTrue("Змейка мертва!", hero.isAlive());
+        assertEquals("Неактивный бородач изменился!", startBody, hero.body());
+        assertTrue("Бородач мертв!", hero.isAlive());
         // если яблоко
         applesAtAllPoints(true);
         hero.tick();
         hero.eat();
         applesAtAllPoints(false);
-        assertEquals("Неактивная змейка изменилась!", startBody, hero.body());
-        assertTrue("Змейка мертва!", hero.isAlive());
+        assertEquals("Неактивный бородач изменился!", startBody, hero.body());
+        assertTrue("Бородач мертв!", hero.isAlive());
         // если камень
         stonesAtAllPoints(true);
         hero.tick();
         hero.eat();
         stonesAtAllPoints(false);
-        assertEquals("Неактивная змейка изменилась!", startBody, hero.body());
-        assertTrue("Змейка мертва!", hero.isAlive());
+        assertEquals("Неактивный бородач изменился!", startBody, hero.body());
+        assertTrue("Бородач мертв!", hero.isAlive());
         // если стена
         wallsAtAllPoints(true);
         hero.tick();
         hero.eat();
         wallsAtAllPoints(false);
-        assertEquals("Неактивная змейка изменилась!", startBody, hero.body());
-        assertTrue("Змейка мертва!", hero.isAlive());
+        assertEquals("Неактивный бородач изменился!", startBody, hero.body());
+        assertTrue("Бородач мертв!", hero.isAlive());
     }
 
-    // Змейка погибает при столкновении со стеной
+    // Бородач погибает при столкновении со стеной
     @Test
     public void diedByWall() {
         int before = hero.size();
@@ -121,10 +121,10 @@ public class HeroTest {
         hero.tick();
         hero.eat();
         wallsAtAllPoints(false);
-        assertTrue("Змейка не погибла от препятствия!", !hero.isAlive());
+        assertTrue("Бородач не погиб от препятствия!", !hero.isAlive());
     }
 
-    // тест что короткая змейка погибает от камня
+    // тест что короткий бородач погибает от камня
     @Test
     public void diedByStone() {
         heroIncreasing(stoneReduced() - 1);
@@ -132,10 +132,10 @@ public class HeroTest {
         hero.tick();
         hero.eat();
         stonesAtAllPoints(false);
-        assertTrue("Маленькая змейка не погибла от камня!", !hero.isAlive());
+        assertTrue("Маленький бородач не погиб от камня!", !hero.isAlive());
     }
 
-    // тест что большая змейка уменьшается от камня, но не погибает
+    // тест что большой бородач уменьшается от камня, но не погибает
     @Test
     public void reduceByStone() {
         heroIncreasing(stoneReduced());
@@ -144,8 +144,8 @@ public class HeroTest {
         hero.tick();
         hero.eat();
         stonesAtAllPoints(false);
-        assertTrue("Большая змейка погибла от камня!", hero.isAlive());
-        assertEquals("Змейка не укоротилась на предполагаемую длину!",
+        assertTrue("Большой бородач погиб от камня!", hero.isAlive());
+        assertEquals("Бородач не укоротился на предполагаемую длину!",
                 before - stoneReduced(), hero.size());
         hero.tick();
         hero.eat();
@@ -155,12 +155,12 @@ public class HeroTest {
         return settings.integer(STONE_REDUCED);
     }
 
-    // змейка может откусить себе хвост
+    // бородач может откусить себе хвост
     @Test
     public void reduceItself() {
         int additionLength = 5;
         heroIncreasing(additionLength);
-        assertEquals("Змейка не удлиннилась!", additionLength + 2, hero.size());
+        assertEquals("Бородач не удлиннился!", additionLength + 2, hero.size());
         hero.down();
         hero.tick();
         hero.eat();
@@ -170,11 +170,11 @@ public class HeroTest {
         hero.up();
         hero.tick();
         hero.eat();
-        assertTrue("Змейка погибла укусив свой хвост!", hero.isAlive());
-        assertEquals("Укусив свой хвост, змейка не укоротилась!", 4, hero.size());
+        assertTrue("Бородач погиб укусив свою бороду!", hero.isAlive());
+        assertEquals("Укусив свою бороду, бородач не укоротился!", 4, hero.size());
     }
 
-    // если змейка съела камень, камень внутри неё
+    // если бородач съела камень, камень внутри неё
     // и она может вернуть его на поле
     @Test
     public void eatStone() {
@@ -188,27 +188,27 @@ public class HeroTest {
             stonesAtAllPoints(false);
             hero.tick();
             hero.eat();
-            assertTrue("Змейка погибла!", hero.isAlive());
-            assertEquals("Съев камень, он не появился внутри змейки!", ++stonesCount, hero.getStonesCount());
+            assertTrue("Бородач погиб!", hero.isAlive());
+            assertEquals("Съев камень, он не появился внутри бородача!", ++stonesCount, hero.getStonesCount());
         }
         // возврат камней
         // невозможно поставить
         canSetStone(false);
         for (int i = 0; i < 4; i++) {
             hero.act();
-            assertTrue("Змейка погибла!", hero.isAlive());
-            assertEquals("Количество камней в змейке уменьшилось!", stonesCount, hero.getStonesCount());
+            assertTrue("Бородач погиб!", hero.isAlive());
+            assertEquals("Количество камней в бородаче уменьшилось!", stonesCount, hero.getStonesCount());
         }
         // возможно поставить
         canSetStone(true);
         for (int i = 0; i < 4; i++) {
             hero.act();
-            assertTrue("Змейка погибла!", hero.isAlive());
-            assertEquals("Количество камней в змейке не уменьшилось!", --stonesCount, hero.getStonesCount());
+            assertTrue("Бородач погиб!", hero.isAlive());
+            assertEquals("Количество камней в бородаче не уменьшилось!", --stonesCount, hero.getStonesCount());
         }
     }
 
-    // если змейка съела пилюлю полёта, 10 ходов она действует
+    // если бородач съела пилюлю полёта, 10 ходов она действует
     @Test
     public void eatFlyingPill() {
         flyingPillsAtAllPoints(true);
@@ -224,7 +224,7 @@ public class HeroTest {
         assertEquals("Количество ходов полёта не может быть меньше 0.", 0, hero.getFuryCount());
     }
 
-    // если змейка съела пилюлю ярости, 10 ходов она действует
+    // если бородач съела пилюлю ярости, 10 ходов она действует
     @Test
     public void eatFuryPill() {
         furyPillsAtAllPoints(true);
@@ -268,6 +268,4 @@ public class HeroTest {
     private void canSetStone(boolean enable) {
         when(game.setStone(any(Point.class))).thenReturn(enable);
     }
-
-
 }

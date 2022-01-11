@@ -94,7 +94,7 @@ public class GameTest {
         assertEquals(expected, events.getEvents());
     }
 
-    // карта со своей змейкой
+    // карта со своим героем
     @Test
     public void shouldHeroOnBoard() {
         givenFl("☼☼☼☼☼☼☼" +
@@ -114,7 +114,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼");
     }
 
-    // старт змейки из "стартового бокса"
+    // старт героя из "стартового бокса"
     @Test
     public void shouldGetOutFromStartPoint() {
         given("☼☼☼☼☼☼☼☼" +
@@ -1075,7 +1075,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼");
     }
 
-    // съедая пилюлю полёта, змейка перелетает камни
+    // съедая пилюлю полёта, герой перелетает камни
     @Test
     public void shouldFlyingOverStones_whenEatFlyingPill() {
         givenFl("☼☼☼☼☼☼☼☼☼" +
@@ -1225,7 +1225,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼");
     }
 
-    // съедая пилюлю полёта, змейка может летать над собой
+    // съедая пилюлю полёта, герой может летать над собой
     @Test
     public void shouldFlyingOverMyself_whenEatFlyingPill() {
         givenFl("☼☼☼☼☼☼☼" +
@@ -1296,7 +1296,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼");
     }
 
-    // съедая пилюлю ярости, змейка ест камни без ущерба
+    // съедая пилюлю ярости, герой ест камни без ущерба
     @Test
     public void shouldEatStones_whenEatFuryPill() {
         givenFl("☼☼☼☼☼☼☼☼☼" +
@@ -1552,7 +1552,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼");
     }
 
-    // разворот на 180 короткой змейки невозможен
+    // разворот на 180 коротким героем невозможен
     @Test
     public void shouldTurn180_whenLengthIs2() {
         givenFl("☼☼☼☼☼☼☼" +
@@ -1576,7 +1576,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼");
     }
 
-    // разворот на 180 с откусыванием хвоста невозможен
+    // разворот на 180 с откусыванием бороды невозможен
     @Test
     public void shouldTurn180_whenLengthIs5() {
         givenFl("☼☼☼☼☼☼☼" +

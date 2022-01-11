@@ -27,8 +27,8 @@ import com.codenjoy.dojo.client.Solver;
 import com.codenjoy.dojo.games.namdreab.Board;
 import com.codenjoy.dojo.namdreab.TestGameSettings;
 import com.codenjoy.dojo.namdreab.model.Level;
-import com.codenjoy.dojo.namdreab.model.Player;
 import com.codenjoy.dojo.namdreab.model.Namdreab;
+import com.codenjoy.dojo.namdreab.model.Player;
 import com.codenjoy.dojo.namdreab.model.items.hero.Hero;
 import com.codenjoy.dojo.namdreab.services.GameSettings;
 import com.codenjoy.dojo.services.Dice;
@@ -44,11 +44,9 @@ import static org.mockito.Mockito.mock;
 
 public class AISolverTest {
 
-    Solver<Board> solver;
-    Board b;
-
+    private Solver<Board> solver;
+    private Board board;
     private Dice dice;
-
     private GameSettings settings;
 
     @Before
@@ -57,13 +55,13 @@ public class AISolverTest {
         solver = new AISolver(dice);
     }
 
-    private void givenFl(String board) {
-        b = new Board();
-        b.forString(board);
+    private void givenFl(String map) {
+        board = new Board();
+        board.forString(map);
 
         // этот весь код ниже используется сейчас только для распечатки изображения доски (для наглядности)
         // можно смело убирать, если мешает
-        Level level = new Level(board);
+        Level level = new Level(map);
 
         settings = new TestGameSettings();
 
@@ -83,7 +81,7 @@ public class AISolverTest {
     }
 
     private void testSolution(String expected) {
-        assertEquals(expected, solver.get(b));
+        assertEquals(expected, solver.get(board));
     }
 
     // корректный старт змейки из "стартового бокса"

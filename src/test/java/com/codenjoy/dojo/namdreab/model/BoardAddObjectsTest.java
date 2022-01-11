@@ -86,28 +86,28 @@ public class BoardAddObjectsTest {
                 {new Stone(pt(3, 2)), false},
                 {new Stone(pt(3, 1)), false},
                 {new Stone(pt(3, 0)), false},
-                // нельзя ставить таблетки полёта на яблоки,камни,таблетки,золото,стены
+                // нельзя ставить таблетки полёта на яблоки, камни, таблетки, золото, стены
                 {new FlyingPill(pt(2, 2)), false},
                 {new FlyingPill(pt(2, 1)), false},
                 {new FlyingPill(pt(3, 3)), false},
                 {new FlyingPill(pt(3, 2)), false},
                 {new FlyingPill(pt(3, 1)), false},
                 {new FlyingPill(pt(3, 0)), false},
-                // нельзя ставить таблетки ярости на яблоки,камни,таблетки,золото,стены
+                // нельзя ставить таблетки ярости на яблоки, камни, таблетки, золото, стены
                 {new FuryPill(pt(2, 2)), false},
                 {new FuryPill(pt(2, 1)), false},
                 {new FuryPill(pt(3, 3)), false},
                 {new FuryPill(pt(3, 2)), false},
                 {new FuryPill(pt(3, 1)), false},
                 {new FuryPill(pt(3, 0)), false},
-                // нельзя ставить золото на яблоки,камни,таблетки,золото,стены
+                // нельзя ставить золото на яблоки, камни, таблетки, золото, стены
                 {new Gold(pt(2, 2)), false},
                 {new Gold(pt(2, 1)), false},
                 {new Gold(pt(3, 3)), false},
                 {new Gold(pt(3, 2)), false},
                 {new Gold(pt(3, 1)), false},
                 {new Gold(pt(3, 0)), false},
-                // можно ставить яблоки,камни,таблетки и золото в пустое место
+                // можно ставить яблоки, камни, таблетки и золото в пустое место
                 {new Apple(pt(4, 2)), true},
                 {new Stone(pt(4, 2)), true},
                 {new FlyingPill(pt(4, 2)), true},
