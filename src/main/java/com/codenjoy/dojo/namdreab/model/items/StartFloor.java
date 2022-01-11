@@ -31,8 +31,8 @@ import com.codenjoy.dojo.services.printer.state.State;
 
 public class StartFloor extends PointImpl implements State<Element, Player> {
 
-    public StartFloor(Point point) {
-        super(point);
+    public StartFloor(Point pt) {
+        super(pt);
     }
 
     @Override

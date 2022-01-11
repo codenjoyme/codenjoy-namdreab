@@ -31,8 +31,8 @@ import com.codenjoy.dojo.services.printer.state.State;
 
 public class Apple extends PointImpl implements State<Element, Player> {
 
-    public Apple(Point point) {
-        super(point);
+    public Apple(Point pt) {
+        super(pt);
     }
 
     @Override

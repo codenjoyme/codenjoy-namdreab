@@ -31,8 +31,8 @@ import com.codenjoy.dojo.services.printer.state.State;
 
 public class Stone extends PointImpl implements State<Element, Player> {
 
-    public Stone(Point point) {
-        super(point);
+    public Stone(Point pt) {
+        super(pt);
     }
 
     @Override

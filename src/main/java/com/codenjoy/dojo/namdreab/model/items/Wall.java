@@ -31,8 +31,8 @@ import com.codenjoy.dojo.services.printer.state.State;
 
 public class Wall extends PointImpl implements State<Element, Player> {
 
-    public Wall(Point point) {
-        super(point);
+    public Wall(Point pt) {
+        super(pt);
     }
 
     @Override

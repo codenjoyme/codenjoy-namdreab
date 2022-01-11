@@ -31,8 +31,8 @@ import com.codenjoy.dojo.services.printer.state.State;
 
 public class FuryPill extends PointImpl implements State<Element, Player> {
 
-    public FuryPill(Point point) {
-        super(point);
+    public FuryPill(Point pt) {
+        super(pt);
     }
 
     @Override

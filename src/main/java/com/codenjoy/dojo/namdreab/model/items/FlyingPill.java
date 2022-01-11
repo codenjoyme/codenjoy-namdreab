@@ -31,8 +31,8 @@ import com.codenjoy.dojo.services.printer.state.State;
 
 public class FlyingPill extends PointImpl implements State<Element, Player> {
 
-    public FlyingPill(Point point) {
-        super(point);
+    public FlyingPill(Point pt) {
+        super(pt);
     }
 
     @Override

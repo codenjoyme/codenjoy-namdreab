@@ -31,8 +31,8 @@ import com.codenjoy.dojo.services.printer.state.State;
 
 public class Gold extends PointImpl implements State<Element, Player> {
 
-    public Gold(Point point) {
-        super(point);
+    public Gold(Point pt) {
+        super(pt);
     }
 
     @Override
