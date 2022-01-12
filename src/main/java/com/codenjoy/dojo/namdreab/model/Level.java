@@ -106,24 +106,24 @@ public class Level extends AbstractLevel {
         switch (getAt(point)) {
             case BODY_HORIZONTAL:
             case ENEMY_BODY_HORIZONTAL:
-                return direction;
             case BODY_VERTICAL:
             case ENEMY_BODY_VERTICAL:
                 return direction;
             case BODY_LEFT_DOWN:
             case ENEMY_BODY_LEFT_DOWN:
-                return ((direction == RIGHT) ? DOWN : LEFT);
+                return direction == RIGHT ? DOWN : LEFT;
             case BODY_RIGHT_DOWN:
             case ENEMY_BODY_RIGHT_DOWN:
-                return ((direction == LEFT) ? DOWN : RIGHT);
+                return direction == LEFT ? DOWN : RIGHT;
             case BODY_LEFT_UP:
             case ENEMY_BODY_LEFT_UP:
-                return ((direction == RIGHT) ? UP : LEFT);
+                return direction == RIGHT ? UP : LEFT;
             case BODY_RIGHT_UP:
             case ENEMY_BODY_RIGHT_UP:
-                return ((direction == LEFT) ? UP : RIGHT);
+                return direction == LEFT ? UP : RIGHT;
+            default:
+                return null;
         }
-        return null;
     }
 
     public Hero enemy(Field field) {
