@@ -55,8 +55,6 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     private Dice dice;
     private GameSettings settings;
 
-    private List<Gold> gold;
-
     private int size;
 
     public Namdreab(Dice dice, Level level, GameSettings settings) {
@@ -78,7 +76,6 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         level.saveTo(field);
         field.init(this);
 
-        gold = level.gold();
         size = level.size();
 
         super.clearScore();
@@ -124,7 +121,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
             addFlyingPill(pt.get());
         }
 
-        if (i == 21 && gold.size() < max*2) {
+        if (i == 21 && gold().size() < max*2) {
             addGold(pt.get());
         }
 
@@ -256,8 +253,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                     player.event(new Event(STONE));
                 }
             }
-            if (gold.contains(head)) {
-                gold.remove(head);
+            if (gold().contains(head)) {
+                gold().removeAt(head);
                 player.event(new Event(GOLD));
             }
             if (flyingPills().contains(head)) {
@@ -321,7 +318,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                 || starts().contains(pt)
                 || flyingPills().contains(pt)
                 || furyPills().contains(pt)
-                || gold.contains(pt));
+                || gold().contains(pt));
     }
 
     private boolean freeOfHero(Point pt) {
@@ -358,7 +355,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
 
     @Override
     public boolean isGold(Point pt) {
-        return gold.contains(pt);
+        return gold().contains(pt);
     }
 
     @Override
@@ -432,7 +429,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     @Override
     public void addGold(Point pt) {
         if (isFree(pt)) {
-            gold.add(new Gold(pt));
+            gold().add(new Gold(pt));
         }
     }
 
@@ -457,10 +454,6 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         return settings;
     }
 
-    public List<Gold> gold() {
-        return gold;
-    }
-
     public BoardReader<Player> reader() {
         return new BoardReader<>() {
             private int size = Namdreab.this.size;
@@ -482,7 +475,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                     addAll(stones().all());
                     addAll(flyingPills().all());
                     addAll(furyPills().all());
-                    addAll(gold());
+                    addAll(gold().all());
                     addAll(starts().all());
 
                     for (Point p : this.toArray(new Point[0])) {
@@ -522,7 +515,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         if (furyPills().contains(pt)) {
             return new FuryPill(pt);
         }
-        if (gold.contains(pt)) {
+        if (gold().contains(pt)) {
             return new Gold(pt);
         }
         if (starts().contains(pt)) {
@@ -567,5 +560,10 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     @Override
     public Accessor<FlyingPill> flyingPills() {
         return field.of(FlyingPill.class);
+    }
+
+    @Override
+    public Accessor<Gold> gold() {
+        return field.of(Gold.class);
     }
 }
