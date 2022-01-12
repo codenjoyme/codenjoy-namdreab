@@ -55,8 +55,6 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     private Dice dice;
     private GameSettings settings;
 
-    private int size;
-
     public Namdreab(Dice dice, Level level, GameSettings settings) {
         super(START, WIN, settings);
 
@@ -75,8 +73,6 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
 
         level.saveTo(field);
         field.init(this);
-
-        size = level.size();
 
         super.clearScore();
     }
@@ -125,7 +121,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
             addGold(pt.get());
         }
 
-        if ((i == 11 && stones().size() < size / 2) || stones().size() == 0) {
+        if ((i == 11 && stones().size() < size() / 2) || stones().size() == 0) {
             addStone(pt.get());
         }
 
@@ -136,7 +132,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
 
     @Override
     public Optional<Point> freeRandom() {
-        return BoardUtils.freeRandom(size, dice, pt -> isFree(pt));
+        return BoardUtils.freeRandom(size(), dice, pt -> isFree(pt));
     }
 
     @Override
@@ -275,12 +271,12 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     public int size() {
-        return size;
+        return field.size();
     }
 
     @Override
     public boolean isBarrier(Point pt) {
-        return pt.isOutOf(size)
+        return pt.isOutOf(size())
                 || walls().contains(pt)
                 || starts().contains(pt);
     }
@@ -456,7 +452,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
 
     public BoardReader<Player> reader() {
         return new BoardReader<>() {
-            private int size = Namdreab.this.size;
+            private int size = Namdreab.this.size();
 
             @Override
             public int size() {
