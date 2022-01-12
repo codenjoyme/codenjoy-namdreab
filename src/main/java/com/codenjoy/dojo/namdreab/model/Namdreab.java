@@ -28,8 +28,8 @@ import com.codenjoy.dojo.namdreab.services.Event;
 import com.codenjoy.dojo.namdreab.services.GameSettings;
 import com.codenjoy.dojo.services.BoardUtils;
 import com.codenjoy.dojo.services.Dice;
-import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.services.field.PointField;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
 import com.codenjoy.dojo.services.printer.BoardReader;
 import com.codenjoy.dojo.services.round.RoundField;
@@ -48,6 +48,12 @@ import static java.util.stream.Collectors.toList;
 
 public class Namdreab extends RoundField<Player, Hero> implements Field {
 
+    private Level level;
+    private PointField field;
+    private List<Player> players;
+    private Dice dice;
+    private GameSettings settings;
+
     private List<Wall> walls;
     private List<StartFloor> starts;
     private List<Apple> apples;
@@ -56,14 +62,27 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     private List<FuryPill> furyPills;
     private List<Gold> gold;
 
-    private List<Player> players;
     private int size;
-    private Dice dice;
-    private GameSettings settings;
 
     public Namdreab(Dice dice, Level level, GameSettings settings) {
         super(START, WIN, settings);
+
+        this.level = level;
         this.dice = dice;
+        this.settings = settings;
+        this.field = new PointField();
+        this.players = new LinkedList<>();
+
+        clearScore();
+    }
+
+    @Override
+    public void clearScore() {
+        if (level == null) return;
+
+        level.saveTo(field);
+        field.init(this);
+
         walls = level.walls();
         starts = level.startPoints();
         apples = level.apples();
@@ -72,8 +91,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         furyPills = level.furyPills();
         gold = level.gold();
         size = level.size();
-        this.settings = settings;
-        players = new LinkedList<>();
+
+        super.clearScore();
     }
 
     @Override
@@ -86,7 +105,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         heroesMove();
         heroesFight();
         heroesEat();
-        // после еды у змеек отрастают хвосты, поэтому столкновения нужно повторить
+        // после еды у змеек отрастают хвосты, поэтому столкновения нужно повторить,
         // чтобы обработать ситуацию "кусь за растущий хвост", иначе eatTailThatGrows тесты не пройдут
         heroesFight();
 
