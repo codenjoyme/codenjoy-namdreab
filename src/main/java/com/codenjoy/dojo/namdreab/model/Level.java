@@ -38,46 +38,6 @@ import static java.util.function.Function.identity;
 
 public class Level extends AbstractLevel {
 
-    public static final List<Element> LEFT_PARTS = Arrays.asList(
-            BODY_HORIZONTAL,
-            BODY_RIGHT_DOWN,
-            BODY_RIGHT_UP,
-            TAIL_END_LEFT,
-            ENEMY_BODY_HORIZONTAL,
-            ENEMY_BODY_RIGHT_DOWN,
-            ENEMY_BODY_RIGHT_UP,
-            ENEMY_TAIL_END_LEFT);
-
-    public static final List<Element> RIGHT_PARTS = Arrays.asList(
-            BODY_HORIZONTAL,
-            BODY_LEFT_DOWN,
-            BODY_LEFT_UP,
-            TAIL_END_RIGHT,
-            ENEMY_BODY_HORIZONTAL,
-            ENEMY_BODY_LEFT_DOWN,
-            ENEMY_BODY_LEFT_UP,
-            ENEMY_TAIL_END_RIGHT);
-
-    public static final List<Element> DOWN_PARTS = Arrays.asList(
-            BODY_VERTICAL,
-            BODY_LEFT_UP,
-            BODY_RIGHT_UP,
-            TAIL_END_DOWN,
-            ENEMY_BODY_VERTICAL,
-            ENEMY_BODY_LEFT_UP,
-            ENEMY_BODY_RIGHT_UP,
-            ENEMY_TAIL_END_DOWN);
-
-    public static final List<Element> UP_PARTS = Arrays.asList(
-            BODY_VERTICAL,
-            BODY_LEFT_DOWN,
-            BODY_RIGHT_DOWN,
-            TAIL_END_UP,
-            ENEMY_BODY_VERTICAL,
-            ENEMY_BODY_LEFT_DOWN,
-            ENEMY_BODY_RIGHT_DOWN,
-            ENEMY_TAIL_END_UP);
-
     public Level(String map) {
         super(map);
     }
@@ -103,20 +63,16 @@ public class Level extends AbstractLevel {
     }
 
     private Hero parseHero(Point head, Field field) {
-        Direction direction = direction(head);
+        Direction direction = headDirection(head);
         Hero hero = new Hero(direction);
         hero.init(field);
 
         Element headElement = at(head);
         if (Arrays.asList(HEAD_FLY, ENEMY_HEAD_FLY).contains(headElement)) {
-            direction = headDirectionWithMod(head);
-            hero.setDirection(direction);
             hero.eatFlying();
         }
 
         if (Arrays.asList(HEAD_EVIL, ENEMY_HEAD_EVIL).contains(headElement)) {
-            direction = headDirectionWithMod(head);
-            hero.setDirection(direction);
             hero.eatFury();
         }
 
@@ -133,24 +89,24 @@ public class Level extends AbstractLevel {
         return hero;
     }
 
-    private Direction headDirectionWithMod(Point head) {
+    private Direction headDirection(Point head) {
         Element atLeft = at(LEFT.change(head));
-        if (LEFT_PARTS.contains(atLeft)) {
+        if (parts.get(LEFT).contains(atLeft)) {
             return RIGHT;
         }
 
         Element atRight = at(RIGHT.change(head));
-        if (RIGHT_PARTS.contains(atRight)) {
+        if (parts.get(RIGHT).contains(atRight)) {
             return LEFT;
         }
 
         Element atDown = at(DOWN.change(head));
-        if (DOWN_PARTS.contains(atDown)) {
+        if (parts.get(DOWN).contains(atDown)) {
             return UP;
         }
 
         Element atUp = at(UP.change(head));
-        if (UP_PARTS.contains(atUp)) {
+        if (parts.get(UP).contains(atUp)) {
             return DOWN;
         }
 
