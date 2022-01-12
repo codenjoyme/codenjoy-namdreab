@@ -68,7 +68,7 @@ public class Level extends AbstractLevel {
         Hero hero = new Hero(direction.inverted());
         hero.init(field);
 
-        Element headElement = at(head);
+        Element headElement = getAt(head);
         if (headElement.isFly()) {
             hero.eatFlying();
         }
@@ -92,7 +92,7 @@ public class Level extends AbstractLevel {
     private Direction headDirection(Point head) {
         return Direction.getValues().stream()
                 .map(direction -> {
-                    Element at = at(direction.change(head));
+                    Element at = getAt(direction.change(head));
                     return parts.get(direction).contains(at)
                             ? direction
                             : null;
@@ -103,7 +103,7 @@ public class Level extends AbstractLevel {
     }
 
     private Direction next(Point point, Direction direction) {
-        switch (at(point)) {
+        switch (getAt(point)) {
             case BODY_HORIZONTAL:
             case ENEMY_BODY_HORIZONTAL:
                 return direction;
@@ -175,7 +175,4 @@ public class Level extends AbstractLevel {
         return find(StartFloor::new, START_FLOOR);
     }
 
-    private Element at(Point pt) {
-        return Element.valueOf(map.charAt(xy.getLength(pt.getX(), pt.getY())));
-    }
 }
