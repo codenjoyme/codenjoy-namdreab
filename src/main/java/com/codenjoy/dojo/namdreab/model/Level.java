@@ -69,11 +69,11 @@ public class Level extends AbstractLevel {
         hero.init(field);
 
         Element headElement = at(head);
-        if (Arrays.asList(HEAD_FLY, ENEMY_HEAD_FLY).contains(headElement)) {
+        if (headElement.isFly()) {
             hero.eatFlying();
         }
 
-        if (Arrays.asList(HEAD_EVIL, ENEMY_HEAD_EVIL).contains(headElement)) {
+        if (headElement.isEvil()) {
             hero.eatFury();
         }
 
@@ -145,18 +145,6 @@ public class Level extends AbstractLevel {
         }
 
         return parseHero(point, field);
-    }
-
-    private Direction direction(Point point) {
-        switch (at(point)) {
-            case HEAD_DOWN :       return DOWN;
-            case ENEMY_HEAD_DOWN : return DOWN;
-            case HEAD_UP :         return UP;
-            case ENEMY_HEAD_UP :   return UP;
-            case HEAD_LEFT :       return LEFT;
-            case ENEMY_HEAD_LEFT : return LEFT;
-            default :              return RIGHT;
-        }
     }
 
     public List<Apple> apples() {
