@@ -64,7 +64,7 @@ public class Level extends AbstractLevel {
 
     private Hero parseHero(Point head, Field field) {
         Direction direction = headDirection(head);
-        Hero hero = new Hero(direction);
+        Hero hero = new Hero(direction.inverted());
         hero.init(field);
 
         Element headElement = at(head);
@@ -77,7 +77,6 @@ public class Level extends AbstractLevel {
         }
 
         hero.addTail(head);
-        direction = direction.inverted();
 
         Point point = head;
         while (direction != null) {
@@ -90,24 +89,24 @@ public class Level extends AbstractLevel {
     }
 
     private Direction headDirection(Point head) {
-        Element atLeft = at(LEFT.change(head));
-        if (parts.get(LEFT).contains(atLeft)) {
-            return RIGHT;
+        Element at = at(LEFT.change(head));
+        if (parts.get(LEFT).contains(at)) {
+            return LEFT;
         }
 
         Element atRight = at(RIGHT.change(head));
         if (parts.get(RIGHT).contains(atRight)) {
-            return LEFT;
+            return RIGHT;
         }
 
         Element atDown = at(DOWN.change(head));
         if (parts.get(DOWN).contains(atDown)) {
-            return UP;
+            return DOWN;
         }
 
         Element atUp = at(UP.change(head));
         if (parts.get(UP).contains(atUp)) {
-            return DOWN;
+            return UP;
         }
 
         throw new RuntimeException("Something wrong with head");
