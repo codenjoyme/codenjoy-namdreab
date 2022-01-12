@@ -196,7 +196,7 @@ public class Hero extends RoundPlayerHero<Field>
         applyNewDirection();
 
         reduceIfShould();
-        count();
+        tickPills();
 
         Point next = direction.change(head());
         if (isMe(next) && !isFlying())
@@ -244,14 +244,14 @@ public class Hero extends RoundPlayerHero<Field>
     }
 
     public void eatFlying() {
-        flyingCount += settings().integer(FLYING_COUNT);
+        flyingCount += settings().integer(FLYING_PILL_EFFECT_TIMEOUT);
     }
 
     public void eatFury() {
-        furyCount += settings().integer(FURY_COUNT);
+        furyCount += settings().integer(FURY_PILL_EFFECT_TIMEOUT);
     }
 
-    public void count() {
+    public void tickPills() {
         if (isFlying()) {
             flyingCount--;
         }

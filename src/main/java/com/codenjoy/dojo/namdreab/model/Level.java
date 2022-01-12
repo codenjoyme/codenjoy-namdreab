@@ -23,6 +23,7 @@ package com.codenjoy.dojo.namdreab.model;
  */
 
 
+import com.codenjoy.dojo.client.ElementsMap;
 import com.codenjoy.dojo.games.namdreab.Element;
 import com.codenjoy.dojo.namdreab.model.items.*;
 import com.codenjoy.dojo.services.Direction;
@@ -38,6 +39,8 @@ import static com.codenjoy.dojo.services.Direction.*;
 import static java.util.function.Function.identity;
 
 public class Level extends AbstractLevel {
+
+    private static final ElementsMap<Element> elements = new ElementsMap<>(Element.values());
 
     public Level(String map) {
         super(map);
@@ -68,7 +71,7 @@ public class Level extends AbstractLevel {
         Hero hero = new Hero(direction.inverted());
         hero.init(field);
 
-        Element headElement = getAt(head);
+        Element headElement = elementAt(head);
         if (headElement.isFly()) {
             hero.eatFlying();
         }
@@ -89,10 +92,14 @@ public class Level extends AbstractLevel {
         return hero;
     }
 
+    private Element elementAt(Point point) {
+        return elements.get(getAt(point));
+    }
+
     private Direction headDirection(Point head) {
         return Direction.getValues().stream()
                 .map(direction -> {
-                    Element at = getAt(direction.change(head));
+                    Element at = elementAt(direction.change(head));
                     return parts.get(direction).contains(at)
                             ? direction
                             : null;
@@ -103,7 +110,7 @@ public class Level extends AbstractLevel {
     }
 
     private Direction next(Point point, Direction direction) {
-        switch (getAt(point)) {
+        switch (elementAt(point)) {
             case BODY_HORIZONTAL:
             case ENEMY_BODY_HORIZONTAL:
             case BODY_VERTICAL:

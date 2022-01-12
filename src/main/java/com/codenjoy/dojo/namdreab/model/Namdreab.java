@@ -44,7 +44,9 @@ import java.util.stream.Stream;
 
 import static com.codenjoy.dojo.namdreab.model.Hero.NEXT_TICK;
 import static com.codenjoy.dojo.namdreab.services.Event.Type.*;
+import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.*;
 import static com.codenjoy.dojo.services.Direction.LEFT;
+import static com.codenjoy.dojo.services.field.Generator.generate;
 import static java.util.function.Predicate.not;
 import static java.util.stream.Collectors.toList;
 
@@ -104,32 +106,47 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     public void generateAll() {
-        int max = (players.size() / 2) + 1;
-        int i = dice.next(50);
-        Optional<Point> pt = freeRandom();
-        if (pt.isEmpty()) {
-            return;
-        }
+        generateFuryPills();
+        generateFlyingPills();
+        generateGold();
+        generateStones();
+        generateApples();
+    }
 
-        if (i == 42 && furyPills().size() < max) {
-            addFuryPill(pt.get());
-        }
+    private void generateFuryPills() {
+        generate(furyPills(),
+                settings, FURY_PILLS_COUNT,
+                player -> freeRandom(),
+                FuryPill::new);
+    }
 
-        if (i == 32 && flyingPills().size() < max) {
-            addFlyingPill(pt.get());
-        }
+    private void generateFlyingPills() {
+        generate(flyingPills(),
+                settings, FLYING_PILLS_COUNT,
+                player -> freeRandom(),
+                FlyingPill::new);
+    }
 
-        if (i == 21 && gold().size() < max*2) {
-            addGold(pt.get());
-        }
+    private void generateGold() {
+        generate(gold(),
+                settings, GOLD_COUNT,
+                player -> freeRandom(),
+                Gold::new);
+    }
 
-        if ((i == 11 && stones().size() < size() / 2) || stones().size() == 0) {
-            addStone(pt.get());
-        }
+    private void generateStones() {
+        generate(stones(),
+                settings, STONES_COUNT,
+                player -> freeRandom(),
+                Stone::new);
+    }
 
-        if ((i < 10 && apples().size() < max*10) || apples().size() < max*2) {
-            addApple(pt.get());
-        }
+
+    private void generateApples() {
+        generate(apples(),
+                settings, APPLES_COUNT,
+                player -> freeRandom(),
+                Apple::new);
     }
 
     public Optional<Point> freeRandom() {

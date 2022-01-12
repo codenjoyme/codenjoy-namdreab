@@ -90,7 +90,7 @@ public class MultiplayerTest {
     private void givenFl(String board) {
         Level level = new Level(board.replaceAll("\n", ""));
 
-        game = new Namdreab(dice, level,  settings);
+        game = new Namdreab(dice, level, settings);
 
         hero = level.hero(game);
         hero.setActive(true);
@@ -3107,13 +3107,13 @@ public class MultiplayerTest {
         game.tick();
         game.tick();
 
-        hero.count();
-        hero.count();
-        hero.count();
-        hero.count();
+        hero.tickPills();
+        hero.tickPills();
+        hero.tickPills();
+        hero.tickPills();
         assertEquals(2, hero.furyCount());
         assertEquals(2, hero.flyingCount());
-        hero.count();
+        hero.tickPills();
         assertEquals(1, hero.furyCount());
         assertEquals(1, hero.flyingCount());
 
@@ -3439,14 +3439,14 @@ public class MultiplayerTest {
                 "☼☼                           ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        hero.count();
-        hero.count();
-        hero.count();
-        hero.count();
-        hero.count();
-        hero.count();
+        hero.tickPills();
+        hero.tickPills();
+        hero.tickPills();
+        hero.tickPills();
+        hero.tickPills();
+        hero.tickPills();
         assertEquals(1, hero.flyingCount());
-        hero.count();
+        hero.tickPills();
         assertEquals(0, hero.flyingCount());
 
         game.tick();
@@ -4764,9 +4764,9 @@ public class MultiplayerTest {
         givenFl("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼☼            ○              ☼\n" +
                 "☼#   ©  ○                    ☼\n" +
-                "☼☼       ●       ○         ○ ☼\n" +
+                "☼☼               ○         ○ ☼\n" +
                 "☼☼                      ○    ☼\n" +
-                "☼☼   ○   ●   ●               ☼\n" +
+                "☼☼   ○                       ☼\n" +
                 "☼☼●    ☼☼☼☼☼                 ☼\n" +
                 "☼☼  ●  ☼               ○     ☼\n" +
                 "☼#     ☼☼☼        ☼☼☼☼# ○    ☼\n" +
@@ -4803,9 +4803,9 @@ public class MultiplayerTest {
         assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼☼            ○              ☼\n" +
                 "☼#   ©  ○                    ☼\n" +
-                "☼☼       ●       ○         ○ ☼\n" +
+                "☼☼               ○         ○ ☼\n" +
                 "☼☼                      ○    ☼\n" +
-                "☼☼   ○   ●   ●               ☼\n" +
+                "☼☼   ○                       ☼\n" +
                 "☼☼●    ☼☼☼☼☼                 ☼\n" +
                 "☼☼  ●  ☼               ○     ☼\n" +
                 "☼#     ☼☼☼        ☼☼☼☼# ○    ☼\n" +

@@ -61,38 +61,40 @@ public class AISolver implements Solver<Board> {
                 int ny = to.getY();
 
                 // вероятность не есть камень 3/4
-                if (board.isStoneAt(nx, ny))
-                    if (dice.next(4) != 0)
+                if (dice.next(4) != 0)
+                    if (board.isStoneAt(nx, ny))
                         return false;
 
                 // вероятность не врезаться в противника 9/10
-                if (board.isAt(nx, ny, ENEMY_HEAD_DOWN,
-                        ENEMY_HEAD_LEFT,
-                        ENEMY_HEAD_RIGHT,
-                        ENEMY_HEAD_UP,
-                        ENEMY_HEAD_EVIL,
-                        ENEMY_HEAD_FLY,
-                        ENEMY_TAIL_END_DOWN,
-                        ENEMY_TAIL_END_LEFT,
-                        ENEMY_TAIL_END_UP,
-                        ENEMY_TAIL_END_RIGHT,
-                        ENEMY_BODY_HORIZONTAL,
-                        ENEMY_BODY_VERTICAL,
-                        ENEMY_BODY_LEFT_DOWN,
-                        ENEMY_BODY_LEFT_UP,
-                        ENEMY_BODY_RIGHT_DOWN,
-                        ENEMY_BODY_RIGHT_UP))
-                    if (dice.next(10) != 0)
+                if (dice.next(10) != 0)
+                    if (board.isAt(nx, ny,
+                            ENEMY_HEAD_DOWN,
+                            ENEMY_HEAD_LEFT,
+                            ENEMY_HEAD_RIGHT,
+                            ENEMY_HEAD_UP,
+                            ENEMY_HEAD_EVIL,
+                            ENEMY_HEAD_FLY,
+                            ENEMY_TAIL_END_DOWN,
+                            ENEMY_TAIL_END_LEFT,
+                            ENEMY_TAIL_END_UP,
+                            ENEMY_TAIL_END_RIGHT,
+                            ENEMY_BODY_HORIZONTAL,
+                            ENEMY_BODY_VERTICAL,
+                            ENEMY_BODY_LEFT_DOWN,
+                            ENEMY_BODY_LEFT_UP,
+                            ENEMY_BODY_RIGHT_DOWN,
+                            ENEMY_BODY_RIGHT_UP))
                         return false;
 
                 //вероятность не есть себя 3/4
-                if (board.isAt(nx, ny, BODY_HORIZONTAL,
-                        BODY_VERTICAL,
-                        BODY_LEFT_DOWN,
-                        BODY_LEFT_UP,
-                        BODY_RIGHT_DOWN,
-                        BODY_RIGHT_UP))
-                    if (dice.next(3) != 0)
+                if (dice.next(3) != 0)
+                    if (board.isAt(nx, ny,
+                            BODY_HORIZONTAL,
+                            BODY_VERTICAL,
+                            BODY_LEFT_DOWN,
+                            BODY_LEFT_UP,
+                            BODY_RIGHT_DOWN,
+                            BODY_RIGHT_UP))
                         return false;
 
                 return true;

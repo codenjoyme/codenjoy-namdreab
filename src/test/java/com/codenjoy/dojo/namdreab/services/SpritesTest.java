@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.namdreab;
+package com.codenjoy.dojo.namdreab.services;
 
 /*-
  * #%L
@@ -10,37 +10,30 @@ package com.codenjoy.dojo.namdreab;
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
 
-import com.codenjoy.dojo.namdreab.services.GameSettings;
+import org.junit.Test;
 
-import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.*;
-import static com.codenjoy.dojo.services.round.RoundSettings.Keys.*;
+import static com.codenjoy.dojo.utils.TestUtils.assertSprites;
 
-public class TestGameSettings extends GameSettings {
+public class SpritesTest {
 
-    /**
-     * Here you can override the settings for all tests.
-     */
-    public TestGameSettings() {
-        bool(ROUNDS_ENABLED, true);
-        integer(ROUNDS_PER_MATCH, 5);
-        integer(ROUNDS_MIN_TICKS_FOR_WIN, 2);
-        integer(ROUNDS_TIME_BEFORE_START, 0);
-        integer(ROUNDS_TIME, 300);
-        integer(ROUNDS_TIME_FOR_WINNER, 1);
-        integer(FLYING_PILL_EFFECT_TIMEOUT, 10);
-        integer(FURY_PILL_EFFECT_TIMEOUT, 10);
-        integer(STONE_REDUCED, 3);
+    @Test
+    public void shouldAllSpritesExists() {
+        // given
+        GameRunner runner = new GameRunner();
+
+        // when then
+        assertSprites(runner.name(), runner.getPlots());
     }
 }

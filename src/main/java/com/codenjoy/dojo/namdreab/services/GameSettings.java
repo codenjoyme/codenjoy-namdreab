@@ -36,9 +36,17 @@ public class GameSettings extends SettingsImpl implements AllSettings<GameSettin
 
     public enum Keys implements Key {
 
-        FLYING_COUNT("[Game] Flying count"),
-        FURY_COUNT("[Game] Fury count"),
+        FLYING_PILL_EFFECT_TIMEOUT("[Game] Flying effect timeout"),
+        FURY_PILL_EFFECT_TIMEOUT("[Game] Fury effect timeout"),
+
+        FLYING_PILLS_COUNT("[Game] Flying pills count"),
+        FURY_PILLS_COUNT("[Game] Fury pills count"),
+        GOLD_COUNT("[Game] Gold count"),
+        STONES_COUNT("[Game] Stone count"),
+        APPLES_COUNT("[Game] Apple count"),
+
         STONE_REDUCED("[Game] Stone reduced value"),
+
         WIN_SCORE("[Score] Win score"),
         APPLE_SCORE("[Score] Apple score"),
         GOLD_SCORE("[Score] Gold score"),
@@ -74,8 +82,15 @@ public class GameSettings extends SettingsImpl implements AllSettings<GameSettin
         // // сколько тиков должно пройти от начала раунда, чтобы засчитать победу
         setMinTicksForWin(40);
 
-        integer(FLYING_COUNT, 10);
-        integer(FURY_COUNT, 10);
+        integer(FLYING_PILL_EFFECT_TIMEOUT, 10);
+        integer(FURY_PILL_EFFECT_TIMEOUT, 10);
+
+        integer(FLYING_PILLS_COUNT, 2);
+        integer(FURY_PILLS_COUNT, 2);
+        integer(GOLD_COUNT, 5);
+        integer(STONES_COUNT, 10);
+        integer(APPLES_COUNT, 30);
+
         integer(STONE_REDUCED, 3);
 
         integer(WIN_SCORE, 50);
