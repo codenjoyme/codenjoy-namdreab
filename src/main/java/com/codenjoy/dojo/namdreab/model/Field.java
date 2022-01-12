@@ -23,6 +23,7 @@ package com.codenjoy.dojo.namdreab.model;
  */
 
 
+import com.codenjoy.dojo.namdreab.model.items.Apple;
 import com.codenjoy.dojo.namdreab.model.items.StartFloor;
 import com.codenjoy.dojo.namdreab.model.items.Wall;
 import com.codenjoy.dojo.services.Point;
@@ -62,4 +63,6 @@ public interface Field extends RoundGameField<Player, Hero> {
     Accessor<Wall> walls();
 
     Accessor<StartFloor> starts();
+
+    Accessor<Apple> apples();
 }

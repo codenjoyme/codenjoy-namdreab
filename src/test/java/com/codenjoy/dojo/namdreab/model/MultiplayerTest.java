@@ -2369,7 +2369,7 @@ public class MultiplayerTest {
                 "☼▼     ☼" +
                 "☼☼☼☼☼☼☼☼");
 
-        assertTrue(game.apples().isEmpty());
+        assertEquals(0, game.apples().size());
         verifyAllEvents("");
     }
 
@@ -2429,7 +2429,7 @@ public class MultiplayerTest {
                 "☼˅     ☼" +
                 "☼☼☼☼☼☼☼☼");
 
-        assertTrue(game.apples().isEmpty());
+        assertEquals(0, game.apples().size());
         verifyAllEvents("");
     }
 
@@ -2639,7 +2639,7 @@ public class MultiplayerTest {
                 "☼      ☼" +
                 "☼☼☼☼☼☼☼☼");
 
-        assertTrue(game.apples().isEmpty());
+        assertEquals(0, game.apples().size());
         verifyAllEvents("");
     }
 
@@ -2699,7 +2699,7 @@ public class MultiplayerTest {
                 "☼      ☼" +
                 "☼☼☼☼☼☼☼☼");
 
-        assertTrue(game.apples().isEmpty());
+        assertEquals(0, game.apples().size());
         verifyAllEvents("");
     }
 

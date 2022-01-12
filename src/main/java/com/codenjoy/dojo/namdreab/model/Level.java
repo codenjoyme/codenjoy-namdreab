@@ -179,6 +179,7 @@ public class Level extends AbstractLevel {
     protected void fill(PointField field) {
         field.addAll(walls());
         field.addAll(starts());
+        field.addAll(apples());
 
         // TODO other elements here
     }
