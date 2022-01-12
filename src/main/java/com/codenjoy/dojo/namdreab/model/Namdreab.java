@@ -55,7 +55,6 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     private Dice dice;
     private GameSettings settings;
 
-    private List<Stone> stones;
     private List<FlyingPill> flyingPills;
     private List<FuryPill> furyPills;
     private List<Gold> gold;
@@ -81,7 +80,6 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         level.saveTo(field);
         field.init(this);
 
-        stones = level.stones();
         flyingPills = level.flyingPills();
         furyPills = level.furyPills();
         gold = level.gold();
@@ -134,7 +132,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
             addGold(pt.get());
         }
 
-        if ((i == 11 && stones.size() < size / 2) || stones.isEmpty()) {
+        if ((i == 11 && stones().size() < size / 2) || stones().size() == 0) {
             addStone(pt.get());
         }
 
@@ -256,8 +254,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                 apples().removeAt(head);
                 player.event(new Event(APPLE));
             }
-            if (stones.contains(head) && !hero.isFlying()) {
-                stones.remove(head);
+            if (stones().contains(head) && !hero.isFlying()) {
+                stones().removeAt(head);
                 if (player.isAlive()) {
                     player.event(new Event(STONE));
                 }
@@ -322,7 +320,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
 
     public boolean isFreeOfObjects(Point pt) {
         return !(apples().contains(pt)
-                || stones.contains(pt)
+                || stones().contains(pt)
                 || walls().contains(pt)
                 || starts().contains(pt)
                 || flyingPills.contains(pt)
@@ -349,7 +347,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
 
     @Override
     public boolean isStone(Point pt) {
-        return stones.contains(pt);
+        return stones().contains(pt);
     }
 
     @Override
@@ -415,7 +413,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     @Override
     public boolean addStone(Point pt) {
         if (isFreeForStone(pt)) {
-            stones.add(new Stone(pt));
+            stones().add(new Stone(pt));
             return true;
         }
         return false;
@@ -475,10 +473,6 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         return gold;
     }
 
-    public List<Stone> stones() {
-        return stones;
-    }
-
     public BoardReader<Player> reader() {
         return new BoardReader<>() {
             private int size = Namdreab.this.size;
@@ -497,7 +491,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
 
                     addAll(walls().all());
                     addAll(apples().all());
-                    addAll(stones());
+                    addAll(stones().all());
                     addAll(flyingPills());
                     addAll(furyPills());
                     addAll(gold());
@@ -531,7 +525,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         if (apples().contains(pt)) {
             return new Apple(pt);
         }
-        if (stones.contains(pt)) {
+        if (stones().contains(pt)) {
             return new Stone(pt);
         }
         if (flyingPills.contains(pt)) {
@@ -570,5 +564,10 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     @Override
     public Accessor<Apple> apples() {
         return field.of(Apple.class);
+    }
+
+    @Override
+    public Accessor<Stone> stones() {
+        return field.of(Stone.class);
     }
 }

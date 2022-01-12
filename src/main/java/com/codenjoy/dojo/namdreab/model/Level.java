@@ -180,6 +180,7 @@ public class Level extends AbstractLevel {
         field.addAll(walls());
         field.addAll(starts());
         field.addAll(apples());
+        field.addAll(stones());
 
         // TODO other elements here
     }
