@@ -55,7 +55,6 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     private Dice dice;
     private GameSettings settings;
 
-    private List<FlyingPill> flyingPills;
     private List<Gold> gold;
 
     private int size;
@@ -79,7 +78,6 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         level.saveTo(field);
         field.init(this);
 
-        flyingPills = level.flyingPills();
         gold = level.gold();
         size = level.size();
 
@@ -122,7 +120,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
             addFuryPill(pt.get());
         }
 
-        if (i == 32 && flyingPills.size() < max) {
+        if (i == 32 && flyingPills().size() < max) {
             addFlyingPill(pt.get());
         }
 
@@ -262,8 +260,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                 gold.remove(head);
                 player.event(new Event(GOLD));
             }
-            if (flyingPills.contains(head)) {
-                flyingPills.remove(head);
+            if (flyingPills().contains(head)) {
+                flyingPills().removeAt(head);
                 player.event(new Event(FLYING));
             }
             if (furyPills().contains(head)) {
@@ -321,7 +319,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                 || stones().contains(pt)
                 || walls().contains(pt)
                 || starts().contains(pt)
-                || flyingPills.contains(pt)
+                || flyingPills().contains(pt)
                 || furyPills().contains(pt)
                 || gold.contains(pt));
     }
@@ -350,7 +348,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
 
     @Override
     public boolean isFlyingPill(Point pt) {
-        return flyingPills.contains(pt);
+        return flyingPills().contains(pt);
     }
 
     @Override
@@ -420,7 +418,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     @Override
     public void addFlyingPill(Point pt) {
         if (isFree(pt)) {
-            flyingPills.add(new FlyingPill(pt));
+            flyingPills().add(new FlyingPill(pt));
         }
     }
 
@@ -459,10 +457,6 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         return settings;
     }
 
-    public List<FlyingPill> flyingPills() {
-        return flyingPills;
-    }
-
     public List<Gold> gold() {
         return gold;
     }
@@ -486,7 +480,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                     addAll(walls().all());
                     addAll(apples().all());
                     addAll(stones().all());
-                    addAll(flyingPills());
+                    addAll(flyingPills().all());
                     addAll(furyPills().all());
                     addAll(gold());
                     addAll(starts().all());
@@ -522,7 +516,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         if (stones().contains(pt)) {
             return new Stone(pt);
         }
-        if (flyingPills.contains(pt)) {
+        if (flyingPills().contains(pt)) {
             return new FlyingPill(pt);
         }
         if (furyPills().contains(pt)) {
@@ -568,5 +562,10 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     @Override
     public Accessor<FuryPill> furyPills() {
         return field.of(FuryPill.class);
+    }
+
+    @Override
+    public Accessor<FlyingPill> flyingPills() {
+        return field.of(FlyingPill.class);
     }
 }
