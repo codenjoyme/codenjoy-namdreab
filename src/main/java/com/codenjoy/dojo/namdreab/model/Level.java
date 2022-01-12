@@ -181,6 +181,7 @@ public class Level extends AbstractLevel {
         field.addAll(starts());
         field.addAll(apples());
         field.addAll(stones());
+        field.addAll(furyPills());
 
         // TODO other elements here
     }

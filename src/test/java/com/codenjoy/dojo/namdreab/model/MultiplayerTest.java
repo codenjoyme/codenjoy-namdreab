@@ -41,7 +41,6 @@ import java.util.Arrays;
 
 import static com.codenjoy.dojo.services.round.RoundSettings.Keys.*;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class MultiplayerTest {
@@ -2247,7 +2246,7 @@ public class MultiplayerTest {
                 "☼♥     ☼" +
                 "☼☼☼☼☼☼☼☼");
 
-        assertTrue(game.furyPills().isEmpty());
+        assertEquals(0, game.furyPills().size());
         verifyAllEvents("");
     }
 
@@ -2308,7 +2307,7 @@ public class MultiplayerTest {
                 "☼♣     ☼" +
                 "☼☼☼☼☼☼☼☼");
 
-        assertTrue(game.furyPills().isEmpty());
+        assertEquals(0, game.furyPills().size());
         verifyAllEvents("");
     }
 

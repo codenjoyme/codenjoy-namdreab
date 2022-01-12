@@ -23,10 +23,7 @@ package com.codenjoy.dojo.namdreab.model;
  */
 
 
-import com.codenjoy.dojo.namdreab.model.items.Apple;
-import com.codenjoy.dojo.namdreab.model.items.StartFloor;
-import com.codenjoy.dojo.namdreab.model.items.Stone;
-import com.codenjoy.dojo.namdreab.model.items.Wall;
+import com.codenjoy.dojo.namdreab.model.items.*;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.field.Accessor;
 import com.codenjoy.dojo.services.round.RoundGameField;
@@ -68,4 +65,6 @@ public interface Field extends RoundGameField<Player, Hero> {
     Accessor<Apple> apples();
 
     Accessor<Stone> stones();
+
+    Accessor<FuryPill> furyPills();
 }
