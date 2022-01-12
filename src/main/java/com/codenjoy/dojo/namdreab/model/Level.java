@@ -38,6 +38,46 @@ import static java.util.function.Function.identity;
 
 public class Level extends AbstractLevel {
 
+    public static final List<Element> LEFT_PARTS = Arrays.asList(
+            BODY_HORIZONTAL,
+            BODY_RIGHT_DOWN,
+            BODY_RIGHT_UP,
+            TAIL_END_LEFT,
+            ENEMY_BODY_HORIZONTAL,
+            ENEMY_BODY_RIGHT_DOWN,
+            ENEMY_BODY_RIGHT_UP,
+            ENEMY_TAIL_END_LEFT);
+
+    public static final List<Element> RIGHT_PARTS = Arrays.asList(
+            BODY_HORIZONTAL,
+            BODY_LEFT_DOWN,
+            BODY_LEFT_UP,
+            TAIL_END_RIGHT,
+            ENEMY_BODY_HORIZONTAL,
+            ENEMY_BODY_LEFT_DOWN,
+            ENEMY_BODY_LEFT_UP,
+            ENEMY_TAIL_END_RIGHT);
+
+    public static final List<Element> DOWN_PARTS = Arrays.asList(
+            BODY_VERTICAL,
+            BODY_LEFT_UP,
+            BODY_RIGHT_UP,
+            TAIL_END_DOWN,
+            ENEMY_BODY_VERTICAL,
+            ENEMY_BODY_LEFT_UP,
+            ENEMY_BODY_RIGHT_UP,
+            ENEMY_TAIL_END_DOWN);
+
+    public static final List<Element> UP_PARTS = Arrays.asList(
+            BODY_VERTICAL,
+            BODY_LEFT_DOWN,
+            BODY_RIGHT_DOWN,
+            TAIL_END_UP,
+            ENEMY_BODY_VERTICAL,
+            ENEMY_BODY_LEFT_DOWN,
+            ENEMY_BODY_RIGHT_DOWN,
+            ENEMY_TAIL_END_UP);
+
     public Level(String map) {
         super(map);
     }
@@ -95,62 +135,26 @@ public class Level extends AbstractLevel {
 
     private Direction headDirectionWithMod(Point head) {
         Element atLeft = at(LEFT.change(head));
-        if (Arrays.asList(
-                BODY_HORIZONTAL,
-                BODY_RIGHT_DOWN,
-                BODY_RIGHT_UP,
-                TAIL_END_LEFT,
-                ENEMY_BODY_HORIZONTAL,
-                ENEMY_BODY_RIGHT_DOWN,
-                ENEMY_BODY_RIGHT_UP,
-                ENEMY_TAIL_END_LEFT).contains(atLeft))
-        {
+        if (LEFT_PARTS.contains(atLeft)) {
             return RIGHT;
         }
 
         Element atRight = at(RIGHT.change(head));
-        if (Arrays.asList(
-                BODY_HORIZONTAL,
-                BODY_LEFT_DOWN,
-                BODY_LEFT_UP,
-                TAIL_END_RIGHT,
-                ENEMY_BODY_HORIZONTAL,
-                ENEMY_BODY_LEFT_DOWN,
-                ENEMY_BODY_LEFT_UP,
-                ENEMY_TAIL_END_RIGHT).contains(atRight))
-        {
+        if (RIGHT_PARTS.contains(atRight)) {
             return LEFT;
         }
 
         Element atDown = at(DOWN.change(head));
-        if (Arrays.asList(
-                BODY_VERTICAL,
-                BODY_LEFT_UP,
-                BODY_RIGHT_UP,
-                TAIL_END_DOWN,
-                ENEMY_BODY_VERTICAL,
-                ENEMY_BODY_LEFT_UP,
-                ENEMY_BODY_RIGHT_UP,
-                ENEMY_TAIL_END_DOWN).contains(atDown))
-        {
+        if (DOWN_PARTS.contains(atDown)) {
             return UP;
         }
 
         Element atUp = at(UP.change(head));
-        if (Arrays.asList(
-                BODY_VERTICAL,
-                BODY_LEFT_DOWN,
-                BODY_RIGHT_DOWN,
-                TAIL_END_UP,
-                ENEMY_BODY_VERTICAL,
-                ENEMY_BODY_LEFT_DOWN,
-                ENEMY_BODY_RIGHT_DOWN,
-                ENEMY_TAIL_END_UP).contains(atUp))
-        {
+        if (UP_PARTS.contains(atUp)) {
             return DOWN;
         }
 
-        throw new RuntimeException("Smth wrong with head");
+        throw new RuntimeException("Something wrong with head");
     }
 
     private Direction next(Point point, Direction direction) {
