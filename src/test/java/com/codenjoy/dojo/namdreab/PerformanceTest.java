@@ -35,9 +35,9 @@ public class PerformanceTest {
     public void test() {
 
         // about 8 sec
-        int expectedPrint = 4500;
-        int expectedTick = 2000;
         int expectedCreation = 1000;
+        int expectedTick = 2000;
+        int expectedPrint = 4500;
 
         int players = 5;
         int ticks = 10000;
@@ -53,7 +53,7 @@ public class PerformanceTest {
         boolean printBoard = false;
         assertPerformance(runner,
                 players, ticks,
-                expectedPrint, expectedTick, expectedCreation,
+                expectedCreation, expectedTick, expectedPrint,
                 printBoard);
     }
 
