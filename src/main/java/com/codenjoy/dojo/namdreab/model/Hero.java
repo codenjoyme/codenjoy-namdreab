@@ -330,7 +330,7 @@ public class Hero extends RoundPlayerHero<Field>
     }
 
     public Element.BodyDirection bodyDirection(Tail curr) {
-        int currIndex = getBodyIndex(curr);
+        int currIndex = bodyIndex(curr);
         Point prev = body.get(currIndex - 1);
         Point next = body.get(currIndex + 1);
 
@@ -403,15 +403,15 @@ public class Hero extends RoundPlayerHero<Field>
         growBy = 0;
     }
 
-    public int getStonesCount() {
+    public int stonesCount() {
         return stonesCount;
     }
 
-    public int getFlyingCount() {
+    public int flyingCount() {
         return flyingCount;
     }
 
-    public int getFuryCount() {
+    public int furyCount() {
         return furyCount;
     }
 
@@ -435,7 +435,7 @@ public class Hero extends RoundPlayerHero<Field>
         body.addFirst(new Tail(part, this));
     }
 
-    public int getBodyIndex(Point pt) {
+    public int bodyIndex(Point pt) {
         // возможны наложения элементов по pt, а потому надо вначале искать по ==
         for (int index = 0; index < body.size(); index++) {
             if (body.get(index) == pt) {
@@ -448,9 +448,5 @@ public class Hero extends RoundPlayerHero<Field>
     @Override
     public String toString() {
         return String.format("[%s,%s]", head().getX(), head().getY());
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
     }
 }

@@ -111,7 +111,7 @@ public class Tail extends PointImpl implements State<Element, Player> {
     }
 
     private int bodyIndex() {
-        return hero.getBodyIndex(this);
+        return hero.bodyIndex(this);
     }
 
     private boolean isHead() {

@@ -1093,7 +1093,7 @@ public class GameTest {
 
         verifyAllEvents("[FLYING]");
 
-        assertEquals(10, hero.getFlyingCount());
+        assertEquals(10, hero.flyingCount());
         assertEquals(true, hero.isFlying());
 
         assertE("☼☼☼☼☼☼☼☼☼" +
@@ -1108,7 +1108,7 @@ public class GameTest {
 
         game.tick();
 
-        assertEquals(9, hero.getFlyingCount());
+        assertEquals(9, hero.flyingCount());
         assertEquals(true, hero.isFlying());
 
         assertE("☼☼☼☼☼☼☼☼☼" +
@@ -1123,9 +1123,9 @@ public class GameTest {
 
         game.tick();
 
-        assertEquals(8, hero.getFlyingCount());
-        assertEquals(0, hero.getFuryCount());
-        assertEquals(0, hero.getStonesCount());
+        assertEquals(8, hero.flyingCount());
+        assertEquals(0, hero.furyCount());
+        assertEquals(0, hero.stonesCount());
         assertEquals(true, hero.isFlying());
         assertEquals(true, hero.isAlive());
 
@@ -1142,8 +1142,8 @@ public class GameTest {
         game.tick();
         game.tick();
 
-        assertEquals(6, hero.getFlyingCount());
-        assertEquals(0, hero.getStonesCount());
+        assertEquals(6, hero.flyingCount());
+        assertEquals(0, hero.stonesCount());
         assertEquals(true, hero.isFlying());
         assertEquals(true, hero.isAlive());
 
@@ -1178,7 +1178,7 @@ public class GameTest {
         game.tick();
         game.tick();
 
-        assertEquals(3, hero.getFlyingCount());
+        assertEquals(3, hero.flyingCount());
         assertEquals(true, hero.isFlying());
 
         assertE("☼☼☼☼☼☼☼☼☼" +
@@ -1195,7 +1195,7 @@ public class GameTest {
         game.tick();
         game.tick();
 
-        assertEquals(1, hero.getFlyingCount());
+        assertEquals(1, hero.flyingCount());
         assertEquals(true, hero.isFlying());
 
         assertE("☼☼☼☼☼☼☼☼☼" +
@@ -1210,7 +1210,7 @@ public class GameTest {
 
         game.tick();
 
-        assertEquals(0, hero.getFlyingCount());
+        assertEquals(0, hero.flyingCount());
         assertEquals(false, hero.isFlying());
 
         assertE("☼☼☼☼☼☼☼☼☼" +
@@ -1314,7 +1314,7 @@ public class GameTest {
 
         verifyAllEvents("[FURY]");
 
-        assertEquals(10, hero.getFuryCount());
+        assertEquals(10, hero.furyCount());
         assertEquals(true, hero.isFury());
 
         assertE("☼☼☼☼☼☼☼☼☼" +
@@ -1329,8 +1329,8 @@ public class GameTest {
 
         game.tick();
 
-        assertEquals(9, hero.getFuryCount());
-        assertEquals(0, hero.getStonesCount());
+        assertEquals(9, hero.furyCount());
+        assertEquals(0, hero.stonesCount());
         assertEquals(true, hero.isFury());
 
         assertE("☼☼☼☼☼☼☼☼☼" +
@@ -1347,9 +1347,9 @@ public class GameTest {
 
         verifyAllEvents("[STONE]");
 
-        assertEquals(8, hero.getFuryCount());
-        assertEquals(0, hero.getFlyingCount());
-        assertEquals(1, hero.getStonesCount());
+        assertEquals(8, hero.furyCount());
+        assertEquals(0, hero.flyingCount());
+        assertEquals(1, hero.stonesCount());
         assertEquals(true, hero.isFury());
         assertEquals(true, hero.isAlive());
 
@@ -1366,8 +1366,8 @@ public class GameTest {
         game.tick();
         game.tick();
 
-        assertEquals(6, hero.getFuryCount());
-        assertEquals(1, hero.getStonesCount());
+        assertEquals(6, hero.furyCount());
+        assertEquals(1, hero.stonesCount());
         assertEquals(true, hero.isFury());
         assertEquals(true, hero.isAlive());
 
@@ -1397,7 +1397,7 @@ public class GameTest {
                 "☼       ☼" +
                 "☼☼☼☼☼☼☼☼☼");
 
-        assertEquals(1, hero.getStonesCount());
+        assertEquals(1, hero.stonesCount());
 
         hero.up();
         game.tick();
@@ -1416,7 +1416,7 @@ public class GameTest {
         hero.act();
         game.tick();
 
-        assertEquals(0, hero.getStonesCount());
+        assertEquals(0, hero.stonesCount());
 
         assertE("☼☼☼☼☼☼☼☼☼" +
                 "☼       ☼" +
@@ -1460,7 +1460,7 @@ public class GameTest {
         game.tick();
         game.tick();
 
-        assertEquals(3, hero.getFuryCount());
+        assertEquals(3, hero.furyCount());
         assertEquals(true, hero.isFury());
 
         assertE("☼☼☼☼☼☼☼☼☼" +
@@ -1477,7 +1477,7 @@ public class GameTest {
         game.tick();
         game.tick();
 
-        assertEquals(1, hero.getFuryCount());
+        assertEquals(1, hero.furyCount());
         assertEquals(true, hero.isFury());
 
         assertE("☼☼☼☼☼☼☼☼☼" +
@@ -1492,7 +1492,7 @@ public class GameTest {
 
         game.tick();
 
-        assertEquals(0, hero.getFuryCount());
+        assertEquals(0, hero.furyCount());
         assertEquals(false, hero.isFury());
 
         assertE("☼☼☼☼☼☼☼☼☼" +
@@ -1520,7 +1520,7 @@ public class GameTest {
                 "☼       ☼" +
                 "☼☼☼☼☼☼☼☼☼");
 
-        assertEquals(1, hero.getStonesCount());
+        assertEquals(1, hero.stonesCount());
 
         hero.act();
         game.tick();
@@ -1536,7 +1536,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼");
 
 
-        assertEquals(0, hero.getStonesCount());
+        assertEquals(0, hero.stonesCount());
 
         game.tick();
 

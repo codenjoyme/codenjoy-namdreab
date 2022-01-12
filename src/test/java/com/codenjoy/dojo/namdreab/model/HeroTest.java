@@ -188,7 +188,7 @@ public class HeroTest {
             hero.tick();
             hero.eat();
             assertTrue("Бородач погиб!", hero.isAlive());
-            assertEquals("Съев камень, он не появился внутри бородача!", ++stonesCount, hero.getStonesCount());
+            assertEquals("Съев камень, он не появился внутри бородача!", ++stonesCount, hero.stonesCount());
         }
         // возврат камней
         // невозможно поставить
@@ -196,14 +196,14 @@ public class HeroTest {
         for (int i = 0; i < 4; i++) {
             hero.act();
             assertTrue("Бородач погиб!", hero.isAlive());
-            assertEquals("Количество камней в бородаче уменьшилось!", stonesCount, hero.getStonesCount());
+            assertEquals("Количество камней в бородаче уменьшилось!", stonesCount, hero.stonesCount());
         }
         // возможно поставить
         canSetStone(true);
         for (int i = 0; i < 4; i++) {
             hero.act();
             assertTrue("Бородач погиб!", hero.isAlive());
-            assertEquals("Количество камней в бородаче не уменьшилось!", --stonesCount, hero.getStonesCount());
+            assertEquals("Количество камней в бородаче не уменьшилось!", --stonesCount, hero.stonesCount());
         }
     }
 
@@ -218,9 +218,9 @@ public class HeroTest {
             hero.tick();
             hero.eat();
             assertEquals("Оставшееся количество ходов полёта не соответствует ожидаемому.",
-                    10 - i, hero.getFlyingCount());
+                    10 - i, hero.flyingCount());
         }
-        assertEquals("Количество ходов полёта не может быть меньше 0.", 0, hero.getFuryCount());
+        assertEquals("Количество ходов полёта не может быть меньше 0.", 0, hero.furyCount());
     }
 
     // если бородач съела пилюлю ярости, 10 ходов она действует
@@ -232,11 +232,11 @@ public class HeroTest {
         furyPillsAtAllPoints(false);
         for (int i = 0; i <= 10; i++) {
             assertEquals("Оставшееся количество ходов ярости не соответствует ожидаемому.",
-                    10 - i, hero.getFuryCount());
+                    10 - i, hero.furyCount());
             hero.tick();
             hero.eat();
         }
-        assertEquals("Количество ходов ярости не может быть меньше 0.", 0, hero.getFuryCount());
+        assertEquals("Количество ходов ярости не может быть меньше 0.", 0, hero.furyCount());
     }
 
     private void applesAtAllPoints(boolean enable) {

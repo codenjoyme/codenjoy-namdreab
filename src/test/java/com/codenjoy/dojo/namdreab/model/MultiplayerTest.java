@@ -3111,11 +3111,11 @@ public class MultiplayerTest {
         hero.count();
         hero.count();
         hero.count();
-        assertEquals(2, hero.getFuryCount());
-        assertEquals(2, hero.getFlyingCount());
+        assertEquals(2, hero.furyCount());
+        assertEquals(2, hero.flyingCount());
         hero.count();
-        assertEquals(1, hero.getFuryCount());
-        assertEquals(1, hero.getFlyingCount());
+        assertEquals(1, hero.furyCount());
+        assertEquals(1, hero.flyingCount());
 
         enemy.left();
         game.tick();
@@ -3445,9 +3445,9 @@ public class MultiplayerTest {
         hero.count();
         hero.count();
         hero.count();
-        assertEquals(1, hero.getFlyingCount());
+        assertEquals(1, hero.flyingCount());
         hero.count();
-        assertEquals(0, hero.getFlyingCount());
+        assertEquals(0, hero.flyingCount());
 
         game.tick();
 
@@ -4514,8 +4514,8 @@ public class MultiplayerTest {
         hero.removeFlying();
         enemy.removeFlying();
 
-        assertEquals(0, hero.getFlyingCount());
-        assertEquals(0, enemy.getFlyingCount());
+        assertEquals(0, hero.flyingCount());
+        assertEquals(0, enemy.flyingCount());
 
         enemy.up();
         game.tick();
