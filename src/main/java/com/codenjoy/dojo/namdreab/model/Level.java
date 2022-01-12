@@ -171,13 +171,14 @@ public class Level extends AbstractLevel {
         return find(Wall::new, WALL);
     }
 
-    public List<StartFloor> startPoints() {
+    public List<StartFloor> starts() {
         return find(StartFloor::new, START_FLOOR);
     }
 
     @Override
     protected void fill(PointField field) {
         field.addAll(walls());
+        field.addAll(starts());
 
         // TODO other elements here
     }
