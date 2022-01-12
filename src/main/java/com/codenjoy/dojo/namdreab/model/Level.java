@@ -28,8 +28,8 @@ import com.codenjoy.dojo.namdreab.model.items.*;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.field.AbstractLevel;
+import com.codenjoy.dojo.services.field.PointField;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -173,6 +173,13 @@ public class Level extends AbstractLevel {
 
     public List<StartFloor> startPoints() {
         return find(StartFloor::new, START_FLOOR);
+    }
+
+    @Override
+    protected void fill(PointField field) {
+        field.addAll(walls());
+
+        // TODO other elements here
     }
 
 }

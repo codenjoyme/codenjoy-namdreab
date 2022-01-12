@@ -23,7 +23,9 @@ package com.codenjoy.dojo.namdreab.model;
  */
 
 
+import com.codenjoy.dojo.namdreab.model.items.Wall;
 import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.services.field.Accessor;
 import com.codenjoy.dojo.services.round.RoundGameField;
 
 import java.util.Optional;
@@ -55,4 +57,6 @@ public interface Field extends RoundGameField<Player, Hero> {
     void addGold(Point p);
 
     Hero enemyEatenWith(Hero h);
+
+    Accessor<Wall> walls();
 }
