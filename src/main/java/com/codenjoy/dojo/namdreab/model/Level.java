@@ -31,6 +31,7 @@ import com.codenjoy.dojo.services.field.AbstractLevel;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static com.codenjoy.dojo.games.namdreab.Element.*;
 import static com.codenjoy.dojo.services.Direction.*;
@@ -89,27 +90,16 @@ public class Level extends AbstractLevel {
     }
 
     private Direction headDirection(Point head) {
-        Element at = at(LEFT.change(head));
-        if (parts.get(LEFT).contains(at)) {
-            return LEFT;
-        }
-
-        Element atRight = at(RIGHT.change(head));
-        if (parts.get(RIGHT).contains(atRight)) {
-            return RIGHT;
-        }
-
-        Element atDown = at(DOWN.change(head));
-        if (parts.get(DOWN).contains(atDown)) {
-            return DOWN;
-        }
-
-        Element atUp = at(UP.change(head));
-        if (parts.get(UP).contains(atUp)) {
-            return UP;
-        }
-
-        throw new RuntimeException("Something wrong with head");
+        return Direction.getValues().stream()
+                .map(direction -> {
+                    Element at = at(direction.change(head));
+                    return parts.get(direction).contains(at)
+                            ? direction
+                            : null;
+                })
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Something wrong with head"));
     }
 
     private Direction next(Point point, Direction direction) {
