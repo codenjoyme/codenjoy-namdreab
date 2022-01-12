@@ -75,6 +75,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         level.saveTo(field);
         field.init(this);
 
+        generateAll();
+
         super.clearScore();
     }
 
@@ -92,7 +94,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         // чтобы обработать ситуацию "кусь за растущий хвост", иначе eatTailThatGrows тесты не пройдут
         heroesFight();
 
-        setNewObjects();
+        generateAll();
     }
 
     private void heroesClear() {
@@ -101,12 +103,11 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                 .forEach(p -> p.getHero().clear());
     }
 
-    @Override
-    public void setNewObjects() {
+    public void generateAll() {
         int max = (players.size() / 2) + 1;
         int i = dice.next(50);
         Optional<Point> pt = freeRandom();
-        if (!pt.isPresent()) {
+        if (pt.isEmpty()) {
             return;
         }
 
@@ -131,9 +132,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         }
     }
 
-    @Override
     public Optional<Point> freeRandom() {
-        return BoardUtils.freeRandom(size(), dice, pt -> isFree(pt));
+        return BoardUtils.freeRandom(size(), dice, this::isFree);
     }
 
     @Override
