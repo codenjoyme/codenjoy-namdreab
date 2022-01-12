@@ -24,6 +24,7 @@ package com.codenjoy.dojo.namdreab.model;
 
 
 import com.codenjoy.dojo.namdreab.model.items.*;
+import com.codenjoy.dojo.namdreab.model.items.fight.FightDetails;
 import com.codenjoy.dojo.namdreab.services.Event;
 import com.codenjoy.dojo.namdreab.services.GameSettings;
 import com.codenjoy.dojo.services.BoardUtils;
@@ -147,40 +148,6 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         }
     }
 
-    private static class ReduceInfo {
-        Hero attacker;
-        Hero pray;
-        int reduce;
-
-        public ReduceInfo(Hero attacker, Hero pray, int reduce) {
-            this.attacker = attacker;
-            this.pray = pray;
-            this.reduce = reduce;
-        }
-    }
-
-    @FunctionalInterface
-    private interface Reduce {
-        void doit(Hero attacker, Hero pray, int size);
-    }
-
-    private static class FightDetails  {
-        private List<ReduceInfo> info = new LinkedList<>();
-
-        public void cutOff(Hero attacker, Hero pray, int size) {
-            info.add(new ReduceInfo(attacker, pray, size));
-        }
-
-        public boolean alreadyCut(Hero pray) {
-            return info.stream()
-                    .anyMatch(info -> info.pray == pray);
-        }
-
-        public void forEach(Reduce action) {
-            info.forEach(info -> action.doit(info.attacker, info.pray, info.reduce));
-        }
-    }
-
     private void heroesFight() {
         FightDetails info = new FightDetails();
 
@@ -226,9 +193,9 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
             }
         });
 
-        info.forEach((attacker, pray, reduce) -> {
-            if (attacker.isAlive()) {
-                attacker.event(new Event(EAT, reduce));
+        info.forEach((hunter, prey, reduce) -> {
+            if (hunter.isAlive()) {
+                hunter.event(new Event(EAT, reduce));
             }
         });
     }
