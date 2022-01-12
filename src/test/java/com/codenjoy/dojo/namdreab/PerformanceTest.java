@@ -22,8 +22,10 @@ package com.codenjoy.dojo.namdreab;
  * #L%
  */
 
+import com.codenjoy.dojo.client.local.DiceGenerator;
 import com.codenjoy.dojo.namdreab.services.GameRunner;
 import com.codenjoy.dojo.namdreab.services.GameSettings;
+import com.codenjoy.dojo.services.Dice;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.services.round.RoundSettings.Keys.ROUNDS_ENABLED;
@@ -34,19 +36,25 @@ public class PerformanceTest {
     @Test
     public void test() {
 
-        // about 8 sec
-        int expectedCreation = 1000;
-        int expectedTick = 2000;
-        int expectedPrint = 4500;
-
+        // about 10 sec
         int players = 5;
         int ticks = 10000;
 
+        int expectedCreation = 1500;
+        int expectedTick = 3000;
+        int expectedPrint = 5000;
+
+        Dice dice = new DiceGenerator().getDice(2000);
         GameRunner runner = new GameRunner(){
+
+            @Override
+            public Dice getDice() {
+                return dice;
+            }
+
             @Override
             public GameSettings getSettings() {
-                return new GameSettings()
-                        .bool(ROUNDS_ENABLED, false);
+                return new GameSettings();
             }
         };
 
