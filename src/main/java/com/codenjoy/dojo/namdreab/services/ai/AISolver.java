@@ -37,24 +37,23 @@ import static com.codenjoy.dojo.games.namdreab.Element.*;
 public class AISolver implements Solver<Board> {
 
     private DeikstraFindWay way;
-    private Point myNeck;
-    Dice dice;
+    private Dice dice;
+    private Point head;
+    private Point neck;
 
     public AISolver(Dice dice) {
         this.dice = dice;
         this.way = new DeikstraFindWay();
     }
 
-    public DeikstraFindWay.Possible possible(final Board board, final Point... excludePoints) {
+    public DeikstraFindWay.Possible possible(Board board) {
         return new DeikstraFindWay.Possible() {
             @Override // TODO test me
             public boolean possible(Point from, Direction where) {
                 Point to = where.change(from);
 
-                for (Point p : excludePoints) {
-                    if (p != null && p.equals(to)) {
-                        return false;
-                    }
+                if (neck != null && neck.equals(to)) {
+                    return false;
                 }
 
                 int nx = to.getX();
@@ -110,27 +109,25 @@ public class AISolver implements Solver<Board> {
     @Override
     public String get(final Board board) {
         if (board.isGameOver()) return "";
-        List<Direction> result = getDirections(board, myNeck);
-        myNeck = board.getMe();
+        head = board.getHero();
+        List<Direction> result = getDirections(board);
+        neck = head;
         if (result.isEmpty()) return "";
         return result.get(0).toString() + getBombIfNeeded(board);
     }
 
     private String getBombIfNeeded(Board board) {
-        Point me = board.getMe();
-        if (me.getX() % 2 == 0 && me.getY() % 2 == 0) {
+        if (head.getX() % 2 == 0 && head.getY() % 2 == 0) {
             return ", ACT";
         } else {
             return "";
         }
     }
 
-    public List<Direction> getDirections(Board board, Point... excludePoints) {
+    public List<Direction> getDirections(Board board) {
         int size = board.size();
-
-        Point from = board.getMe();
         List<Point> to = board.get(FURY_PILL, FLYING_PILL, APPLE, GOLD);
-        DeikstraFindWay.Possible map = possible(board, excludePoints);
-        return way.getShortestWay(size, from, to, map);
+        DeikstraFindWay.Possible map = possible(board);
+        return way.getShortestWay(size, head, to, map);
     }
 }
