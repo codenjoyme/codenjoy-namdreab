@@ -32,7 +32,6 @@ import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.field.Accessor;
 import com.codenjoy.dojo.services.field.PointField;
-import com.codenjoy.dojo.services.multiplayer.GamePlayer;
 import com.codenjoy.dojo.services.printer.BoardReader;
 import com.codenjoy.dojo.services.round.RoundField;
 
@@ -101,8 +100,9 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
 
     private void heroesClear() {
         players.stream()
-                .filter(p -> p.isActive() && !p.isAlive())
-                .forEach(p -> p.getHero().clear());
+                .map(Player::getHero)
+                .filter(hero -> hero.isActive() && !hero.isAlive())
+                .forEach(Hero::clear);
     }
 
     public void generateAll() {
@@ -158,10 +158,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     private void heroesMove() {
-        for (GamePlayer<Hero, Field> player : aliveActive()) {
-            Hero hero = player.getHero();
-            hero.tick();
-        }
+        aliveActiveHeroes()
+                .forEach(Hero::tick);
     }
 
     private void heroesFight() {
@@ -217,40 +215,38 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     private void heroesEat() {
-        for (GamePlayer<Hero, Field> player : aliveActive()) {
-            Hero hero = player.getHero();
+        for (Hero hero : aliveActiveHeroes()) {
             Point head = hero.head();
             hero.eat();
 
             if (apples().contains(head)) {
                 apples().removeAt(head);
-                player.event(new Event(APPLE));
+                hero.event(new Event(APPLE));
             }
             if (stones().contains(head) && !hero.isFlying()) {
                 stones().removeAt(head);
-                if (player.isAlive()) {
-                    player.event(new Event(STONE));
+                if (hero.isAlive()) {
+                    hero.event(new Event(STONE));
                 }
             }
             if (gold().contains(head)) {
                 gold().removeAt(head);
-                player.event(new Event(GOLD));
+                hero.event(new Event(GOLD));
             }
             if (flyingPills().contains(head)) {
                 flyingPills().removeAt(head);
-                player.event(new Event(FLYING));
+                hero.event(new Event(FLYING));
             }
             if (furyPills().contains(head)) {
                 furyPills().removeAt(head);
-                player.event(new Event(FURY));
+                hero.event(new Event(FURY));
             }
         }
     }
 
     private Stream<Hero> notFlyingHeroes() {
-        return aliveActive().stream()
-                .map(GamePlayer::getHero)
-                .filter(h -> !h.isFlying());
+        return aliveActiveHeroes().stream()
+                .filter(hero -> !hero.isFlying());
     }
 
     public int size() {
@@ -338,40 +334,39 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public Hero enemyEatenWith(Hero hero) {
+    public Hero enemyEatenWith(Hero hunter) {
+        return aliveEnemies(hunter)
+                .filter(hero -> !hero.isFlying())
+                .filter(hero -> hero.body().contains(hunter.head()))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private Stream<Hero> aliveEnemies(Hero other) {
+        return aliveActiveHeroes().stream()
+                .filter(hero -> !hero.equals(other));
+    }
+
+    private Hero enemyCrossedWith(Hero hero) {
         return aliveEnemies(hero)
-                .filter(h -> !h.isFlying())
-                .filter(h -> h.body().contains(hero.head()))
+                .filter(hero::isHeadIntersect)
                 .findFirst()
                 .orElse(null);
     }
 
-    private Stream<Hero> aliveEnemies(Hero hero) {
-        return aliveActive().stream()
-                .map(GamePlayer::getHero)
-                .filter(h -> !h.equals(hero));
-    }
-
-    private Hero enemyCrossedWith(Hero me) {
-        return aliveEnemies(me)
-                .filter(me::isHeadIntersect)
-                .findFirst()
-                .orElse(null);
-    }
-
-    public void addToPoint(Point p) {
-        if (p instanceof Apple) {
-            addApple(p);
-        } else if (p instanceof Stone) {
-            addStone(p);
-        } else if (p instanceof FlyingPill) {
-            addFlyingPill(p);
-        } else if (p instanceof FuryPill) {
-            addFuryPill(p);
-        } else if (p instanceof Gold) {
-            addGold(p);
+    public void addToPoint(Point pt) {
+        if (pt instanceof Apple) {
+            addApple(pt);
+        } else if (pt instanceof Stone) {
+            addStone(pt);
+        } else if (pt instanceof FlyingPill) {
+            addFlyingPill(pt);
+        } else if (pt instanceof FuryPill) {
+            addFuryPill(pt);
+        } else if (pt instanceof Gold) {
+            addGold(pt);
         } else {
-            fail("Невозможно добавить на поле объект типа " + p.getClass());
+            fail("Невозможно добавить на поле объект типа " + pt.getClass());
         }
     }
 
@@ -457,9 +452,9 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                     addAll(gold().all());
                     addAll(starts().all());
 
-                    for (Point p : this.toArray(new Point[0])) {
-                        if (p.isOutOf(Namdreab.this.size())) {
-                            remove(p);
+                    for (Point pt : this.toArray(new Point[0])) {
+                        if (pt.isOutOf(Namdreab.this.size())) {
+                            remove(pt);
                         }
                     }
                 }
