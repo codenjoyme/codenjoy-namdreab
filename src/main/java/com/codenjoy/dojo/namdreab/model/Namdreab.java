@@ -215,7 +215,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     private void heroesEat() {
-        for (Hero hero : aliveActiveHeroes()) {
+        aliveActiveHeroes().forEach(hero -> {
             Point head = hero.head();
             hero.eat();
 
@@ -241,11 +241,11 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                 furyPills().removeAt(head);
                 hero.event(new Event(FURY));
             }
-        }
+        });
     }
 
     private Stream<Hero> notFlyingHeroes() {
-        return aliveActiveHeroes().stream()
+        return aliveActiveHeroes()
                 .filter(hero -> !hero.isFlying());
     }
 
@@ -343,7 +343,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     private Stream<Hero> aliveEnemies(Hero other) {
-        return aliveActiveHeroes().stream()
+        return aliveActiveHeroes()
                 .filter(hero -> !hero.equals(other));
     }
 
