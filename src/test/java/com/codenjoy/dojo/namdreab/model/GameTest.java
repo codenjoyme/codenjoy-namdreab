@@ -26,8 +26,8 @@ package com.codenjoy.dojo.namdreab.model;
 import com.codenjoy.dojo.namdreab.TestGameSettings;
 import com.codenjoy.dojo.namdreab.services.Event;
 import com.codenjoy.dojo.namdreab.services.GameSettings;
-import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.EventListener;
+import com.codenjoy.dojo.services.dice.MockDice;
 import com.codenjoy.dojo.services.printer.PrinterFactory;
 import com.codenjoy.dojo.services.printer.PrinterFactoryImpl;
 import com.codenjoy.dojo.utils.TestUtils;
@@ -45,7 +45,7 @@ public class GameTest {
 
     private Namdreab game;
     private Hero hero;
-    private Dice dice;
+    private MockDice dice;
     private EventListener listener;
     private Player player;
     private PrinterFactory printer;
@@ -54,7 +54,7 @@ public class GameTest {
 
     @Before
     public void setup() {
-        dice = mock(Dice.class);
+        dice = new MockDice();
         settings = new TestGameSettings();
         printer = new PrinterFactoryImpl();
         events = new EventsListenersAssert(() -> Arrays.asList(listener), Event.class);
@@ -116,6 +116,8 @@ public class GameTest {
     // старт героя из "стартового бокса"
     @Test
     public void shouldGetOutFromStartPoint() {
+        dice.then(0);
+
         given("☼☼☼☼☼☼☼☼" +
                 "☼☼     ☼" +
                 "☼#     ☼" +

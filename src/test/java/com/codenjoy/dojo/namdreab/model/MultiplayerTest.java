@@ -26,8 +26,8 @@ package com.codenjoy.dojo.namdreab.model;
 import com.codenjoy.dojo.namdreab.TestGameSettings;
 import com.codenjoy.dojo.namdreab.services.Event;
 import com.codenjoy.dojo.namdreab.services.GameSettings;
-import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.EventListener;
+import com.codenjoy.dojo.services.dice.MockDice;
 import com.codenjoy.dojo.services.printer.PrinterFactory;
 import com.codenjoy.dojo.services.printer.PrinterFactoryImpl;
 import com.codenjoy.dojo.utils.TestUtils;
@@ -35,7 +35,6 @@ import com.codenjoy.dojo.utils.events.EventsListenersAssert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.stubbing.OngoingStubbing;
 
 import java.util.Arrays;
 
@@ -46,7 +45,7 @@ import static org.mockito.Mockito.*;
 public class MultiplayerTest {
 
     private Namdreab game;
-    private Dice dice;
+    private MockDice dice;
 
     private Hero hero;
     private EventListener heroEvents;
@@ -63,7 +62,7 @@ public class MultiplayerTest {
 
     @Before
     public void setup() {
-        dice = mock(Dice.class);
+        dice = new MockDice();
         settings = new TestGameSettings()
                 .integer(ROUNDS_MIN_TICKS_FOR_WIN, 1);
 
@@ -78,13 +77,6 @@ public class MultiplayerTest {
 
     public void verifyAllEvents(String expected) {
         assertEquals(expected, events.getEvents());
-    }
-
-    private void dice(int... values) {
-        OngoingStubbing<Integer> when = when(dice.next(anyInt()));
-        for (int value : values) {
-            when = when.thenReturn(value);
-        }
     }
 
     private void givenFl(String board) {
@@ -1311,6 +1303,7 @@ public class MultiplayerTest {
         assertEquals(true, enemyPlayer.isAlive());
         assertEquals(true, enemyPlayer.isActive());
 
+        dice.then(0); // стартовый спот для героя
         game.newGame(heroPlayer); // это делает автоматом фреймворк потому что heroPlayer.!isAlive()
 
         assertEquals(true, heroPlayer.isAlive());

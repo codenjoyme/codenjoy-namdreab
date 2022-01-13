@@ -114,36 +114,35 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     private void generateFuryPills() {
-        generate(furyPills(),
+        generate(furyPills(), size(),
                 settings, FURY_PILLS_COUNT,
                 player -> freeRandom(),
                 FuryPill::new);
     }
 
     private void generateFlyingPills() {
-        generate(flyingPills(),
+        generate(flyingPills(), size(),
                 settings, FLYING_PILLS_COUNT,
                 player -> freeRandom(),
                 FlyingPill::new);
     }
 
     private void generateGold() {
-        generate(gold(),
+        generate(gold(), size(),
                 settings, GOLD_COUNT,
                 player -> freeRandom(),
                 Gold::new);
     }
 
     private void generateStones() {
-        generate(stones(),
+        generate(stones(), size(),
                 settings, STONES_COUNT,
                 player -> freeRandom(),
                 Stone::new);
     }
 
-
     private void generateApples() {
-        generate(apples(),
+        generate(apples(), size(),
                 settings, APPLES_COUNT,
                 player -> freeRandom(),
                 Apple::new);

@@ -26,14 +26,14 @@ package com.codenjoy.dojo.namdreab.services.ai;
 import com.codenjoy.dojo.client.Solver;
 import com.codenjoy.dojo.games.namdreab.Board;
 import com.codenjoy.dojo.namdreab.TestGameSettings;
+import com.codenjoy.dojo.namdreab.model.Hero;
 import com.codenjoy.dojo.namdreab.model.Level;
 import com.codenjoy.dojo.namdreab.model.Namdreab;
 import com.codenjoy.dojo.namdreab.model.Player;
-import com.codenjoy.dojo.namdreab.model.Hero;
 import com.codenjoy.dojo.namdreab.services.GameSettings;
-import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.EventListener;
+import com.codenjoy.dojo.services.dice.MockDice;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -46,12 +46,12 @@ public class AISolverTest {
 
     private Solver<Board> solver;
     private Board board;
-    private Dice dice;
+    private MockDice dice;
     private GameSettings settings;
 
     @Before
     public void setup() {
-        dice = mock(Dice.class);
+        dice = new MockDice();
         solver = new AISolver(dice);
     }
 

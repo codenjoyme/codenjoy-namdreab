@@ -26,9 +26,9 @@ package com.codenjoy.dojo.namdreab.model;
 import com.codenjoy.dojo.namdreab.TestGameSettings;
 import com.codenjoy.dojo.namdreab.model.items.*;
 import com.codenjoy.dojo.namdreab.services.GameSettings;
-import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.services.dice.MockDice;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -49,6 +49,7 @@ public class BoardAddObjectsTest {
 
     private Point addition;
     boolean add;
+    private MockDice dice;
 
     public BoardAddObjectsTest(Point addition, boolean add) {
         this.addition = addition;
@@ -57,8 +58,9 @@ public class BoardAddObjectsTest {
 
     private void givenFl(String board) {
         Level level = new Level(board);
+        dice = new MockDice();
         GameSettings settings = new TestGameSettings();
-        game = new Namdreab(mock(Dice.class), level, settings);
+        game = new Namdreab(dice, level, settings);
         Hero hero = level.hero(game);
         EventListener listener = mock(EventListener.class);
         Player player = new Player(listener, settings);
