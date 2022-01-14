@@ -27,10 +27,10 @@ import com.codenjoy.dojo.namdreab.model.items.*;
 import com.codenjoy.dojo.namdreab.model.items.fight.FightDetails;
 import com.codenjoy.dojo.namdreab.services.Event;
 import com.codenjoy.dojo.namdreab.services.GameSettings;
-import com.codenjoy.dojo.services.BoardUtils;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.field.Accessor;
+import com.codenjoy.dojo.services.field.Generator;
 import com.codenjoy.dojo.services.field.PointField;
 import com.codenjoy.dojo.services.printer.BoardReader;
 import com.codenjoy.dojo.services.round.RoundField;
@@ -149,7 +149,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     public Optional<Point> freeRandom() {
-        return BoardUtils.freeRandom(size(), dice, this::isFree);
+        return Generator.freeRandom(size(), dice, this::isFree);
     }
 
     @Override
