@@ -109,7 +109,7 @@ public class AISolver implements Solver<Board> {
     @Override
     public String get(final Board board) {
         if (board.isGameOver()) return "";
-        head = board.getHero();
+        head = board.getHeroHead();
         List<Direction> result = getDirections(board);
         neck = head;
         if (result.isEmpty()) return "";
