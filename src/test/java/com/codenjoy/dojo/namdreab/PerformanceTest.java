@@ -28,21 +28,20 @@ import com.codenjoy.dojo.namdreab.services.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import org.junit.Test;
 
-import static com.codenjoy.dojo.services.round.RoundSettings.Keys.ROUNDS_ENABLED;
 import static com.codenjoy.dojo.utils.TestUtils.assertPerformance;
+import static org.junit.Assert.assertEquals;
 
 public class PerformanceTest {
 
     @Test
     public void test() {
-
-        // about 10 sec
+        // about 7.1 sec
         int players = 5;
-        int ticks = 10000;
+        int ticks = 1000;
 
-        int expectedCreation = 1500;
-        int expectedTick = 3000;
-        int expectedPrint = 5000;
+        int expectedCreation = 2999;
+        int expectedPrint = 7000;
+        int expectedTick = 1000;
 
         Dice dice = new DiceGenerator().getDice(2000);
         GameRunner runner = new GameRunner(){
@@ -59,11 +58,43 @@ public class PerformanceTest {
         };
 
         boolean printBoard = false;
-        assertPerformance(runner,
+        String board = assertPerformance(runner,
                 players, ticks,
-                expectedCreation, expectedTick, expectedPrint,
+                expectedCreation, expectedPrint, expectedTick,
                 printBoard);
+
+        assertEquals(
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+                "☼☼   ☼ ○☼    ☼       ©☼       ☼\n" +
+                "☼☼○     ☼☼☼      ☼    ☼   ○☼  ☼\n" +
+                "☼#○     ○     ☼ ☼☼☼☼ ☼☼    ☼ $☼\n" +
+                "☼☼    ☼☼☼☼ ☼☼$☼  ○☼   ☼☼☼ ☼☼☼○☼\n" +
+                "☼☼  ☼         ☼   ☼☼   ☼  ○☼  ☼\n" +
+                "☼☼☼☼☼ ☼☼☼  ☼  ☼ ○         ○   ☼\n" +
+                "☼☼ ☼ ♦ ○   ☼  $ ○☼☼  ☼☼☼☼ ○☼  ☼\n" +
+                "☼☼  ┌┘☼☼☼ ☼☼     ☼    ☼    ☼ ●☼\n" +
+                "☼#  │ ╘═►     ☼ ☼☼☼  ☼☼ ○  ☼  ☼\n" +
+                "☼☼  ¤   ☼☼☼☼ ☼☼   ☼○  ☼☼☼ ☼☼☼ ☼\n" +
+                "☼☼  ☼   ☼     ☼   ☼   ☼ ○  ☼  ☼\n" +
+                "☼☼☼☼☼ ☼☼☼  ☼  ☼˄              ☼\n" +
+                "☼☼ ●☼   ☼  ☼   │☼☼  ☼☼☼  ☼☼☼  ☼\n" +
+                "☼☼      ☼  ☼ ┌─┘ ☼  ○ ☼    ☼  ☼\n" +
+                "☼#      ●  ┌─┘☼  ☼☼☼ ☼☼○ æ ☼  ☼\n" +
+                "☼☼      ☼☼☼│☼☼☼   ☼ © ☼☼☼│☼☼☼○☼\n" +
+                "☼☼    ☼ ☼  └ö ☼ ● ☼┌─────┘ ☼  ☼\n" +
+                "☼☼☼☼☼ ☼☼☼  ☼  ☼    │ ○☼☼☼     ☼\n" +
+                "☼☼  ☼   ☼● ☼☼   ☼☼☼│  ☼    ☼  ☼\n" +
+                "☼☼         ☼┌──────┘  ☼  ☼☼☼  ☼\n" +
+                "☼#      ☼● ┌┘ ☼ ☼☼☼☼ ☼☼○   ☼  ☼\n" +
+                "☼☼  ○   ☼☼ │☼☼☼●  ☼○● ☼☼☼ ☼☼☼ ☼\n" +
+                "☼☼  ☼   ☼  └─┐☼   ☼☼ ○®  ® ☼  ☼\n" +
+                "☼☼☼☼☼  ☼☼  ☼☼│☼  ☼☼   ☼☼☼  ○  ☼\n" +
+                "☼☼ ☼    ☼  ☼ └───> $  ☼   ●☼○ ☼\n" +
+                "☼☼    ☼☼☼  ☼    ☼☼☼☼ ☼☼    ☼○ ☼\n" +
+                "☼#            ☼   ☼   ☼☼☼ ☼☼☼○☼\n" +
+                "☼☼     ˄☼☼ ☼☼☼☼   ☼    $  ●☼  ☼\n" +
+                "☼☼  ☼×─┘☼     ○       ☼○      ☼\n" +
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n",
+                board);
     }
-
-
 }
