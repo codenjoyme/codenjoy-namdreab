@@ -40,7 +40,8 @@ import static com.codenjoy.dojo.games.namdreab.Element.BodyDirection.*;
 import static com.codenjoy.dojo.games.namdreab.Element.TailDirection.*;
 import static com.codenjoy.dojo.namdreab.services.Event.Type.DIE;
 import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.*;
-import static com.codenjoy.dojo.services.Direction.*;
+import static com.codenjoy.dojo.services.Direction.LEFT;
+import static com.codenjoy.dojo.services.Direction.RIGHT;
 
 public class Hero extends RoundPlayerHero<Field>
         implements RoundsDirectionActJoystick,
@@ -73,7 +74,6 @@ public class Hero extends RoundPlayerHero<Field>
     public Hero(Direction direction) {
         this.direction = direction;
         body = new LinkedList<>();
-
         clearScores();
     }
 
