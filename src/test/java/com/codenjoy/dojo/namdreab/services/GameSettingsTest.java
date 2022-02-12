@@ -22,7 +22,7 @@ package com.codenjoy.dojo.namdreab.services;
  * #L%
  */
 
-import com.codenjoy.dojo.client.Utils;
+import com.codenjoy.dojo.utils.TestUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -31,21 +31,21 @@ public class GameSettingsTest {
 
     @Test
     public void shouldGetAllKeys() {
-        assertEquals("[FLYING_PILL_EFFECT_TIMEOUT, \n" +
-                        "FURY_PILL_EFFECT_TIMEOUT, \n" +
-                        "FLYING_PILLS_COUNT, \n" +
-                        "FURY_PILLS_COUNT, \n" +
-                        "GOLD_COUNT, \n" +
-                        "STONES_COUNT, \n" +
-                        "APPLES_COUNT, \n" +
-                        "STONE_REDUCED, \n" +
-                        "WIN_SCORE, \n" +
-                        "APPLE_SCORE, \n" +
-                        "GOLD_SCORE, \n" +
-                        "DIE_PENALTY, \n" +
-                        "STONE_SCORE, \n" +
-                        "EAT_SCORE, \n" +
-                        "SCORE_COUNTING_TYPE]",
-                Utils.split(new GameSettings().allKeys(), ", \n"));
+        assertEquals("FLYING_PILL_EFFECT_TIMEOUT =[Game] Flying effect timeout\n" +
+                    "FURY_PILL_EFFECT_TIMEOUT   =[Game] Fury effect timeout\n" +
+                    "FLYING_PILLS_COUNT         =[Game] Flying pills count\n" +
+                    "FURY_PILLS_COUNT           =[Game] Fury pills count\n" +
+                    "GOLD_COUNT                 =[Game] Gold count\n" +
+                    "STONES_COUNT               =[Game] Stone count\n" +
+                    "APPLES_COUNT               =[Game] Apple count\n" +
+                    "STONE_REDUCED              =[Game] Stone reduced value\n" +
+                    "WIN_SCORE                  =[Score] Win score\n" +
+                    "APPLE_SCORE                =[Score] Apple score\n" +
+                    "GOLD_SCORE                 =[Score] Gold score\n" +
+                    "DIE_PENALTY                =[Score] Die penalty\n" +
+                    "STONE_SCORE                =[Score] Stone score\n" +
+                    "EAT_SCORE                  =[Score] Eat enemy score\n" +
+                    "SCORE_COUNTING_TYPE        =[Score] Counting score mode",
+                TestUtils.toString(new GameSettings().allKeys()));
     }
 }
