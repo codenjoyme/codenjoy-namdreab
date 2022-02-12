@@ -28,8 +28,8 @@ import com.codenjoy.dojo.client.Solver;
 import com.codenjoy.dojo.games.namdreab.Board;
 import com.codenjoy.dojo.games.namdreab.Element;
 import com.codenjoy.dojo.namdreab.model.Level;
-import com.codenjoy.dojo.namdreab.model.Player;
 import com.codenjoy.dojo.namdreab.model.Namdreab;
+import com.codenjoy.dojo.namdreab.model.Player;
 import com.codenjoy.dojo.namdreab.services.ai.AISolver;
 import com.codenjoy.dojo.services.AbstractGameType;
 import com.codenjoy.dojo.services.EventListener;
@@ -45,6 +45,8 @@ import com.codenjoy.dojo.services.settings.Parameter;
 import static com.codenjoy.dojo.services.settings.SimpleParameter.v;
 
 public class GameRunner extends AbstractGameType<GameSettings> {
+
+    public static final String GAME_NAME = "namdreab";
 
     @Override
     public GameSettings getSettings() {
@@ -69,7 +71,7 @@ public class GameRunner extends AbstractGameType<GameSettings> {
 
     @Override
     public String name() {
-        return "namdreab";
+        return GAME_NAME;
     }
 
     @Override
