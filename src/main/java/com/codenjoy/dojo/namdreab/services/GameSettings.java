@@ -23,42 +23,40 @@ package com.codenjoy.dojo.namdreab.services;
  */
 
 import com.codenjoy.dojo.services.event.Calculator;
-import com.codenjoy.dojo.services.event.ScoresImpl;
 import com.codenjoy.dojo.services.settings.AllSettings;
+import com.codenjoy.dojo.services.settings.PropertiesKey;
 import com.codenjoy.dojo.services.settings.SettingsImpl;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static com.codenjoy.dojo.namdreab.services.GameRunner.GAME_NAME;
 import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.*;
 
 public class GameSettings extends SettingsImpl implements AllSettings<GameSettings> {
 
-    public enum Keys implements Key {
+    public enum Keys implements PropertiesKey {
 
-        FLYING_PILL_EFFECT_TIMEOUT("[Game] Flying effect timeout"),
-        FURY_PILL_EFFECT_TIMEOUT("[Game] Fury effect timeout"),
-
-        FLYING_PILLS_COUNT("[Game] Flying pills count"),
-        FURY_PILLS_COUNT("[Game] Fury pills count"),
-        GOLD_COUNT("[Game] Gold count"),
-        STONES_COUNT("[Game] Stone count"),
-        APPLES_COUNT("[Game] Apple count"),
-
-        STONE_REDUCED("[Game] Stone reduced value"),
-
-        WIN_SCORE("[Score] Win score"),
-        APPLE_SCORE("[Score] Apple score"),
-        GOLD_SCORE("[Score] Gold score"),
-        DIE_PENALTY("[Score] Die penalty"),
-        STONE_SCORE("[Score] Stone score"),
-        EAT_SCORE("[Score] Eat enemy score"),
-        SCORE_COUNTING_TYPE(ScoresImpl.SCORE_COUNTING_TYPE.key());
+        FLYING_PILL_EFFECT_TIMEOUT,
+        FURY_PILL_EFFECT_TIMEOUT,
+        FLYING_PILLS_COUNT,
+        FURY_PILLS_COUNT,
+        GOLD_COUNT,
+        STONES_COUNT,
+        APPLES_COUNT,
+        STONE_REDUCED,
+        WIN_SCORE,
+        APPLE_SCORE,
+        GOLD_SCORE,
+        DIE_PENALTY,
+        STONE_SCORE,
+        EAT_SCORE,
+        SCORE_COUNTING_TYPE;
 
         private String key;
 
-        Keys(String key) {
-            this.key = key;
+        Keys() {
+            this.key = key(GAME_NAME);
         }
 
         @Override
