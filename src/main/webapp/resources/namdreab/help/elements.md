@@ -6,7 +6,6 @@
 |<img src="https://github.com/codenjoyme/codenjoy-namdreab/raw/master/src/main/webapp/resources/namdreab/sprite/none.png" style="width:40px;" /> | `NONE(' ')` | Empty space - space where the hero can move. | 
 |<img src="https://github.com/codenjoyme/codenjoy-namdreab/raw/master/src/main/webapp/resources/namdreab/sprite/wall.png" style="width:40px;" /> | `WALL('☼')` | Impenetrable wall. | 
 |<img src="https://github.com/codenjoyme/codenjoy-namdreab/raw/master/src/main/webapp/resources/namdreab/sprite/start_floor.png" style="width:40px;" /> | `START_FLOOR('#')` | Respawn point from which the hero starts its movement. | 
-|<img src="https://github.com/codenjoyme/codenjoy-namdreab/raw/master/src/main/webapp/resources/namdreab/sprite/other.png" style="width:40px;" /> | `OTHER('?')` | . | 
 |<img src="https://github.com/codenjoyme/codenjoy-namdreab/raw/master/src/main/webapp/resources/namdreab/sprite/apple.png" style="width:40px;" /> | `APPLE('○')` | Apple. | 
 |<img src="https://github.com/codenjoyme/codenjoy-namdreab/raw/master/src/main/webapp/resources/namdreab/sprite/stone.png" style="width:40px;" /> | `STONE('●')` | Stone. | 
 |<img src="https://github.com/codenjoyme/codenjoy-namdreab/raw/master/src/main/webapp/resources/namdreab/sprite/flying_pill.png" style="width:40px;" /> | `FLYING_PILL('©')` | Flying pill/Angel's wings. | 

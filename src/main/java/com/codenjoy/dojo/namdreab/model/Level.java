@@ -25,6 +25,7 @@ package com.codenjoy.dojo.namdreab.model;
 
 import com.codenjoy.dojo.client.ElementsMap;
 import com.codenjoy.dojo.games.namdreab.Element;
+import com.codenjoy.dojo.games.namdreab.ElementUtils;
 import com.codenjoy.dojo.namdreab.model.items.*;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
@@ -72,11 +73,11 @@ public class Level extends AbstractLevel {
         hero.init(field);
 
         Element headElement = elementAt(head);
-        if (headElement.isFly()) {
+        if (ElementUtils.isFly(headElement)) {
             hero.eatFlying();
         }
 
-        if (headElement.isEvil()) {
+        if (ElementUtils.isEvil(headElement)) {
             hero.eatFury();
         }
 
@@ -100,7 +101,7 @@ public class Level extends AbstractLevel {
         return Direction.getValues().stream()
                 .map(direction -> {
                     Element at = elementAt(direction.change(head));
-                    return parts.get(direction).contains(at)
+                    return ElementUtils.parts.get(direction).contains(at)
                             ? direction
                             : null;
                 })

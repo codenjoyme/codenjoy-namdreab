@@ -23,7 +23,8 @@ package com.codenjoy.dojo.namdreab.model;
  */
 
 
-import com.codenjoy.dojo.games.namdreab.Element;
+import com.codenjoy.dojo.games.namdreab.BodyDirection;
+import com.codenjoy.dojo.games.namdreab.TailDirection;
 import com.codenjoy.dojo.namdreab.model.items.Tail;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
@@ -36,8 +37,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.codenjoy.dojo.games.namdreab.Element.BodyDirection.*;
-import static com.codenjoy.dojo.games.namdreab.Element.TailDirection.*;
+import static com.codenjoy.dojo.games.namdreab.BodyDirection.*;
+import static com.codenjoy.dojo.games.namdreab.TailDirection.*;
 import static com.codenjoy.dojo.namdreab.services.Event.Type.DIE;
 import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.*;
 import static com.codenjoy.dojo.services.Direction.LEFT;
@@ -329,12 +330,12 @@ public class Hero extends RoundPlayerHero<Field>
         return body;
     }
 
-    public Element.BodyDirection bodyDirection(Tail curr) {
+    public BodyDirection bodyDirection(Tail curr) {
         int currIndex = bodyIndex(curr);
         Point prev = body.get(currIndex - 1);
         Point next = body.get(currIndex + 1);
 
-        Element.BodyDirection nextPrev = orientation(next, prev);
+        BodyDirection nextPrev = orientation(next, prev);
         if (nextPrev != null) {
             return nextPrev;
         }
@@ -356,7 +357,7 @@ public class Hero extends RoundPlayerHero<Field>
         }
     }
 
-    private Element.BodyDirection orientation(Point curr, Point next) {
+    private BodyDirection orientation(Point curr, Point next) {
         if (curr.getX() == next.getX()) {
             return VERTICAL;
         } else if (curr.getY() == next.getY()) {
@@ -366,7 +367,7 @@ public class Hero extends RoundPlayerHero<Field>
         }
     }
 
-    public Element.TailDirection tailDirection() {
+    public TailDirection tailDirection() {
         Point body = this.body.get(1);
         Point tail = tail();
 

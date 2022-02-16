@@ -24,6 +24,7 @@ package com.codenjoy.dojo.namdreab.model.items;
 
 
 import com.codenjoy.dojo.games.namdreab.Element;
+import com.codenjoy.dojo.games.namdreab.ElementUtils;
 import com.codenjoy.dojo.namdreab.model.Hero;
 import com.codenjoy.dojo.namdreab.model.Player;
 import com.codenjoy.dojo.services.Point;
@@ -51,7 +52,7 @@ public class Tail extends PointImpl implements State<Element, Player> {
         Element element = tail.state();
         return tail.belongsTo(hero)
                 ? element
-                : element.enemyHero();
+                : ElementUtils.enemyHero(element);
     }
 
     private boolean belongsTo(Hero hero) {
@@ -76,16 +77,16 @@ public class Tail extends PointImpl implements State<Element, Player> {
                 return HEAD_EVIL;
             }
 
-            return Element.head(hero.direction());
+            return ElementUtils.head(hero.direction());
         }
         if (isTail()) {
             if (!hero.isActive()) {
                 return TAIL_INACTIVE;
             }
 
-            return Element.tail(hero.tailDirection());
+            return ElementUtils.tail(hero.tailDirection());
         }
-        return Element.body(hero.bodyDirection(this));
+        return ElementUtils.body(hero.bodyDirection(this));
     }
 
     private Tail higher(List<Object> elements) {
