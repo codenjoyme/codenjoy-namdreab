@@ -224,7 +224,7 @@ The parameters will change[(?)](#ask) as the game progresses.
 
 ## FAQ
 
-## <a id=""ask""></a> Ask Sensei
+## <a id="ask"></a> Ask Sensei
 
 You can always see the settings of the current game
 [here](/codenjoy-contest/rest/settings/player).
