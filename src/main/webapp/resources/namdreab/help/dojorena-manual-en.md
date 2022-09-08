@@ -222,6 +222,8 @@ The parameters will change[*](index-md.md#ask) as the game progresses.
 - If two heroes collide, the under the fury pill always wins.
 - If two furious heroes collide, common collision rules are used.
 
+## FAQ
+
 ## <a id=""ask""></a> Ask Sensei
 
 You can always see the settings of the current game
@@ -260,8 +262,6 @@ level API for working with the board are implemented already.
 * `Element getAt(Point point);`
   Element in the current cell.
 * etc... 
-
-## FAQ
 
 ## Want to host an event?
 
