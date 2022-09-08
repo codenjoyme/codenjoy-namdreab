@@ -192,7 +192,7 @@ in its current direction until stopped by a wall.
 
 ## Points
 
-The parameters will change[*](index-md.md#ask) as the game progresses.
+The parameters will change[(?)](#ask) as the game progresses.
 
 ## Cases
 
@@ -271,8 +271,8 @@ to fix bugs and to add any other logic simply
 All instructions are in Readme.md file, you'll know what to do 
 next once you read it.
 
-If you have any questions reach me in [skype alexander.baglay](skype:alexander.baglay)
-or email [apofig@gmail.com](mailto:apofig@gmail.com).
+If you have any questions reach me in email 
+[oleksandr_baglai@epam.com](mailto:oleksandr_baglai@epam.com).
 
 Good luck and may the best win!
 
