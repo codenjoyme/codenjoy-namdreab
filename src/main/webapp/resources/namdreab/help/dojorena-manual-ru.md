@@ -120,7 +120,7 @@ C помощью этого regexp можно выкусить строку до
 
 Как это поле выглядит в реале:
 
-![](https://dojorena.io/codenjoy-contest/resources/namdreab/help/board.png)
+![](/codenjoy-contest/resources/namdreab/help/board.png)
 
 <meta charset="UTF-8">
 

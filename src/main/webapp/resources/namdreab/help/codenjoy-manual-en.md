@@ -134,7 +134,7 @@ corner has the `[0, 0]` coordinate.
 
 This is what you see on UI:
 
-![](board.png)
+![](/codenjoy-contest/resources/namdreab/help/board.png)
 
 <meta charset="UTF-8">
 
