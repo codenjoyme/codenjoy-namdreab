@@ -256,7 +256,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     @Override
     public boolean isBarrier(Point pt) {
         return pt.isOutOf(size())
-                || walls().contains(pt)
+                || rocks().contains(pt)
                 || starts().contains(pt);
     }
 
@@ -289,7 +289,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     public boolean isFreeOfObjects(Point pt) {
         return !(apples().contains(pt)
                 || stones().contains(pt)
-                || walls().contains(pt)
+                || rocks().contains(pt)
                 || starts().contains(pt)
                 || flyingPills().contains(pt)
                 || furyPills().contains(pt)
@@ -444,7 +444,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                     drawHeroes(Hero::isFlying,      Hero::reversedBody);
                     drawHeroes(not(Hero::isFlying), Hero::reversedBody);
 
-                    addAll(walls().all());
+                    addAll(rocks().all());
                     addAll(apples().all());
                     addAll(stones().all());
                     addAll(flyingPills().all());
@@ -495,8 +495,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         if (starts().contains(pt)) {
             return new StartFloor(pt);
         }
-        if (walls().contains(pt)) {
-            return new Wall(pt);
+        if (rocks().contains(pt)) {
+            return new Rock(pt);
         }
         for (Player player : players) {
             if (player.getHero().body().contains(pt)) {
@@ -507,8 +507,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public Accessor<Wall> walls() {
-        return field.of(Wall.class);
+    public Accessor<Rock> rocks() {
+        return field.of(Rock.class);
     }
 
     @Override

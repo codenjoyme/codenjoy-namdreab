@@ -699,7 +699,7 @@ public class GameTest {
 
     // тест смерти об стену
     @Test
-    public void shouldDie_whenEatWall() {
+    public void shouldDie_whenEatRock() {
         givenFl("☼☼☼☼☼☼☼" +
                 "☼     ☼" +
                 "☼     ☼" +

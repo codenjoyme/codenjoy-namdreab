@@ -142,7 +142,7 @@ This is what you see on UI:
 | Sprite | Code | Description |
 | -------- | -------- | -------- |
 |<img src="/codenjoy-contest/resources/namdreab/sprite/none.png" style="height:auto;" /> | `NONE(' ')` | Empty space - space where the hero can move. | 
-|<img src="/codenjoy-contest/resources/namdreab/sprite/wall.png" style="height:auto;" /> | `WALL('☼')` | Impenetrable wall. | 
+|<img src="/codenjoy-contest/resources/namdreab/sprite/rock.png" style="height:auto;" /> | `ROCK('☼')` | Impenetrable rock. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/start_floor.png" style="height:auto;" /> | `START_FLOOR('#')` | Respawn point from which the hero starts its movement. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/apple.png" style="height:auto;" /> | `APPLE('○')` | Apple. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/stone.png" style="height:auto;" /> | `STONE('●')` | Stone. | 
@@ -194,7 +194,7 @@ This is what you see on UI:
 The game is turn-based: Each second, the server sends the updated state of the
 field to the client and waits for response. Within the next second the player
 must give hero a command. If no command is given, hero moves inertially
-in its current direction until stopped by a wall.
+in its current direction until stopped by a rock.
 
 ## Commands
 
@@ -215,7 +215,7 @@ The parameters will change[(?)](#ask) as the game progresses.
 
 ### Negative impact
 
-- Hero that hits a wall, dies.
+- Hero that hits a rock, dies.
 - Hero that hits another hero, dies.
 - Hero must be at least two cells long or it dies.
 - Hero that eats a stone becomes three cells shorter, and, if that

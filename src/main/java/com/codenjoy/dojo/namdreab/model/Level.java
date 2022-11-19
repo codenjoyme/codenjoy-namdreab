@@ -175,8 +175,8 @@ public class Level extends AbstractLevel {
         return find(Gold::new, GOLD);
     }
 
-    public List<Wall> walls() {
-        return find(Wall::new, WALL);
+    public List<Rock> rocks() {
+        return find(Rock::new, ROCK);
     }
 
     public List<StartFloor> starts() {
@@ -185,7 +185,7 @@ public class Level extends AbstractLevel {
 
     @Override
     protected void fill(PointField field) {
-        field.addAll(walls());
+        field.addAll(rocks());
         field.addAll(starts());
         field.addAll(apples());
         field.addAll(stones());

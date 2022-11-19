@@ -28,8 +28,6 @@ import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.field.Accessor;
 import com.codenjoy.dojo.services.round.RoundGameField;
 
-import java.util.Optional;
-
 public interface Field extends RoundGameField<Player, Hero> {
 
     boolean isBarrier(Point p);
@@ -56,7 +54,7 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     Hero enemyEatenWith(Hero h);
 
-    Accessor<Wall> walls();
+    Accessor<Rock> rocks();
 
     Accessor<StartFloor> starts();
 

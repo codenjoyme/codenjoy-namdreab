@@ -4,7 +4,7 @@
 | Sprite | Code | Description |
 | -------- | -------- | -------- |
 |<img src="/codenjoy-contest/resources/namdreab/sprite/none.png" style="height:auto;" /> | `NONE(' ')` | Empty space - space where the hero can move. | 
-|<img src="/codenjoy-contest/resources/namdreab/sprite/wall.png" style="height:auto;" /> | `WALL('☼')` | Impenetrable wall. | 
+|<img src="/codenjoy-contest/resources/namdreab/sprite/rock.png" style="height:auto;" /> | `ROCK('☼')` | Impenetrable rock. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/start_floor.png" style="height:auto;" /> | `START_FLOOR('#')` | Respawn point from which the hero starts its movement. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/apple.png" style="height:auto;" /> | `APPLE('○')` | Apple. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/stone.png" style="height:auto;" /> | `STONE('●')` | Stone. | 

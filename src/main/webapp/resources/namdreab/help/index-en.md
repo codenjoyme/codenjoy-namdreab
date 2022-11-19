@@ -138,7 +138,7 @@ Please [check it here](elements.md).
 The game is turn-based: Each second, the server sends the updated state of the
 field to the client and waits for response. Within the next second the player
 must give hero a command. If no command is given, hero moves inertially
-in its current direction until stopped by a wall.
+in its current direction until stopped by a rock.
 
 ## Commands
 
@@ -159,7 +159,7 @@ The parameters will change[(?)](#ask) as the game progresses.
 
 ### Negative impact
 
-- Hero that hits a wall, dies.
+- Hero that hits a rock, dies.
 - Hero that hits another hero, dies.
 - Hero must be at least two cells long or it dies.
 - Hero that eats a stone becomes three cells shorter, and, if that

@@ -103,23 +103,23 @@ public class HeroTest {
         stonesAtAllPoints(false);
         assertEquals("Неактивный бородач изменился!", startBody, hero.body());
         assertTrue("Бородач мертв!", hero.isAlive());
-        // если стена
-        wallsAtAllPoints(true);
+        // если скала
+        rocksAtAllPoints(true);
         hero.tick();
         hero.eat();
-        wallsAtAllPoints(false);
+        rocksAtAllPoints(false);
         assertEquals("Неактивный бородач изменился!", startBody, hero.body());
         assertTrue("Бородач мертв!", hero.isAlive());
     }
 
-    // Бородач погибает при столкновении со стеной
+    // Бородач погибает при столкновении со скалой
     @Test
-    public void diedByWall() {
+    public void diedByRock() {
         int before = hero.size();
-        wallsAtAllPoints(true);// впереди яблоко -> увеличиваем змейку
+        rocksAtAllPoints(true);// впереди яблоко -> увеличиваем змейку
         hero.tick();
         hero.eat();
-        wallsAtAllPoints(false);
+        rocksAtAllPoints(false);
         assertTrue("Бородач не погиб от препятствия!", !hero.isAlive());
     }
 
@@ -259,7 +259,7 @@ public class HeroTest {
         when(game.isStone(any(Point.class))).thenReturn(enable);// впереди камень
     }
 
-    private void wallsAtAllPoints(boolean enable) {
+    private void rocksAtAllPoints(boolean enable) {
         when(game.isBarrier(any(Point.class))).thenReturn(enable);// впереди стена
     }
 
