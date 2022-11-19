@@ -56,7 +56,7 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     Accessor<Rock> rocks();
 
-    Accessor<StartFloor> starts();
+    Accessor<StartSpot> starts();
 
     Accessor<Apple> apples();
 

@@ -263,12 +263,12 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     @Override
     public Optional<Point> freeRandom(Player player) {
         for (int i = 0; i < 10 && starts().size() != 0; i++) {
-            StartFloor start = starts().all().get(dice.next(starts().size()));
+            StartSpot start = starts().all().get(dice.next(starts().size()));
             if (freeOfHero(start)) {
                 return Optional.of(start);
             }
         }
-        for (StartFloor start : starts()) {
+        for (StartSpot start : starts()) {
             if (freeOfHero(start)) {
                 return Optional.of(start);
             }
@@ -493,7 +493,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
             return new Gold(pt);
         }
         if (starts().contains(pt)) {
-            return new StartFloor(pt);
+            return new StartSpot(pt);
         }
         if (rocks().contains(pt)) {
             return new Rock(pt);
@@ -512,8 +512,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public Accessor<StartFloor> starts() {
-        return field.of(StartFloor.class);
+    public Accessor<StartSpot> starts() {
+        return field.of(StartSpot.class);
     }
 
     @Override

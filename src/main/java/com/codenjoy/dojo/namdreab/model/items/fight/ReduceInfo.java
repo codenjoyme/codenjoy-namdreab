@@ -25,6 +25,7 @@ package com.codenjoy.dojo.namdreab.model.items.fight;
 import com.codenjoy.dojo.namdreab.model.Hero;
 
 public class ReduceInfo {
+
     private Hero hunter;
     private Hero prey;
     private int reduce;

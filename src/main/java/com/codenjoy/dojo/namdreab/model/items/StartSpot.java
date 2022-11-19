@@ -29,14 +29,14 @@ import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.printer.state.State;
 
-public class StartFloor extends PointImpl implements State<Element, Player> {
+public class StartSpot extends PointImpl implements State<Element, Player> {
 
-    public StartFloor(Point pt) {
+    public StartSpot(Point pt) {
         super(pt);
     }
 
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
-        return Element.START_FLOOR;
+        return Element.START_SPOT;
     }
 }

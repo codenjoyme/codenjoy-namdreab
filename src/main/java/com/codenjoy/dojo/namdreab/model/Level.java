@@ -179,8 +179,8 @@ public class Level extends AbstractLevel {
         return find(Rock::new, ROCK);
     }
 
-    public List<StartFloor> starts() {
-        return find(StartFloor::new, START_FLOOR);
+    public List<StartSpot> starts() {
+        return find(StartSpot::new, START_SPOT);
     }
 
     @Override
