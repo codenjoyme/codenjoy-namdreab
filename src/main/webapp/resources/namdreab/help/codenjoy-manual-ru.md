@@ -25,7 +25,7 @@
 по очкам. Все играют на одном поле. Змейка может передвигаться по
 свободным ячейкам во все четыре стороны, но не может возвращаться в предыдущую клетку.
 
-На своем пути змейка может повстречать желудь, золото, таблеку ярости, таблетку полёта,
+На своем пути змейка может повстречать желудь, золото, таблеку ярости, бледную поганку,
 ягоды черники или другую змейку. Если змейка нарвется на желудь - уменьшается 
 на 4 единицы. Если змейка меньше двух клеток - погибнет. За золото,
 чернику, в случае смерти других змеек, змейка получит бонусные очки[(?)](#ask). 
@@ -143,7 +143,7 @@ C помощью этого regexp можно выкусить строку до
 |<img src="/codenjoy-contest/resources/namdreab/sprite/start_spot.png" style="height:auto;" /> | `START_SPOT('#')` | Respawn point from which the hero starts its movement. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/blueberry.png" style="height:auto;" /> | `BLUEBERRY('○')` | Blueberry. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/acorn.png" style="height:auto;" /> | `ACORN('●')` | Acorn. | 
-|<img src="/codenjoy-contest/resources/namdreab/sprite/flying_pill.png" style="height:auto;" /> | `FLYING_PILL('©')` | Flying pill/Angel's wings. | 
+|<img src="/codenjoy-contest/resources/namdreab/sprite/death_cap.png" style="height:auto;" /> | `DEATH_CAP('©')` | Death cap/Angel's wings. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/fury_pill.png" style="height:auto;" /> | `FURY_PILL('®')` | Fury pill/Devil's mask. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/gold.png" style="height:auto;" /> | `GOLD('$')` | Gold. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/head_down.png" style="height:auto;" /> | `HEAD_DOWN('▼')` | Your hero head pointing down. | 
@@ -152,7 +152,7 @@ C помощью этого regexp можно выкусить строку до
 |<img src="/codenjoy-contest/resources/namdreab/sprite/head_up.png" style="height:auto;" /> | `HEAD_UP('▲')` | Your hero head pointing up. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/head_dead.png" style="height:auto;" /> | `HEAD_DEAD('☻')` | Your hero is dead. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/head_evil.png" style="height:auto;" /> | `HEAD_EVIL('♥')` | Your hero head under influence Fury pill/Devils mask. | 
-|<img src="/codenjoy-contest/resources/namdreab/sprite/head_fly.png" style="height:auto;" /> | `HEAD_FLY('♠')` | Your hero head under influence Flying pill/Angels wings. | 
+|<img src="/codenjoy-contest/resources/namdreab/sprite/head_fly.png" style="height:auto;" /> | `HEAD_FLY('♠')` | Your hero head under influence Death cap/Angels wings. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/head_sleep.png" style="height:auto;" /> | `HEAD_SLEEP('&')` | Your hero head when hero is inactive. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/body_horizontal.png" style="height:auto;" /> | `BODY_HORIZONTAL('═')` | Body of your hero is directed horizontally. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/body_vertical.png" style="height:auto;" /> | `BODY_VERTICAL('║')` | Body of your hero is directed vertically. | 
@@ -171,7 +171,7 @@ C помощью этого regexp можно выкусить строку до
 |<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_head_up.png" style="height:auto;" /> | `ENEMY_HEAD_UP('˄')` | Enemy hero head pointing up. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_head_dead.png" style="height:auto;" /> | `ENEMY_HEAD_DEAD('☺')` | Enemy hero is dead. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_head_evil.png" style="height:auto;" /> | `ENEMY_HEAD_EVIL('♣')` | Enemy hero head under influence Fury pill/Devils mask. | 
-|<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_head_fly.png" style="height:auto;" /> | `ENEMY_HEAD_FLY('♦')` | Enemy hero head under influence Flying pill/Angels wings. | 
+|<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_head_fly.png" style="height:auto;" /> | `ENEMY_HEAD_FLY('♦')` | Enemy hero head under influence Death cap/Angels wings. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_head_sleep.png" style="height:auto;" /> | `ENEMY_HEAD_SLEEP('ø')` | Enemy hero head when hero is inactive. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_body_horizontal.png" style="height:auto;" /> | `ENEMY_BODY_HORIZONTAL('─')` | Body of enemy hero is directed horizontally. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_body_vertical.png" style="height:auto;" /> | `ENEMY_BODY_VERTICAL('│')` | Body of enemy hero is directed vertically. | 
@@ -229,7 +229,7 @@ C помощью этого regexp можно выкусить строку до
 ### Позитивные воздействия
 
 - Змейка, съевшая чернику, увеличивается на 1.
-- Змейка, съевшая таблетку полёта, в течении 10 ходов летает над желудями и другими змеями.
+- Змейка, съевшая бледную поганку, в течении 10 ходов летает над желудями и другими змеями.
 - Змейка, съевшая таблетку ярости, в течении 10 ходов может откусывать куски от других змей, а так же поедать желуди без уменьшения длины.
 - Змейка, съевшая золото, просто получает дополнительные очки.
 
@@ -239,7 +239,7 @@ C помощью этого regexp можно выкусить строку до
 - При столкновении змей лоб в лоб, меньшая змея погибает. Большая змея при этом укорачивается на длину меньшей.
   (если становится меньше 2, тоже погибает).
 - Откушенная часть хвоста всегда пропадает, а змея укорачивается.
-- При столкновении двух змей, одна из которых под воздействием таблетки полёта, не происходит ничего.
+- При столкновении двух змей, одна из которых под воздействием бледной поганки, не происходит ничего.
 - При столкновении двух змей, всегда побеждает змея, находящаяся под воздействием таблетки ярости.
 - При столкновении двух змей, когда обе под воздействием таблетки ярости, действуют обычные правила столкновений.
 

@@ -31,21 +31,21 @@ public class GameSettingsTest {
 
     @Test
     public void shouldGetAllKeys() {
-        assertEquals("FLYING_PILL_EFFECT_TIMEOUT =[Game] Flying effect timeout\n" +
-                    "FURY_PILL_EFFECT_TIMEOUT   =[Game] Fury effect timeout\n" +
-                    "FLYING_PILLS_COUNT         =[Game] Flying pills count\n" +
-                    "FURY_PILLS_COUNT           =[Game] Fury pills count\n" +
-                    "GOLD_COUNT                 =[Game] Gold count\n" +
-                    "ACORNS_COUNT               =[Game] Acorns count\n" +
-                    "BLUEBERRIES_COUNT          =[Game] Blueberries count\n" +
-                    "ACORN_REDUCED              =[Game] Acorn reduced value\n" +
-                    "WIN_SCORE                  =[Score] Win score\n" +
-                    "BLUEBERRY_SCORE            =[Score] Blueberry score\n" +
-                    "GOLD_SCORE                 =[Score] Gold score\n" +
-                    "DIE_PENALTY                =[Score] Die penalty\n" +
-                    "ACORN_SCORE                =[Score] Acorn score\n" +
-                    "EAT_SCORE                  =[Score] Eat enemy score\n" +
-                    "SCORE_COUNTING_TYPE        =[Score] Counting score mode",
+        assertEquals("DEATH_CAP_EFFECT_TIMEOUT =[Game] Death cap/flying effect timeout\n" +
+                    "FURY_PILL_EFFECT_TIMEOUT =[Game] Fury effect timeout\n" +
+                    "DEATH_CAPS_COUNT         =[Game] death caps count\n" +
+                    "FURY_PILLS_COUNT         =[Game] Fury pills count\n" +
+                    "GOLD_COUNT               =[Game] Gold count\n" +
+                    "ACORNS_COUNT             =[Game] Acorns count\n" +
+                    "BLUEBERRIES_COUNT        =[Game] Blueberries count\n" +
+                    "ACORN_REDUCED            =[Game] Acorn reduced value\n" +
+                    "WIN_SCORE                =[Score] Win score\n" +
+                    "BLUEBERRY_SCORE          =[Score] Blueberry score\n" +
+                    "GOLD_SCORE               =[Score] Gold score\n" +
+                    "DIE_PENALTY              =[Score] Die penalty\n" +
+                    "ACORN_SCORE              =[Score] Acorn score\n" +
+                    "EAT_SCORE                =[Score] Eat enemy score\n" +
+                    "SCORE_COUNTING_TYPE      =[Score] Counting score mode",
                 TestUtils.toString(new GameSettings().allKeys()));
     }
 }

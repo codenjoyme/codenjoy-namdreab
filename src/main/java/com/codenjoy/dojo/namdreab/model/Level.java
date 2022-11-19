@@ -74,7 +74,7 @@ public class Level extends AbstractLevel {
 
         Element headElement = elementAt(head);
         if (ElementUtils.isFly(headElement)) {
-            hero.eatFlying();
+            hero.eatDeathCap();
         }
 
         if (ElementUtils.isEvil(headElement)) {
@@ -163,8 +163,8 @@ public class Level extends AbstractLevel {
         return find(Acorn::new, ACORN);
     }
 
-    public List<FlyingPill> flyingPills() {
-        return find(FlyingPill::new, FLYING_PILL);
+    public List<DeathCap> deathCaps() {
+        return find(DeathCap::new, DEATH_CAP);
     }
 
     public List<FuryPill> furyPills() {
@@ -190,7 +190,7 @@ public class Level extends AbstractLevel {
         field.addAll(blueberries());
         field.addAll(acorns());
         field.addAll(furyPills());
-        field.addAll(flyingPills());
+        field.addAll(deathCaps());
         field.addAll(gold());
     }
 

@@ -72,7 +72,7 @@ public class BoardAddObjectsTest {
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         Object[][] params = new Object[][]{
-                // нельзя ставить чернику на чернику, желуди, таблетки, золото, стены
+                // нельзя ставить чернику на чернику, желуди, грибы, золото, стены
                 {new Blueberry(pt(2, 2)), false},
                 {new Blueberry(pt(2, 1)), false},
                 {new Blueberry(pt(3, 3)), false},
@@ -80,7 +80,7 @@ public class BoardAddObjectsTest {
                 {new Blueberry(pt(3, 1)), false},
                 {new Blueberry(pt(3, 0)), false},
 
-                // нельзя ставить желуди на чернику, желуди, таблетки, золото, стены и справа от выходов
+                // нельзя ставить желуди на чернику, желуди, грибы, золото, стены и справа от выходов
                 {new Acorn(pt(2, 3)), false},
                 {new Acorn(pt(2, 2)), false},
                 {new Acorn(pt(2, 1)), false},
@@ -89,15 +89,15 @@ public class BoardAddObjectsTest {
                 {new Acorn(pt(3, 1)), false},
                 {new Acorn(pt(3, 0)), false},
 
-                // нельзя ставить таблетки полёта на чернику, желуди, таблетки, золото, стены
-                {new FlyingPill(pt(2, 2)), false},
-                {new FlyingPill(pt(2, 1)), false},
-                {new FlyingPill(pt(3, 3)), false},
-                {new FlyingPill(pt(3, 2)), false},
-                {new FlyingPill(pt(3, 1)), false},
-                {new FlyingPill(pt(3, 0)), false},
+                // нельзя ставить бледные поганки на чернику, желуди, грибы, золото, стены
+                {new DeathCap(pt(2, 2)), false},
+                {new DeathCap(pt(2, 1)), false},
+                {new DeathCap(pt(3, 3)), false},
+                {new DeathCap(pt(3, 2)), false},
+                {new DeathCap(pt(3, 1)), false},
+                {new DeathCap(pt(3, 0)), false},
 
-                // нельзя ставить таблетки ярости на чернику, желуди, таблетки, золото, стены
+                // нельзя ставить таблетки ярости на чернику, желуди, грибы, золото, стены
                 {new FuryPill(pt(2, 2)), false},
                 {new FuryPill(pt(2, 1)), false},
                 {new FuryPill(pt(3, 3)), false},
@@ -105,7 +105,7 @@ public class BoardAddObjectsTest {
                 {new FuryPill(pt(3, 1)), false},
                 {new FuryPill(pt(3, 0)), false},
 
-                // нельзя ставить золото на чернику, желуди, таблетки, золото, стены
+                // нельзя ставить золото на чернику, желуди, грибы, золото, стены
                 {new Gold(pt(2, 2)), false},
                 {new Gold(pt(2, 1)), false},
                 {new Gold(pt(3, 3)), false},
@@ -113,10 +113,10 @@ public class BoardAddObjectsTest {
                 {new Gold(pt(3, 1)), false},
                 {new Gold(pt(3, 0)), false},
 
-                // можно ставить чернику, желуди, таблетки и золото в пустое место
+                // можно ставить чернику, желуди, грибы и золото в пустое место
                 {new Blueberry(pt(4, 2)), true},
                 {new Acorn(pt(4, 2)), true},
-                {new FlyingPill(pt(4, 2)), true},
+                {new DeathCap(pt(4, 2)), true},
                 {new FuryPill(pt(4, 2)), true},
                 {new Gold(pt(4, 2)), true},
         };
@@ -145,8 +145,8 @@ public class BoardAddObjectsTest {
             case "Acorn":
                 objectsAfter = game.acorns().size();
                 break;
-            case "FlyingPill":
-                objectsAfter = game.flyingPills().size();
+            case "DeathCap":
+                objectsAfter = game.deathCaps().size();
                 break;
             case "FuryPill":
                 objectsAfter = game.furyPills().size();

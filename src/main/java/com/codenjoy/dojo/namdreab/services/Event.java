@@ -40,7 +40,7 @@ public class Event implements EventObject<Event.Type, Integer> {
         ACORN,
         EAT,
         GOLD,
-        FLYING,
+        DEATH_CAP,
         FURY
     }
 

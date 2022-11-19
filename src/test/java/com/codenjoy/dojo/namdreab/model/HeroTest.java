@@ -213,9 +213,9 @@ public class HeroTest {
         }
     }
 
-    // если бородач съела пилюлю полёта, 10 ходов она действует
+    // если бородач съел бледную поганку, 10 ходов она действует
     @Test
-    public void eatFlyingPill() {
+    public void eatDeathCap() {
         flyingPillsAtAllPoints(true);
         hero.tick();
         hero.eat();
@@ -223,10 +223,10 @@ public class HeroTest {
         for (int i = 1; i <= 10; i++) {
             hero.tick();
             hero.eat();
-            assertEquals("Оставшееся количество ходов полёта не соответствует ожидаемому.",
+            assertEquals("Оставшееся количество ходов в полете не соответствует ожидаемому.",
                     10 - i, hero.flyingCount());
         }
-        assertEquals("Количество ходов полёта не может быть меньше 0.", 0, hero.furyCount());
+        assertEquals("Количество ходов в полете не может быть меньше 0.", 0, hero.furyCount());
     }
 
     // если бородач съела пилюлю ярости, 10 ходов она действует
@@ -250,7 +250,7 @@ public class HeroTest {
     }
 
     private void flyingPillsAtAllPoints(boolean enable) {
-        when(game.isFlyingPill(any(Point.class))).thenReturn(enable);// впереди пилюля полёта
+        when(game.isDeathCap(any(Point.class))).thenReturn(enable);// впереди бледная поганка
     }
 
     private void furyPillsAtAllPoints(boolean enable) {

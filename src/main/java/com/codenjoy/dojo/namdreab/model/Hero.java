@@ -234,8 +234,8 @@ public class Hero extends RoundPlayerHero<Field>
                 reduce(settings().integer(ACORN_REDUCED), NOW);
             }
         }
-        if (field.isFlyingPill(head)) {
-            eatFlying();
+        if (field.isDeathCap(head)) {
+            eatDeathCap();
         }
         if (field.isFuryPill(head)) {
             eatFury();
@@ -245,8 +245,8 @@ public class Hero extends RoundPlayerHero<Field>
         }
     }
 
-    public void eatFlying() {
-        flyingCount += settings().integer(FLYING_PILL_EFFECT_TIMEOUT);
+    public void eatDeathCap() {
+        flyingCount += settings().integer(DEATH_CAP_EFFECT_TIMEOUT);
     }
 
     public void eatFury() {

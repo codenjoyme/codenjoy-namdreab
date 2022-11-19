@@ -159,7 +159,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼");
     }
 
-    // карта с черникой, желудями, пилюлями полёта, пилюлями ярости, деньгами
+    // карта с черникой, желудями, бледными поганками, пилюлями ярости, деньгами
     @Test
     public void shouldBoardWithElements() {
         givenFl("☼☼☼☼☼☼☼" +
@@ -1076,9 +1076,9 @@ public class GameTest {
                 "☼☼☼☼☼☼☼");
     }
 
-    // съедая пилюлю полёта, герой перелетает желуди
+    // съедая бледную поганку, герой перелетает желуди
     @Test
-    public void shouldFlyingOverAcorns_whenEatFlyingPill() {
+    public void shouldFlyingOverAcorns_whenEatDeathCap() {
         givenFl("☼☼☼☼☼☼☼☼☼" +
                 "☼       ☼" +
                 "☼       ☼" +
@@ -1093,7 +1093,7 @@ public class GameTest {
 
         game.tick();
 
-        verifyAllEvents("[FLYING]");
+        verifyAllEvents("[DEATH_CAP]");
 
         assertEquals(10, hero.flyingCount());
         assertEquals(true, hero.isFlying());
@@ -1162,8 +1162,8 @@ public class GameTest {
     }
 
     @Test
-    public void shouldDisableFlyingPillEffect_when10Ticks() {
-        shouldFlyingOverAcorns_whenEatFlyingPill();
+    public void shouldDisableDeathCapEffect_when10Ticks() {
+        shouldFlyingOverAcorns_whenEatDeathCap();
 
         assertE("☼☼☼☼☼☼☼☼☼" +
                 "☼       ☼" +
@@ -1226,9 +1226,9 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼");
     }
 
-    // съедая пилюлю полёта, герой может летать над собой
+    // съедая бледную поганку, герой может летать над собой
     @Test
-    public void shouldFlyingOverMyself_whenEatFlyingPill() {
+    public void shouldFlyingOverMyself_whenEatDeathCap() {
         givenFl("☼☼☼☼☼☼☼" +
                 "☼╓    ☼" +
                 "☼║    ☼" +
@@ -1239,7 +1239,7 @@ public class GameTest {
 
         game.tick();
 
-        verifyAllEvents("[FLYING]");
+        verifyAllEvents("[DEATH_CAP]");
 
         assertEquals(9, hero.size());
 

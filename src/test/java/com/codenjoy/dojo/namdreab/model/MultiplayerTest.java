@@ -802,7 +802,7 @@ public class MultiplayerTest {
         game.tick();
 
         verifyAllEvents(
-                "listener(0) => [FLYING]\n");
+                "listener(0) => [DEATH_CAP]\n");
 
         hero.down();
         enemy.up();
@@ -851,7 +851,7 @@ public class MultiplayerTest {
         game.tick();
 
         verifyAllEvents(
-                "listener(1) => [FLYING]\n");
+                "listener(1) => [DEATH_CAP]\n");
 
         hero.down();
         enemy.up();
@@ -1890,7 +1890,7 @@ public class MultiplayerTest {
 
         game.tick();
         verifyAllEvents(
-                "listener(0) => [FLYING]\n");
+                "listener(0) => [DEATH_CAP]\n");
 
         hero.up();
         game.tick();
@@ -2997,7 +2997,7 @@ public class MultiplayerTest {
         verifyAllEvents("");
     }
 
-    // с таблеткой полета и яростью я не откусываю хвост врага
+    // с бледной поганкой и яростью я не откусываю хвост врага
     @Test
     public void shouldCase12_furyPlusFlying() {
         givenFl("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -3031,7 +3031,7 @@ public class MultiplayerTest {
                 "☼☼                           ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼");
 
-        hero.eatFlying(); // добрали таблетку полета
+        hero.eatDeathCap(); // добрали бледную поганку
 
         game.tick();
 
@@ -3296,7 +3296,7 @@ public class MultiplayerTest {
 
     }
 
-    // с таблеткой полета я пархаю над врагом
+    // с бледной поганкой я порхаю над врагом
     // пока полет не закончится - там змея моя
     // погибнет и враг заберет очки
     @Test
@@ -3517,7 +3517,7 @@ public class MultiplayerTest {
                 "☼       ☼" +
                 "☼☼☼☼☼☼☼☼☼");
 
-        hero.eatFlying();
+        hero.eatDeathCap();
         enemy.eatFury();
 
         assertH("☼☼☼☼☼☼☼☼☼\n" +
@@ -3541,7 +3541,7 @@ public class MultiplayerTest {
                 "☼☼☼☼☼☼☼☼☼");
 
         hero.eatFury();
-        enemy.eatFlying();
+        enemy.eatDeathCap();
 
         assertH("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -4016,7 +4016,7 @@ public class MultiplayerTest {
         game.tick();
 
         verifyAllEvents(
-                "listener(1) => [FLYING]\n");
+                "listener(1) => [DEATH_CAP]\n");
 
         game.tick();
 
@@ -4077,7 +4077,7 @@ public class MultiplayerTest {
         game.tick();
 
         verifyAllEvents(
-                "listener(0) => [FLYING]\n");
+                "listener(0) => [DEATH_CAP]\n");
 
         game.tick();
 
@@ -4138,7 +4138,7 @@ public class MultiplayerTest {
         game.tick();
 
         verifyAllEvents(
-                "listener(1) => [FLYING]\n");
+                "listener(1) => [DEATH_CAP]\n");
 
         game.tick();
 
@@ -4195,7 +4195,7 @@ public class MultiplayerTest {
         game.tick();
 
         verifyAllEvents(
-                "listener(0) => [FLYING]\n");
+                "listener(0) => [DEATH_CAP]\n");
 
         game.tick();
 
@@ -4239,7 +4239,7 @@ public class MultiplayerTest {
     }
 
     @Test
-    public void headTwoFlyingHeros_drawSmallerOnTop_start() {
+    public void headTwoFlyingHeroes_drawSmallerOnTop_start() {
         givenFl("☼☼☼☼☼☼☼☼☼☼☼☼☼" +
                 "☼           ☼" +
                 "☼           ☼" +
@@ -4254,8 +4254,8 @@ public class MultiplayerTest {
                 "☼           ☼" +
                 "☼☼☼☼☼☼☼☼☼☼☼☼☼");
 
-        hero.eatFlying();
-        enemy.eatFlying();
+        hero.eatDeathCap();
+        enemy.eatDeathCap();
         game.tick();
 
         assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -4409,8 +4409,8 @@ public class MultiplayerTest {
     }
 
     @Test
-    public void headTwoFlyingHeros_drawSmallerOnTop_finishWithFlying() {
-        headTwoFlyingHeros_drawSmallerOnTop_start();
+    public void headTwoFlyingHeroes_drawSmallerOnTop_finishWithFlying() {
+        headTwoFlyingHeroes_drawSmallerOnTop_start();
 
         enemy.up();
         game.tick();
@@ -4506,7 +4506,7 @@ public class MultiplayerTest {
 
     @Test
     public void headTwoFlyingHeros_drawSmallerOnTop_finishWithoutFlying() {
-        headTwoFlyingHeros_drawSmallerOnTop_start();
+        headTwoFlyingHeroes_drawSmallerOnTop_start();
 
         hero.removeFlying();
         enemy.removeFlying();
@@ -4620,8 +4620,8 @@ public class MultiplayerTest {
                 "☼         ☼" +
                 "☼☼☼☼☼☼☼☼☼☼☼");
 
-        hero.eatFlying();
-        enemy.eatFlying();
+        hero.eatDeathCap();
+        enemy.eatDeathCap();
         game.tick();
 
         verifyAllEvents(

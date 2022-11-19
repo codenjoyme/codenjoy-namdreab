@@ -107,7 +107,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
 
     public void generateAll() {
         generateFuryPills();
-        generateFlyingPills();
+        generateDeathCaps();
         generateGold();
         generateAcorns();
         generateBlueberries();
@@ -120,11 +120,11 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                 FuryPill::new);
     }
 
-    private void generateFlyingPills() {
-        generate(flyingPills(), size(),
-                settings, FLYING_PILLS_COUNT,
+    private void generateDeathCaps() {
+        generate(deathCaps(), size(),
+                settings, DEATH_CAPS_COUNT,
                 player -> freeRandom(),
-                FlyingPill::new);
+                DeathCap::new);
     }
 
     private void generateGold() {
@@ -233,9 +233,9 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                 gold().removeAt(head);
                 hero.event(new Event(GOLD));
             }
-            if (flyingPills().contains(head)) {
-                flyingPills().removeAt(head);
-                hero.event(new Event(FLYING));
+            if (deathCaps().contains(head)) {
+                deathCaps().removeAt(head);
+                hero.event(new Event(DEATH_CAP));
             }
             if (furyPills().contains(head)) {
                 furyPills().removeAt(head);
@@ -291,7 +291,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                 || acorns().contains(pt)
                 || rocks().contains(pt)
                 || starts().contains(pt)
-                || flyingPills().contains(pt)
+                || deathCaps().contains(pt)
                 || furyPills().contains(pt)
                 || gold().contains(pt));
     }
@@ -319,8 +319,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public boolean isFlyingPill(Point pt) {
-        return flyingPills().contains(pt);
+    public boolean isDeathCap(Point pt) {
+        return deathCaps().contains(pt);
     }
 
     @Override
@@ -359,8 +359,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
             addBlueberry(pt);
         } else if (pt instanceof Acorn) {
             addAcorn(pt);
-        } else if (pt instanceof FlyingPill) {
-            addFlyingPill(pt);
+        } else if (pt instanceof DeathCap) {
+            addDeathCap(pt);
         } else if (pt instanceof FuryPill) {
             addFuryPill(pt);
         } else if (pt instanceof Gold) {
@@ -387,9 +387,9 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public void addFlyingPill(Point pt) {
+    public void addDeathCap(Point pt) {
         if (isFree(pt)) {
-            flyingPills().add(new FlyingPill(pt));
+            deathCaps().add(new DeathCap(pt));
         }
     }
 
@@ -447,7 +447,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                     addAll(rocks().all());
                     addAll(blueberries().all());
                     addAll(acorns().all());
-                    addAll(flyingPills().all());
+                    addAll(deathCaps().all());
                     addAll(furyPills().all());
                     addAll(gold().all());
                     addAll(starts().all());
@@ -483,8 +483,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         if (acorns().contains(pt)) {
             return new Acorn(pt);
         }
-        if (flyingPills().contains(pt)) {
-            return new FlyingPill(pt);
+        if (deathCaps().contains(pt)) {
+            return new DeathCap(pt);
         }
         if (furyPills().contains(pt)) {
             return new FuryPill(pt);
@@ -532,8 +532,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public Accessor<FlyingPill> flyingPills() {
-        return field.of(FlyingPill.class);
+    public Accessor<DeathCap> deathCaps() {
+        return field.of(DeathCap.class);
     }
 
     @Override

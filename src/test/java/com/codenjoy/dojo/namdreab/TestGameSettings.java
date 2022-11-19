@@ -39,7 +39,7 @@ public class TestGameSettings extends GameSettings {
         integer(ROUNDS_TIME_BEFORE_START, 0);
         integer(ROUNDS_TIME, 300);
         integer(ROUNDS_TIME_FOR_WINNER, 1);
-        integer(FLYING_PILL_EFFECT_TIMEOUT, 10);
+        integer(DEATH_CAP_EFFECT_TIMEOUT, 10);
         integer(FURY_PILL_EFFECT_TIMEOUT, 10);
         integer(ACORN_REDUCED, 3);
     }

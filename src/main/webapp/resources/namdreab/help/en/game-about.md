@@ -6,7 +6,7 @@ The rest of the game is ready for you.
 You have to write a hero bot that will beat other bots by points. All players play on the
 same field. Hero can move to empty cells in four directions but cannot move to the previous cell.
 
-On its path a hero can encounter acorns, gold, fury pills, flying pills, blueberries or other
+On its path a hero can encounter acorns, gold, fury pills, death caps, blueberries or other
 heroes. If hero eats an acorn it becomes shorter by 4 cells. If its length is less
 than 2, it dies. For gold, blueberry and dead competitors hero gets 
 bonus points[(?)](#ask).

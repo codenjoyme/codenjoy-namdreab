@@ -29,14 +29,14 @@ import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.printer.state.State;
 
-public class FlyingPill extends PointImpl implements State<Element, Player> {
+public class DeathCap extends PointImpl implements State<Element, Player> {
 
-    public FlyingPill(Point pt) {
+    public DeathCap(Point pt) {
         super(pt);
     }
 
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
-        return Element.FLYING_PILL;
+        return Element.DEATH_CAP;
     }
 }

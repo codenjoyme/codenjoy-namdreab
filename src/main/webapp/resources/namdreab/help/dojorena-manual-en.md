@@ -18,7 +18,7 @@ The rest of the game is ready for you.
 You have to write a hero bot that will beat other bots by points. All players play on the
 same field. Hero can move to empty cells in four directions but cannot move to the previous cell.
 
-On its path a hero can encounter Acorns, gold, fury pills, flying pills, blueberries or other
+On its path a hero can encounter Acorns, gold, fury pills, death caps, blueberries or other
 heroes. If hero eats an acorn it became shorter by 4 cells. If its length is less
 than 2, it dies. For gold, blueberries and dead competitors hero gets 
 bonus points[(?)](#ask).
@@ -129,7 +129,7 @@ This is what you see on UI:
 |<img src="/codenjoy-contest/resources/namdreab/sprite/start_spot.png" style="height:auto;" /> | `START_SPOT('#')` | Respawn point from which the hero starts its movement. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/blueberry.png" style="height:auto;" /> | `BLUEBERRY('○')` | Blueberry. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/acorn.png" style="height:auto;" /> | `ACORN('●')` | Acorn. | 
-|<img src="/codenjoy-contest/resources/namdreab/sprite/flying_pill.png" style="height:auto;" /> | `FLYING_PILL('©')` | Flying pill/Angel's wings. | 
+|<img src="/codenjoy-contest/resources/namdreab/sprite/death_cap.png" style="height:auto;" /> | `DEATH_CAP('©')` | Death cap/Angel's wings. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/fury_pill.png" style="height:auto;" /> | `FURY_PILL('®')` | Fury pill/Devil's mask. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/gold.png" style="height:auto;" /> | `GOLD('$')` | Gold. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/head_down.png" style="height:auto;" /> | `HEAD_DOWN('▼')` | Your hero head pointing down. | 
@@ -138,7 +138,7 @@ This is what you see on UI:
 |<img src="/codenjoy-contest/resources/namdreab/sprite/head_up.png" style="height:auto;" /> | `HEAD_UP('▲')` | Your hero head pointing up. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/head_dead.png" style="height:auto;" /> | `HEAD_DEAD('☻')` | Your hero is dead. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/head_evil.png" style="height:auto;" /> | `HEAD_EVIL('♥')` | Your hero head under influence Fury pill/Devils mask. | 
-|<img src="/codenjoy-contest/resources/namdreab/sprite/head_fly.png" style="height:auto;" /> | `HEAD_FLY('♠')` | Your hero head under influence Flying pill/Angels wings. | 
+|<img src="/codenjoy-contest/resources/namdreab/sprite/head_fly.png" style="height:auto;" /> | `HEAD_FLY('♠')` | Your hero head under influence Death cap/Angels wings. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/head_sleep.png" style="height:auto;" /> | `HEAD_SLEEP('&')` | Your hero head when hero is inactive. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/body_horizontal.png" style="height:auto;" /> | `BODY_HORIZONTAL('═')` | Body of your hero is directed horizontally. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/body_vertical.png" style="height:auto;" /> | `BODY_VERTICAL('║')` | Body of your hero is directed vertically. | 
@@ -157,7 +157,7 @@ This is what you see on UI:
 |<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_head_up.png" style="height:auto;" /> | `ENEMY_HEAD_UP('˄')` | Enemy hero head pointing up. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_head_dead.png" style="height:auto;" /> | `ENEMY_HEAD_DEAD('☺')` | Enemy hero is dead. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_head_evil.png" style="height:auto;" /> | `ENEMY_HEAD_EVIL('♣')` | Enemy hero head under influence Fury pill/Devils mask. | 
-|<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_head_fly.png" style="height:auto;" /> | `ENEMY_HEAD_FLY('♦')` | Enemy hero head under influence Flying pill/Angels wings. | 
+|<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_head_fly.png" style="height:auto;" /> | `ENEMY_HEAD_FLY('♦')` | Enemy hero head under influence Death cap/Angels wings. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_head_sleep.png" style="height:auto;" /> | `ENEMY_HEAD_SLEEP('ø')` | Enemy hero head when hero is inactive. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_body_horizontal.png" style="height:auto;" /> | `ENEMY_BODY_HORIZONTAL('─')` | Body of enemy hero is directed horizontally. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_body_vertical.png" style="height:auto;" /> | `ENEMY_BODY_VERTICAL('│')` | Body of enemy hero is directed vertically. | 
@@ -207,7 +207,7 @@ The parameters will change[(?)](#ask) as the game progresses.
 ### Positive impact
 
 - Hero that eats a blueberry becomes longer by one cell.
-- Hero that eats a flying pill flies over acorns and other heroes for 10 moves.
+- Hero that eats a death cap flies over acorns and other heroes for 10 moves.
 - Hero that eats a fury pill can bite off parts of other heroes and eat acorns without
   negative effects for 10 moves.
 - Hero that eats gold gets bonus points.
@@ -218,7 +218,7 @@ The parameters will change[(?)](#ask) as the game progresses.
 - If two heroes collide head-on, the shortest hero dies. The surviving hero becomes
   shorter - by the length of the dead one (if that makes it shorter than two cells, it dies as well).
 - The bitten off part of the tail always disappears, and hero is shortened.
-- If two heroes, one of which is under the flying pill, collide, nothing happens.
+- If two heroes, one of which is under the death cap, collide, nothing happens.
 - If two heroes collide, the under the fury pill always wins.
 - If two furious heroes collide, common collision rules are used.
 
