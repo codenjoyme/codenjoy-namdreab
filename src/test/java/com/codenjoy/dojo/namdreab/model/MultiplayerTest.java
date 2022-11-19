@@ -902,7 +902,7 @@ public class MultiplayerTest {
 
         verifyAllEvents(
                 "listener(0) => [FURY]\n" +
-                "listener(1) => [APPLE, APPLE]\n");
+                "listener(1) => [BLUEBERRY, BLUEBERRY]\n");
 
         hero.down();
         enemy.up();
@@ -947,13 +947,13 @@ public class MultiplayerTest {
 
         game.tick();
         verifyAllEvents(
-                "listener(0) => [APPLE]\n" +
+                "listener(0) => [BLUEBERRY]\n" +
                 "listener(1) => [FURY]\n");
 
         enemy.up();
         game.tick();
         verifyAllEvents(
-                "listener(0) => [APPLE]\n");
+                "listener(0) => [BLUEBERRY]\n");
 
         game.tick();
 
@@ -979,7 +979,7 @@ public class MultiplayerTest {
 
         verifyAllEvents(
                 "listener(0) => [FURY]\n" +
-                "listener(1) => [APPLE]\n");
+                "listener(1) => [BLUEBERRY]\n");
 
         hero.down();
         game.tick();
@@ -1876,9 +1876,9 @@ public class MultiplayerTest {
     }
 
     // с помощью этой команды можно самоуничтожиться
-    // при этом на месте старой змейки появится много яблок :)
+    // при этом на месте героя появится много ягод черники :)
     @Test
-    public void shouldDieAndLeaveApples_whenAct0() {
+    public void shouldDieAndLeaveBlueberries_whenAct0() {
         givenFl("☼☼☼☼☼☼☼☼" +
                 "☼╔═══╕ ☼" +
                 "☼║     ☼" +
@@ -2304,10 +2304,11 @@ public class MultiplayerTest {
         verifyAllEvents("");
     }
 
-    // Тестируем что обработка столкновений происходите до съедения яблока.
-    // Если бы яблоко "съелось" короткой змейкой до обработки столкновения, обе змейки умерли бы.
+    // Тестируем что обработка столкновений происходите до съедения черники.
+    // Если бы черника "съелась" коротким героем до обработки столкновения,
+    // оба героя умерли бы.
     @Test
-    public void firstFightThenEatApple() {
+    public void firstFightThenEatBlueberry() {
         givenFl("☼☼☼☼☼☼☼☼" +
                 "☼┌─┐   ☼" +
                 "☼│ ¤   ☼" +
@@ -2321,7 +2322,7 @@ public class MultiplayerTest {
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
-                "listener(1) => [EAT[5], APPLE, WIN]\n");
+                "listener(1) => [EAT[5], BLUEBERRY, WIN]\n");
 
         assertH("☼☼☼☼☼☼☼☼" +
                 "☼┌─┐   ☼" +
@@ -2361,13 +2362,14 @@ public class MultiplayerTest {
                 "☼▼     ☼" +
                 "☼☼☼☼☼☼☼☼");
 
-        assertEquals(0, game.apples().size());
+        assertEquals(0, game.blueberries().size());
         verifyAllEvents("");
     }
 
-    // Тест зеркальный предыдущему чтобы показать что порядок игроков на сервере не влияет на исход столкновения.
+    // Тест зеркальный предыдущему чтобы показать что порядок игроков
+    // на сервере не влияет на исход столкновения.
     @Test
-    public void firstFightThenEatAppleInverted() {
+    public void firstFightThenEatBlueberryInverted() {
         givenFl("☼☼☼☼☼☼☼☼" +
                 "☼╔═╗   ☼" +
                 "☼║ ╙   ☼" +
@@ -2380,7 +2382,7 @@ public class MultiplayerTest {
         game.tick();
 
         verifyAllEvents(
-                "listener(0) => [EAT[5], APPLE, WIN]\n" +
+                "listener(0) => [EAT[5], BLUEBERRY, WIN]\n" +
                 "listener(1) => [DIE]\n");
 
         assertH("☼☼☼☼☼☼☼☼" +
@@ -2421,7 +2423,7 @@ public class MultiplayerTest {
                 "☼˅     ☼" +
                 "☼☼☼☼☼☼☼☼");
 
-        assertEquals(0, game.apples().size());
+        assertEquals(0, game.blueberries().size());
         verifyAllEvents("");
     }
 
@@ -2550,7 +2552,8 @@ public class MultiplayerTest {
         verifyAllEvents("");
     }
 
-    // Тестируем случай когда одна змейка с Fury идет на клетку где был хвост второй в момент когда вторая кушает яблоко.
+    // Тестируем случай когда один герой с Fury идет на клетку,
+    // где был хвост второго в момент когда второй кушает чернику.
     @Test
     public void eatTailThatGrows_Fury() {
         givenFl("☼☼☼☼☼☼☼☼" +
@@ -2590,7 +2593,7 @@ public class MultiplayerTest {
         game.tick();
 
         verifyAllEvents(
-                "listener(0) => [APPLE]\n" +
+                "listener(0) => [BLUEBERRY]\n" +
                 "listener(1) => [EAT[1]]\n");
 
         assertH("☼☼☼☼☼☼☼☼" +
@@ -2631,7 +2634,7 @@ public class MultiplayerTest {
                 "☼      ☼" +
                 "☼☼☼☼☼☼☼☼");
 
-        assertEquals(0, game.apples().size());
+        assertEquals(0, game.blueberries().size());
         verifyAllEvents("");
     }
 
@@ -2650,7 +2653,7 @@ public class MultiplayerTest {
         game.tick();
 
         verifyAllEvents(
-                "listener(0) => [APPLE, EAT[2], WIN]\n" +
+                "listener(0) => [BLUEBERRY, EAT[2], WIN]\n" +
                 "listener(1) => [DIE]\n");
 
         assertH("☼☼☼☼☼☼☼☼" +
@@ -2691,7 +2694,7 @@ public class MultiplayerTest {
                 "☼      ☼" +
                 "☼☼☼☼☼☼☼☼");
 
-        assertEquals(0, game.apples().size());
+        assertEquals(0, game.blueberries().size());
         verifyAllEvents("");
     }
 
@@ -3145,11 +3148,11 @@ public class MultiplayerTest {
                 "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
 
         verifyAllEvents(
-                "listener(1) => [APPLE]\n");
+                "listener(1) => [BLUEBERRY]\n");
     }
 
-    // с таблеткой ярости я отгрызаю хвосты,
-    // даже те которые под яблоком вырастают
+    // с таблеткой ярости я отгрызаю бороды,
+    // даже те которые на чернике вырастают
     @Test
     public void shouldCase12_justFury() {
         givenFl("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -3222,7 +3225,7 @@ public class MultiplayerTest {
 
         verifyAllEvents(
                 "listener(0) => [EAT[2], EAT[1]]\n" +
-                "listener(1) => [APPLE]\n");
+                "listener(1) => [BLUEBERRY]\n");
 
         assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼☼                           ☼\n" +
@@ -3399,7 +3402,7 @@ public class MultiplayerTest {
         game.tick();
 
         verifyAllEvents(
-                "listener(1) => [APPLE]\n");
+                "listener(1) => [BLUEBERRY]\n");
 
         assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼☼                           ☼\n" +
@@ -4603,7 +4606,7 @@ public class MultiplayerTest {
     }
 
     @Test
-    public void twoFlyingHeros_andOneApple_whoIsFirst() {
+    public void twoFlyingHeros_andOneBlueberry_whoIsFirst() {
         givenFl("☼☼☼☼☼☼☼☼☼☼☼" +
                 "☼         ☼" +
                 "☼         ☼" +
@@ -4621,7 +4624,7 @@ public class MultiplayerTest {
         game.tick();
 
         verifyAllEvents(
-                "listener(0) => [APPLE]\n");
+                "listener(0) => [BLUEBERRY]\n");
 
         assertH("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
@@ -4829,7 +4832,8 @@ public class MultiplayerTest {
     }
 
     // была бага, когда откусывали от змейки два раза, то она второй раз не давалась
-    // попутно в этом тесте тестируется что будет, если во время откусывания по fury скушать яблоко
+    // попутно в этом тесте тестируется что будет,
+    // если во время откусывания по fury скушать чернику
     @Test
     public void eatTwiceSameHero() {
         givenFl("☼☼☼☼☼☼☼☼" +
@@ -4863,7 +4867,7 @@ public class MultiplayerTest {
 
         verifyAllEvents(
                 "listener(0) => [FURY]\n" +
-                "listener(1) => [APPLE]\n");
+                "listener(1) => [BLUEBERRY]\n");
 
         game.tick();
 
@@ -4887,7 +4891,7 @@ public class MultiplayerTest {
 
         verifyAllEvents(
                 "listener(0) => [EAT[3], EAT[1]]\n" +
-                "listener(1) => [APPLE]\n");
+                "listener(1) => [BLUEBERRY]\n");
 
         enemy.up();
         game.tick();
@@ -4975,7 +4979,7 @@ public class MultiplayerTest {
 
         verifyAllEvents(
                 "listener(0) => [FURY]\n" +
-                "listener(1) => [APPLE, APPLE]\n");
+                "listener(1) => [BLUEBERRY, BLUEBERRY]\n");
 
         hero.left();
         game.tick();

@@ -36,7 +36,7 @@ public class Event implements EventObject<Event.Type, Integer> {
         START,
         WIN,
         DIE,
-        APPLE,
+        BLUEBERRY,
         STONE,
         EAT,
         GOLD,

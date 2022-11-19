@@ -110,7 +110,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         generateFlyingPills();
         generateGold();
         generateStones();
-        generateApples();
+        generateBlueberries();
     }
 
     private void generateFuryPills() {
@@ -141,11 +141,11 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                 Stone::new);
     }
 
-    private void generateApples() {
-        generate(apples(), size(),
-                settings, APPLES_COUNT,
+    private void generateBlueberries() {
+        generate(blueberries(), size(),
+                settings, BLUEBERRIES_COUNT,
                 player -> freeRandom(),
-                Apple::new);
+                Blueberry::new);
     }
 
     public Optional<Point> freeRandom() {
@@ -219,9 +219,9 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
             Point head = hero.head();
             hero.eat();
 
-            if (apples().contains(head)) {
-                apples().removeAt(head);
-                hero.event(new Event(APPLE));
+            if (blueberries().contains(head)) {
+                blueberries().removeAt(head);
+                hero.event(new Event(BLUEBERRY));
             }
             if (stones().contains(head) && !hero.isFlying()) {
                 stones().removeAt(head);
@@ -287,7 +287,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     public boolean isFreeOfObjects(Point pt) {
-        return !(apples().contains(pt)
+        return !(blueberries().contains(pt)
                 || stones().contains(pt)
                 || rocks().contains(pt)
                 || starts().contains(pt)
@@ -309,8 +309,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public boolean isApple(Point pt) {
-        return apples().contains(pt);
+    public boolean isBlueberry(Point pt) {
+        return blueberries().contains(pt);
     }
 
     @Override
@@ -355,8 +355,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     public void addToPoint(Point pt) {
-        if (pt instanceof Apple) {
-            addApple(pt);
+        if (pt instanceof Blueberry) {
+            addBlueberry(pt);
         } else if (pt instanceof Stone) {
             addStone(pt);
         } else if (pt instanceof FlyingPill) {
@@ -371,9 +371,9 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public void addApple(Point pt) {
+    public void addBlueberry(Point pt) {
         if (isFree(pt)) {
-            apples().add(new Apple(pt));
+            blueberries().add(new Blueberry(pt));
         }
     }
 
@@ -445,7 +445,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                     drawHeroes(not(Hero::isFlying), Hero::reversedBody);
 
                     addAll(rocks().all());
-                    addAll(apples().all());
+                    addAll(blueberries().all());
                     addAll(stones().all());
                     addAll(flyingPills().all());
                     addAll(furyPills().all());
@@ -477,8 +477,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     public Point getAt(Point pt) {
-        if (apples().contains(pt)) {
-            return new Apple(pt);
+        if (blueberries().contains(pt)) {
+            return new Blueberry(pt);
         }
         if (stones().contains(pt)) {
             return new Stone(pt);
@@ -517,8 +517,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public Accessor<Apple> apples() {
-        return field.of(Apple.class);
+    public Accessor<Blueberry> blueberries() {
+        return field.of(Blueberry.class);
     }
 
     @Override

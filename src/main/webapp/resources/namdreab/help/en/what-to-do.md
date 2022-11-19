@@ -32,7 +32,7 @@ The parameters will change[(?)](#ask) as the game progresses.
 
 ### Positive impact
 
-- Hero that eats an apple becomes longer by one cell.
+- Hero that eats a blueberry becomes longer by one cell.
 - Hero that eats a flying pill flies over stones and other heroes for 10 moves.
 - Hero that eats a fury pill can bite off parts of other heroes and eat stones without
   negative effects for 10 moves.

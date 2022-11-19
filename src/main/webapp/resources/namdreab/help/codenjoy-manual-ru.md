@@ -26,9 +26,9 @@
 свободным ячейкам во все четыре стороны, но не может возвращаться в предыдущую клетку.
 
 На своем пути змейка может повстречать камень, золото, таблеку ярости, таблетку полёта,
-яблоко или другую змейку. Если змейка нарвется на камень - уменьшается 
-на 4 единицы. Если змейка меньше двух клеток - погибнет. За золото, 
-яблоки, в случае смерти других змеек, змейка получит бонусные очки[(?)](#ask). 
+ягоды черники или другую змейку. Если змейка нарвется на камень - уменьшается 
+на 4 единицы. Если змейка меньше двух клеток - погибнет. За золото,
+чернику, в случае смерти других змеек, змейка получит бонусные очки[(?)](#ask). 
 За свою смерть и за камни - штрафные[(?)](#ask). 
 
 Мертвая змейка тут же появляется на одном из свободных стартовых полей и ждёт начала
@@ -141,7 +141,7 @@ C помощью этого regexp можно выкусить строку до
 |<img src="/codenjoy-contest/resources/namdreab/sprite/none.png" style="height:auto;" /> | `NONE(' ')` | Empty space - space where the hero can move. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/rock.png" style="height:auto;" /> | `ROCK('☼')` | Impenetrable rock. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/start_spot.png" style="height:auto;" /> | `START_SPOT('#')` | Respawn point from which the hero starts its movement. | 
-|<img src="/codenjoy-contest/resources/namdreab/sprite/apple.png" style="height:auto;" /> | `APPLE('○')` | Apple. | 
+|<img src="/codenjoy-contest/resources/namdreab/sprite/blueberry.png" style="height:auto;" /> | `BLUEBERRY('○')` | Blueberry. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/stone.png" style="height:auto;" /> | `STONE('●')` | Stone. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/flying_pill.png" style="height:auto;" /> | `FLYING_PILL('©')` | Flying pill/Angel's wings. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/fury_pill.png" style="height:auto;" /> | `FURY_PILL('®')` | Fury pill/Devil's mask. | 
@@ -228,7 +228,7 @@ C помощью этого regexp можно выкусить строку до
 
 ### Позитивные воздействия
 
-- Змейка, съевшая яблоко, увеличивается на 1.
+- Змейка, съевшая чернику, увеличивается на 1.
 - Змейка, съевшая таблетку полёта, в течении 10 ходов летает над камнями и другими змеями.
 - Змейка, съевшая таблетку ярости, в течении 10 ходов может откусывать куски от других змей, а так же поедать камни без уменьшения длины.
 - Змейка, съевшая золото, просто получает дополнительные очки.

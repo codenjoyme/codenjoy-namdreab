@@ -144,7 +144,7 @@ This is what you see on UI:
 |<img src="/codenjoy-contest/resources/namdreab/sprite/none.png" style="height:auto;" /> | `NONE(' ')` | Empty space - space where the hero can move. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/rock.png" style="height:auto;" /> | `ROCK('☼')` | Impenetrable rock. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/start_spot.png" style="height:auto;" /> | `START_SPOT('#')` | Respawn point from which the hero starts its movement. | 
-|<img src="/codenjoy-contest/resources/namdreab/sprite/apple.png" style="height:auto;" /> | `APPLE('○')` | Apple. | 
+|<img src="/codenjoy-contest/resources/namdreab/sprite/blueberry.png" style="height:auto;" /> | `BLUEBERRY('○')` | Blueberry. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/stone.png" style="height:auto;" /> | `STONE('●')` | Stone. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/flying_pill.png" style="height:auto;" /> | `FLYING_PILL('©')` | Flying pill/Angel's wings. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/fury_pill.png" style="height:auto;" /> | `FURY_PILL('®')` | Fury pill/Devil's mask. | 
@@ -223,7 +223,7 @@ The parameters will change[(?)](#ask) as the game progresses.
 
 ### Positive impact
 
-- Hero that eats an apple becomes longer by one cell.
+- Hero that eats a blueberry becomes longer by one cell.
 - Hero that eats a flying pill flies over stones and other heroes for 10 moves.
 - Hero that eats a fury pill can bite off parts of other heroes and eat stones without
   negative effects for 10 moves.

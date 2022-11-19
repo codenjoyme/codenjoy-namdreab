@@ -167,7 +167,7 @@ The parameters will change[(?)](#ask) as the game progresses.
 
 ### Positive impact
 
-- Hero that eats an apple becomes longer by one cell.
+- Hero that eats a blueberry becomes longer by one cell.
 - Hero that eats a flying pill flies over stones and other heroes for 10 moves.
 - Hero that eats a fury pill can bite off parts of other heroes and eat stones without
   negative effects for 10 moves.
@@ -202,8 +202,8 @@ getShortestWay() method in particular.
 If you are not sure what to do try to implement the following algorithms:
 
 - Move to a random empty adjacent cell.
-- Move to a free cell in the direction of the nearest apple.
-- Move to an apple that can be reached faster.
+- Move to a free cell in the direction of the nearest blueberry.
+- Move to a blueberry that can be reached faster.
 - Avoid longer enemies and ones under fury pill.
 - Block the supposed path of the enemy by your tail.
 

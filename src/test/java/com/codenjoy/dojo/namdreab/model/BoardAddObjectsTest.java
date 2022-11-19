@@ -72,14 +72,15 @@ public class BoardAddObjectsTest {
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         Object[][] params = new Object[][]{
-                // нельзя ставить яблоки на яблоки,камни,таблетки,золото,стены
-                {new Apple(pt(2, 2)), false},
-                {new Apple(pt(2, 1)), false},
-                {new Apple(pt(3, 3)), false},
-                {new Apple(pt(3, 2)), false},
-                {new Apple(pt(3, 1)), false},
-                {new Apple(pt(3, 0)), false},
-                // нельзя ставить камни на яблоки,камни,таблетки,золото,стены и справа от выходов
+                // нельзя ставить чернику на чернику, камни, таблетки, золото, стены
+                {new Blueberry(pt(2, 2)), false},
+                {new Blueberry(pt(2, 1)), false},
+                {new Blueberry(pt(3, 3)), false},
+                {new Blueberry(pt(3, 2)), false},
+                {new Blueberry(pt(3, 1)), false},
+                {new Blueberry(pt(3, 0)), false},
+
+                // нельзя ставить камни на чернику, камни, таблетки, золото, стены и справа от выходов
                 {new Stone(pt(2, 3)), false},
                 {new Stone(pt(2, 2)), false},
                 {new Stone(pt(2, 1)), false},
@@ -87,29 +88,33 @@ public class BoardAddObjectsTest {
                 {new Stone(pt(3, 2)), false},
                 {new Stone(pt(3, 1)), false},
                 {new Stone(pt(3, 0)), false},
-                // нельзя ставить таблетки полёта на яблоки, камни, таблетки, золото, стены
+
+                // нельзя ставить таблетки полёта на чернику, камни, таблетки, золото, стены
                 {new FlyingPill(pt(2, 2)), false},
                 {new FlyingPill(pt(2, 1)), false},
                 {new FlyingPill(pt(3, 3)), false},
                 {new FlyingPill(pt(3, 2)), false},
                 {new FlyingPill(pt(3, 1)), false},
                 {new FlyingPill(pt(3, 0)), false},
-                // нельзя ставить таблетки ярости на яблоки, камни, таблетки, золото, стены
+
+                // нельзя ставить таблетки ярости на чернику, камни, таблетки, золото, стены
                 {new FuryPill(pt(2, 2)), false},
                 {new FuryPill(pt(2, 1)), false},
                 {new FuryPill(pt(3, 3)), false},
                 {new FuryPill(pt(3, 2)), false},
                 {new FuryPill(pt(3, 1)), false},
                 {new FuryPill(pt(3, 0)), false},
-                // нельзя ставить золото на яблоки, камни, таблетки, золото, стены
+
+                // нельзя ставить золото на чернику, камни, таблетки, золото, стены
                 {new Gold(pt(2, 2)), false},
                 {new Gold(pt(2, 1)), false},
                 {new Gold(pt(3, 3)), false},
                 {new Gold(pt(3, 2)), false},
                 {new Gold(pt(3, 1)), false},
                 {new Gold(pt(3, 0)), false},
-                // можно ставить яблоки, камни, таблетки и золото в пустое место
-                {new Apple(pt(4, 2)), true},
+
+                // можно ставить чернику, камни, таблетки и золото в пустое место
+                {new Blueberry(pt(4, 2)), true},
                 {new Stone(pt(4, 2)), true},
                 {new FlyingPill(pt(4, 2)), true},
                 {new FuryPill(pt(4, 2)), true},
@@ -134,8 +139,8 @@ public class BoardAddObjectsTest {
         int objectsAfter = 0;
         String objType = addition.getClass().toString().replaceAll(".*\\.", "");
         switch (objType) {
-            case "Apple":
-                objectsAfter = game.apples().size();
+            case "Blueberry":
+                objectsAfter = game.blueberries().size();
                 break;
             case "Stone":
                 objectsAfter = game.stones().size();

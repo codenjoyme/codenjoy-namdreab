@@ -159,7 +159,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼");
     }
 
-    // карта с яблоками, камнями, пилюлями полёта, пилюлями ярости, деньгами
+    // карта с черникой, камнями, пилюлями полёта, пилюлями ярости, деньгами
     @Test
     public void shouldBoardWithElements() {
         givenFl("☼☼☼☼☼☼☼" +
@@ -213,7 +213,7 @@ public class GameTest {
 
     // тест событий
     @Test
-    public void shouldAppleEvent_whenEatIt() {
+    public void shouldBlueberryEvent_whenEatIt() {
         givenFl("☼☼☼☼☼☼☼" +
                 "☼     ☼" +
                 "☼     ☼" +
@@ -232,7 +232,7 @@ public class GameTest {
 
         game.tick();
 
-        verifyAllEvents("[APPLE]");
+        verifyAllEvents("[BLUEBERRY]");
 
         assertE("☼☼☼☼☼☼☼" +
                 "☼     ☼" +
@@ -593,7 +593,7 @@ public class GameTest {
 
     // тест роста
     @Test
-    public void shouldGrow_whenEatApple() {
+    public void shouldGrow_whenEatBlueberry() {
         givenFl("☼☼☼☼☼☼☼☼☼☼☼" +
                 "☼         ☼" +
                 "☼         ☼" +
@@ -608,7 +608,7 @@ public class GameTest {
 
         game.tick();
 
-        verifyAllEvents("[APPLE]");
+        verifyAllEvents("[BLUEBERRY]");
 
         assertE("☼☼☼☼☼☼☼☼☼☼☼" +
                 "☼         ☼" +
@@ -638,7 +638,7 @@ public class GameTest {
 
         game.tick();
 
-        verifyAllEvents("[APPLE]");
+        verifyAllEvents("[BLUEBERRY]");
 
         assertE("☼☼☼☼☼☼☼☼☼☼☼" +
                 "☼         ☼" +
@@ -668,7 +668,7 @@ public class GameTest {
 
         game.tick();
 
-        verifyAllEvents("[APPLE]");
+        verifyAllEvents("[BLUEBERRY]");
 
         assertE("☼☼☼☼☼☼☼☼☼☼☼" +
                 "☼         ☼" +

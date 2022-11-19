@@ -68,14 +68,14 @@ public class HeroTest {
             heroIncreasing();
     }
 
-    // Проверка что бородач растет
+    // Проверка что борода растет
     @Test
     public void heroIncreasing() {
         int before = hero.size();
-        applesAtAllPoints(true);// впереди яблоко -> увеличиваем змейку
+        blueberriesAtAllPoints(true);// впереди черника -> увеличиваем бородачу бороду
         hero.tick();
         hero.eat();
-        applesAtAllPoints(false);
+        blueberriesAtAllPoints(false);
         assertEquals("Голова бородача не увеличилась!", before + 1, hero.size());
     }
 
@@ -84,18 +84,21 @@ public class HeroTest {
     public void heroInactive() {
         hero.setActive(false);
         LinkedList<Tail> startBody = new LinkedList<>(hero.body());
+
         // просто тик
         hero.tick();
         hero.eat();
         assertEquals("Неактивный бородач изменился!", startBody, hero.body());
         assertTrue("Бородач мертв!", hero.isAlive());
-        // если яблоко
-        applesAtAllPoints(true);
+
+        // если черника
+        blueberriesAtAllPoints(true);
         hero.tick();
         hero.eat();
-        applesAtAllPoints(false);
+        blueberriesAtAllPoints(false);
         assertEquals("Неактивный бородач изменился!", startBody, hero.body());
         assertTrue("Бородач мертв!", hero.isAlive());
+
         // если камень
         stonesAtAllPoints(true);
         hero.tick();
@@ -103,6 +106,7 @@ public class HeroTest {
         stonesAtAllPoints(false);
         assertEquals("Неактивный бородач изменился!", startBody, hero.body());
         assertTrue("Бородач мертв!", hero.isAlive());
+
         // если скала
         rocksAtAllPoints(true);
         hero.tick();
@@ -116,7 +120,7 @@ public class HeroTest {
     @Test
     public void diedByRock() {
         int before = hero.size();
-        rocksAtAllPoints(true);// впереди яблоко -> увеличиваем змейку
+        rocksAtAllPoints(true);// впереди черника -> увеличиваем бороду
         hero.tick();
         hero.eat();
         rocksAtAllPoints(false);
@@ -239,8 +243,8 @@ public class HeroTest {
         assertEquals("Количество ходов ярости не может быть меньше 0.", 0, hero.furyCount());
     }
 
-    private void applesAtAllPoints(boolean enable) {
-        when(game.isApple(any(Point.class))).thenReturn(enable);// впереди яблоко
+    private void blueberriesAtAllPoints(boolean enable) {
+        when(game.isBlueberry(any(Point.class))).thenReturn(enable);// впереди черника
     }
 
     private void flyingPillsAtAllPoints(boolean enable) {

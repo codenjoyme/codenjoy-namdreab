@@ -155,8 +155,8 @@ public class Level extends AbstractLevel {
         return parseHero(point, field);
     }
 
-    public List<Apple> apples() {
-        return find(Apple::new, APPLE);
+    public List<Blueberry> blueberries() {
+        return find(Blueberry::new, BLUEBERRY);
     }
 
     public List<Stone> stones() {
@@ -187,7 +187,7 @@ public class Level extends AbstractLevel {
     protected void fill(PointField field) {
         field.addAll(rocks());
         field.addAll(starts());
-        field.addAll(apples());
+        field.addAll(blueberries());
         field.addAll(stones());
         field.addAll(furyPills());
         field.addAll(flyingPills());

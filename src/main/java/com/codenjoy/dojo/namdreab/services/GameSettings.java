@@ -43,10 +43,10 @@ public class GameSettings extends SettingsImpl implements AllSettings<GameSettin
         FURY_PILLS_COUNT,
         GOLD_COUNT,
         STONES_COUNT,
-        APPLES_COUNT,
+        BLUEBERRIES_COUNT,
         STONE_REDUCED,
         WIN_SCORE,
-        APPLE_SCORE,
+        BLUEBERRY_SCORE,
         GOLD_SCORE,
         DIE_PENALTY,
         STONE_SCORE,
@@ -87,12 +87,12 @@ public class GameSettings extends SettingsImpl implements AllSettings<GameSettin
         integer(FURY_PILLS_COUNT, 2);
         integer(GOLD_COUNT, 5);
         integer(STONES_COUNT, 10);
-        integer(APPLES_COUNT, 30);
+        integer(BLUEBERRIES_COUNT, 30);
 
         integer(STONE_REDUCED, 3);
 
         integer(WIN_SCORE, 50);
-        integer(APPLE_SCORE, 1);
+        integer(BLUEBERRY_SCORE, 1);
         integer(GOLD_SCORE, 10);
         integer(DIE_PENALTY, -0);
         integer(STONE_SCORE, 5);

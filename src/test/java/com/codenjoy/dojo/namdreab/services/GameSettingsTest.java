@@ -37,10 +37,10 @@ public class GameSettingsTest {
                     "FURY_PILLS_COUNT           =[Game] Fury pills count\n" +
                     "GOLD_COUNT                 =[Game] Gold count\n" +
                     "STONES_COUNT               =[Game] Stone count\n" +
-                    "APPLES_COUNT               =[Game] Apple count\n" +
+                    "BLUEBERRIES_COUNT          =[Game] Blueberries count\n" +
                     "STONE_REDUCED              =[Game] Stone reduced value\n" +
                     "WIN_SCORE                  =[Score] Win score\n" +
-                    "APPLE_SCORE                =[Score] Apple score\n" +
+                    "BLUEBERRY_SCORE            =[Score] Blueberry score\n" +
                     "GOLD_SCORE                 =[Score] Gold score\n" +
                     "DIE_PENALTY                =[Score] Die penalty\n" +
                     "STONE_SCORE                =[Score] Stone score\n" +

@@ -36,8 +36,8 @@ public class Scores extends ScoresMap<Integer> {
         put(Event.Type.WIN,
                 value -> settings.integer(WIN_SCORE));
 
-        put(Event.Type.APPLE,
-                value -> settings.integer(APPLE_SCORE));
+        put(Event.Type.BLUEBERRY,
+                value -> settings.integer(BLUEBERRY_SCORE));
 
         put(Event.Type.GOLD,
                 value -> settings.integer(GOLD_SCORE));

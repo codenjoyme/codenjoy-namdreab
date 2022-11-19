@@ -49,7 +49,7 @@ public class ScoresTest {
     public ScoresTest(int score, Event event, int changeValue) {
         settings = new TestGameSettings()
                 .integer(WIN_SCORE, 30)
-                .integer(APPLE_SCORE, 1)
+                .integer(BLUEBERRY_SCORE, 1)
                 .integer(GOLD_SCORE, 5)
                 .integer(DIE_PENALTY, -10)
                 .integer(STONE_SCORE, -1);
@@ -66,13 +66,13 @@ public class ScoresTest {
     public static Collection<Object[]> data() {
         Object[][] params = new Object[][]{
                 {0, new Event(START), 0},
-                {0, new Event(APPLE), +1},
+                {0, new Event(BLUEBERRY), +1},
                 {0, new Event(GOLD), +5},
                 {0, new Event(STONE), 0}, // счёт всегда >=0
                 {0, new Event(WIN), +30},
                 {0, new Event(DIE), 0}, // счёт всегда >=0
                 {100, new Event(START), 0},
-                {100, new Event(APPLE), +1},
+                {100, new Event(BLUEBERRY), +1},
                 {100, new Event(GOLD), +5},
                 {100, new Event(STONE), -1},
                 {100, new Event(WIN), +30},

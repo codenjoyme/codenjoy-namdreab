@@ -62,7 +62,7 @@ public class Hero extends RoundPlayerHero<Field>
     private int stonesCount;
     private int flyingCount;
     private int furyCount;
-    private boolean leaveApples;
+    private boolean leaveBlueberry;
     private Point lastTailPosition;
     private int score;
 
@@ -81,7 +81,7 @@ public class Hero extends RoundPlayerHero<Field>
     public void clearScores() {
         growBy = 0;
         score = 0;
-        leaveApples = false;
+        leaveBlueberry = false;
         newDirection = null;
         stonesCount = 0;
         flyingCount = 0;
@@ -167,7 +167,7 @@ public class Hero extends RoundPlayerHero<Field>
         // TODO test что только если змейка жива, если она в загоне нельзя давать эту команду выполнять
         if (act.is(ACT_SUICIDE)) {
             die();
-            leaveApples = true;
+            leaveBlueberry = true;
             return;
         }
 
@@ -221,10 +221,11 @@ public class Hero extends RoundPlayerHero<Field>
         }
 
         Point head = head();
-        if (field.isApple(head)) {
+        if (field.isBlueberry(head)) {
             growBy(1);
-            // если не сделать этого здесь, при съедании яблока и одновременной потере части корпуса
-            // яблоко будет зачтено лишь на следующий тик, что неправильно
+            // если не сделать этого здесь, при съедании черники и одновременной
+            // потере части бороды будет зачтена лишь на следующий тик,
+            // что неправильно
             grow();
         }
         if (field.isStone(head) && !isFlying()) {
@@ -397,9 +398,9 @@ public class Hero extends RoundPlayerHero<Field>
     public void clear() {
         List<Point> points = new LinkedList<>(body);
         body = new LinkedList<>();
-        if (leaveApples) {
-            points.forEach(e -> field.addApple(e));
-            leaveApples = false;
+        if (leaveBlueberry) {
+            points.forEach(e -> field.addBlueberry(e));
+            leaveBlueberry = false;
         }
         growBy = 0;
     }
