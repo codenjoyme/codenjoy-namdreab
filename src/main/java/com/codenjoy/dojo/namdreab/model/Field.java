@@ -34,7 +34,7 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     boolean isBlueberry(Point p);
 
-    boolean isStone(Point p);
+    boolean isAcorn(Point p);
 
     boolean isFlyingPill(Point p);
 
@@ -44,7 +44,7 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     void addBlueberry(Point p);
 
-    boolean addStone(Point p);
+    boolean addAcorn(Point p);
 
     void addFlyingPill(Point p);
 
@@ -60,7 +60,7 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     Accessor<Blueberry> blueberries();
 
-    Accessor<Stone> stones();
+    Accessor<Acorn> acorns();
 
     Accessor<FuryPill> furyPills();
 

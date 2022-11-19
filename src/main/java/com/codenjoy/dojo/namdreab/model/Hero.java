@@ -59,7 +59,7 @@ public class Hero extends RoundPlayerHero<Field>
     private Direction direction;
     private Direction newDirection;
     private int growBy;
-    private int stonesCount;
+    private int acornsCount;
     private int flyingCount;
     private int furyCount;
     private boolean leaveBlueberry;
@@ -83,7 +83,7 @@ public class Hero extends RoundPlayerHero<Field>
         score = 0;
         leaveBlueberry = false;
         newDirection = null;
-        stonesCount = 0;
+        acornsCount = 0;
         flyingCount = 0;
         furyCount = 0;
     }
@@ -172,12 +172,12 @@ public class Hero extends RoundPlayerHero<Field>
         }
 
         if (act.is()) {
-            if (stonesCount <= 0) {
+            if (acornsCount <= 0) {
                 return;
             }
             Point to = tail();
-            if (field.addStone(to)) {
-                stonesCount--;
+            if (field.addAcorn(to)) {
+                acornsCount--;
             }
             return;
         }
@@ -228,10 +228,10 @@ public class Hero extends RoundPlayerHero<Field>
             // что неправильно
             grow();
         }
-        if (field.isStone(head) && !isFlying()) {
-            stonesCount++;
+        if (field.isAcorn(head) && !isFlying()) {
+            acornsCount++;
             if (!isFury()) {
-                reduce(settings().integer(STONE_REDUCED), NOW);
+                reduce(settings().integer(ACORN_REDUCED), NOW);
             }
         }
         if (field.isFlyingPill(head)) {
@@ -405,8 +405,8 @@ public class Hero extends RoundPlayerHero<Field>
         growBy = 0;
     }
 
-    public int stonesCount() {
-        return stonesCount;
+    public int acornsCount() {
+        return acornsCount;
     }
 
     public int flyingCount() {

@@ -159,8 +159,8 @@ public class Level extends AbstractLevel {
         return find(Blueberry::new, BLUEBERRY);
     }
 
-    public List<Stone> stones() {
-        return find(Stone::new, STONE);
+    public List<Acorn> acorns() {
+        return find(Acorn::new, ACORN);
     }
 
     public List<FlyingPill> flyingPills() {
@@ -188,7 +188,7 @@ public class Level extends AbstractLevel {
         field.addAll(rocks());
         field.addAll(starts());
         field.addAll(blueberries());
-        field.addAll(stones());
+        field.addAll(acorns());
         field.addAll(furyPills());
         field.addAll(flyingPills());
         field.addAll(gold());

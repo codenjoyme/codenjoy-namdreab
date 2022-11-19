@@ -45,8 +45,8 @@ public class Scores extends ScoresMap<Integer> {
         put(Event.Type.DIE,
                 value -> settings.integer(DIE_PENALTY));
 
-        put(Event.Type.STONE,
-                value -> settings.integer(STONE_SCORE));
+        put(Event.Type.ACORN,
+                value -> settings.integer(ACORN_SCORE));
 
         put(Event.Type.EAT,
                 value -> value * settings.integer(EAT_SCORE));

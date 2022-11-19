@@ -52,7 +52,7 @@ public class ScoresTest {
                 .integer(BLUEBERRY_SCORE, 1)
                 .integer(GOLD_SCORE, 5)
                 .integer(DIE_PENALTY, -10)
-                .integer(STONE_SCORE, -1);
+                .integer(ACORN_SCORE, -1);
         givenScores(score);
         this.event = event;
         this.changeValue = changeValue;
@@ -68,13 +68,13 @@ public class ScoresTest {
                 {0, new Event(START), 0},
                 {0, new Event(BLUEBERRY), +1},
                 {0, new Event(GOLD), +5},
-                {0, new Event(STONE), 0}, // счёт всегда >=0
+                {0, new Event(ACORN), 0}, // счёт всегда >=0
                 {0, new Event(WIN), +30},
                 {0, new Event(DIE), 0}, // счёт всегда >=0
                 {100, new Event(START), 0},
                 {100, new Event(BLUEBERRY), +1},
                 {100, new Event(GOLD), +5},
-                {100, new Event(STONE), -1},
+                {100, new Event(ACORN), -1},
                 {100, new Event(WIN), +30},
                 {100, new Event(DIE), -10},
         };

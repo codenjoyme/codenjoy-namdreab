@@ -41,6 +41,6 @@ public class TestGameSettings extends GameSettings {
         integer(ROUNDS_TIME_FOR_WINNER, 1);
         integer(FLYING_PILL_EFFECT_TIMEOUT, 10);
         integer(FURY_PILL_EFFECT_TIMEOUT, 10);
-        integer(STONE_REDUCED, 3);
+        integer(ACORN_REDUCED, 3);
     }
 }

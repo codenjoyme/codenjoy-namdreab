@@ -25,11 +25,11 @@ The rest of the game is ready for you.
 You have to write a hero bot that will beat other bots by points. All players play on the
 same field. Hero can move to empty cells in four directions but cannot move to the previous cell.
 
-On its path a hero can encounter stones, gold, fury pills, flying pills, aplles or other
-heroes. If hero eats a stone it becomse shorter by 4 cells. If its length is less
-than 2, it dies. For gold, aplles and dead competitors hero gets 
+On its path a hero can encounter acorns, gold, fury pills, flying pills, blueberries or other
+heroes. If hero eats an acorn it became shorter by 4 cells. If its length is less
+than 2, it dies. For gold, blueberries and dead competitors hero gets 
 bonus points[(?)](#ask).
-For its own death and eaten stones hero gets demerit points[(?)](#ask).
+For its own death and eaten acorns hero gets demerit points[(?)](#ask).
 The points are summed up.
 
 The player with most points when time expires wins. A dead hero immediately
@@ -144,11 +144,11 @@ in its current direction until stopped by a rock.
 
 * `UP`, `DOWN`, `LEFT`, `RIGHT` - they move hero one cell in the
   corresponding direction.
-* `ACT` - drop a stone (if hero has previously eaten at
-  least one). The stone is left at the end of hero's tail. With the help 
-  of stones players can set obstacles and block enemies.
+* `ACT` - drop an acorn (if hero has previously eaten at
+  least one). The acorn is left at the end of hero's tail. With the help 
+  of acorns players can set obstacles and block enemies.
 * Movement and `ACT` commands can be combined, separating them by comma. 
-  During one game cycle hero will drop a stone and move, 
+  During one game cycle hero will drop an acorn and move, 
   e.g. `LEFT,ACT` or `ACT,LEFT`.
 
 ## Points
@@ -162,14 +162,14 @@ The parameters will change[(?)](#ask) as the game progresses.
 - Hero that hits a rock, dies.
 - Hero that hits another hero, dies.
 - Hero must be at least two cells long or it dies.
-- Hero that eats a stone becomes three cells shorter, and, if that
+- Hero that eats an acorn becomes three cells shorter, and, if that
   makes it shorter than two cells - it dies.
 
 ### Positive impact
 
 - Hero that eats a blueberry becomes longer by one cell.
-- Hero that eats a flying pill flies over stones and other heroes for 10 moves.
-- Hero that eats a fury pill can bite off parts of other heroes and eat stones without
+- Hero that eats a flying pill flies over acorns and other heroes for 10 moves.
+- Hero that eats a fury pill can bite off parts of other heroes and eat acorns without
   negative effects for 10 moves.
 - Hero that eats gold gets bonus points.
 

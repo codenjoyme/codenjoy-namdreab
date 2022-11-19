@@ -159,7 +159,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼");
     }
 
-    // карта с черникой, камнями, пилюлями полёта, пилюлями ярости, деньгами
+    // карта с черникой, желудями, пилюлями полёта, пилюлями ярости, деньгами
     @Test
     public void shouldBoardWithElements() {
         givenFl("☼☼☼☼☼☼☼" +
@@ -244,7 +244,7 @@ public class GameTest {
     }
 
     @Test
-    public void shouldStoneAndDieEvents_whenEatStone_lengthIsTooShort() {
+    public void shouldAcornAndDieEvents_whenEatAcorn_lengthIsTooShort() {
         givenFl("☼☼☼☼☼☼☼" +
                 "☼     ☼" +
                 "☼     ☼" +
@@ -291,7 +291,7 @@ public class GameTest {
     }
 
     @Test
-    public void shouldStoneAndAlive_whenEatStone_lengthIsOk() {
+    public void shouldAcornAndAlive_whenEatAcorn_lengthIsOk() {
         givenFl("☼☼☼☼☼☼☼" +
                 "☼╔═══╗☼" +
                 "☼╚═╗╘╝☼" +
@@ -310,7 +310,7 @@ public class GameTest {
 
         game.tick();
 
-        verifyAllEvents("[STONE]");
+        verifyAllEvents("[ACORN]");
 
         assertEquals(true, hero.isAlive());
         assertEquals(true, hero.isActive());
@@ -1076,9 +1076,9 @@ public class GameTest {
                 "☼☼☼☼☼☼☼");
     }
 
-    // съедая пилюлю полёта, герой перелетает камни
+    // съедая пилюлю полёта, герой перелетает желуди
     @Test
-    public void shouldFlyingOverStones_whenEatFlyingPill() {
+    public void shouldFlyingOverAcorns_whenEatFlyingPill() {
         givenFl("☼☼☼☼☼☼☼☼☼" +
                 "☼       ☼" +
                 "☼       ☼" +
@@ -1127,7 +1127,7 @@ public class GameTest {
 
         assertEquals(8, hero.flyingCount());
         assertEquals(0, hero.furyCount());
-        assertEquals(0, hero.stonesCount());
+        assertEquals(0, hero.acornsCount());
         assertEquals(true, hero.isFlying());
         assertEquals(true, hero.isAlive());
 
@@ -1145,11 +1145,11 @@ public class GameTest {
         game.tick();
 
         assertEquals(6, hero.flyingCount());
-        assertEquals(0, hero.stonesCount());
+        assertEquals(0, hero.acornsCount());
         assertEquals(true, hero.isFlying());
         assertEquals(true, hero.isAlive());
 
-        // камень остался на месте
+        // желудь остался на месте
         assertE("☼☼☼☼☼☼☼☼☼" +
                 "☼       ☼" +
                 "☼       ☼" +
@@ -1163,7 +1163,7 @@ public class GameTest {
 
     @Test
     public void shouldDisableFlyingPillEffect_when10Ticks() {
-        shouldFlyingOverStones_whenEatFlyingPill();
+        shouldFlyingOverAcorns_whenEatFlyingPill();
 
         assertE("☼☼☼☼☼☼☼☼☼" +
                 "☼       ☼" +
@@ -1297,9 +1297,9 @@ public class GameTest {
                 "☼☼☼☼☼☼☼");
     }
 
-    // съедая пилюлю ярости, герой ест камни без ущерба
+    // съедая пилюлю ярости, герой ест желуди без ущерба
     @Test
-    public void shouldEatStones_whenEatFuryPill() {
+    public void shouldEatAcorns_whenEatFuryPill() {
         givenFl("☼☼☼☼☼☼☼☼☼" +
                 "☼       ☼" +
                 "☼       ☼" +
@@ -1332,7 +1332,7 @@ public class GameTest {
         game.tick();
 
         assertEquals(9, hero.furyCount());
-        assertEquals(0, hero.stonesCount());
+        assertEquals(0, hero.acornsCount());
         assertEquals(true, hero.isFury());
 
         assertE("☼☼☼☼☼☼☼☼☼" +
@@ -1347,11 +1347,11 @@ public class GameTest {
 
         game.tick();
 
-        verifyAllEvents("[STONE]");
+        verifyAllEvents("[ACORN]");
 
         assertEquals(8, hero.furyCount());
         assertEquals(0, hero.flyingCount());
-        assertEquals(1, hero.stonesCount());
+        assertEquals(1, hero.acornsCount());
         assertEquals(true, hero.isFury());
         assertEquals(true, hero.isAlive());
 
@@ -1369,11 +1369,11 @@ public class GameTest {
         game.tick();
 
         assertEquals(6, hero.furyCount());
-        assertEquals(1, hero.stonesCount());
+        assertEquals(1, hero.acornsCount());
         assertEquals(true, hero.isFury());
         assertEquals(true, hero.isAlive());
 
-        // камень пропал
+        // желудь пропал
         assertE("☼☼☼☼☼☼☼☼☼" +
                 "☼       ☼" +
                 "☼       ☼" +
@@ -1386,8 +1386,8 @@ public class GameTest {
     }
 
     @Test
-    public void shouldDropStone_afterFury() {
-        shouldEatStones_whenEatFuryPill();
+    public void shouldDropAcorn_afterFury() {
+        shouldEatAcorns_whenEatFuryPill();
 
         assertE("☼☼☼☼☼☼☼☼☼" +
                 "☼       ☼" +
@@ -1399,7 +1399,7 @@ public class GameTest {
                 "☼       ☼" +
                 "☼☼☼☼☼☼☼☼☼");
 
-        assertEquals(1, hero.stonesCount());
+        assertEquals(1, hero.acornsCount());
 
         hero.up();
         game.tick();
@@ -1418,7 +1418,7 @@ public class GameTest {
         hero.act();
         game.tick();
 
-        assertEquals(0, hero.stonesCount());
+        assertEquals(0, hero.acornsCount());
 
         assertE("☼☼☼☼☼☼☼☼☼" +
                 "☼       ☼" +
@@ -1445,7 +1445,7 @@ public class GameTest {
 
     @Test
     public void shouldDisableFuryPillEffect_when10Ticks() {
-        shouldEatStones_whenEatFuryPill();
+        shouldEatAcorns_whenEatFuryPill();
 
         assertE("☼☼☼☼☼☼☼☼☼" +
                 "☼       ☼" +
@@ -1509,7 +1509,7 @@ public class GameTest {
     }
 
     @Test
-    public void shouldDropStone_afterFuryDisabled() {
+    public void shouldDropAcorn_afterFuryDisabled() {
         shouldDisableFuryPillEffect_when10Ticks();
 
         assertE("☼☼☼☼☼☼☼☼☼" +
@@ -1522,7 +1522,7 @@ public class GameTest {
                 "☼       ☼" +
                 "☼☼☼☼☼☼☼☼☼");
 
-        assertEquals(1, hero.stonesCount());
+        assertEquals(1, hero.acornsCount());
 
         hero.act();
         game.tick();
@@ -1538,7 +1538,7 @@ public class GameTest {
                 "☼☼☼☼☼☼☼☼☼");
 
 
-        assertEquals(0, hero.stonesCount());
+        assertEquals(0, hero.acornsCount());
 
         game.tick();
 

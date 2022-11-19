@@ -2427,10 +2427,10 @@ public class MultiplayerTest {
         verifyAllEvents("");
     }
 
-    // Тестируем что обработка столкновений происходите до съедения камня.
-    // Если бы камень "съелся" короткой змейкой до обработки столкновения, она умерла бы не повредив длинную.
+    // Тестируем что обработка столкновений происходите до съедения желудя.
+    // Если бы желудь "съелся" короткой змейкой до обработки столкновения, она умерла бы не повредив длинную.
     @Test
-    public void firstFightThenEatStone() {
+    public void firstFightThenEatAcorn() {
         givenFl("☼☼☼☼☼☼☼☼" +
                 "☼┌─┐   ☼" +
                 "☼│ ¤   ☼" +
@@ -2444,10 +2444,10 @@ public class MultiplayerTest {
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
-                "listener(1) => [EAT[2], STONE, WIN]\n");
+                "listener(1) => [EAT[2], ACORN, WIN]\n");
 
-        // несмотря на то что на сервере столкновение обрабатывается до съедения камня,
-        // съедение камня приводит к мгновенной утрате длинны (на 3),
+        // несмотря на то что на сервере столкновение обрабатывается до съедения желудя,
+        // съедение желудя приводит к мгновенной утрате длинны (на 3),
         // тогда как убийство соперника приводит к утрате длинны только на следующий тик.
         // лично я бы апдейтил длинну выжившей змейки тоже сразу и не показывал бы части умерших змеек.
         assertH("☼☼☼☼☼☼☼☼" +
@@ -2488,13 +2488,14 @@ public class MultiplayerTest {
                 "☼▼     ☼" +
                 "☼☼☼☼☼☼☼☼");
 
-        assertEquals("[]", game.stones().toString());
+        assertEquals("[]", game.acorns().toString());
         verifyAllEvents("");
     }
 
-    // Тест зеркальный предыдущему, показывает что порядок игроков на сервере не влият на исход столкновения.
+    // Тест зеркальный предыдущему, показывает что порядок игроков 
+    // на сервере не влияет на исход столкновения.
     @Test
-    public void firstFightThenEatStoneInverted() {
+    public void firstFightThenEatAcornInverted() {
         givenFl("☼☼☼☼☼☼☼☼" +
                 "☼╔═╗   ☼" +
                 "☼║ ╙   ☼" +
@@ -2507,7 +2508,7 @@ public class MultiplayerTest {
         game.tick();
 
         verifyAllEvents(
-                "listener(0) => [EAT[2], STONE, WIN]\n" +
+                "listener(0) => [EAT[2], ACORN, WIN]\n" +
                 "listener(1) => [DIE]\n");
 
         assertH("☼☼☼☼☼☼☼☼" +
@@ -2548,7 +2549,7 @@ public class MultiplayerTest {
                 "☼˅     ☼" +
                 "☼☼☼☼☼☼☼☼");
 
-        assertEquals("[]", game.stones().toString());
+        assertEquals("[]", game.acorns().toString());
         verifyAllEvents("");
     }
 

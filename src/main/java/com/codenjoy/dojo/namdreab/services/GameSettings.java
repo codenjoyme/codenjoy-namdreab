@@ -42,14 +42,14 @@ public class GameSettings extends SettingsImpl implements AllSettings<GameSettin
         FLYING_PILLS_COUNT,
         FURY_PILLS_COUNT,
         GOLD_COUNT,
-        STONES_COUNT,
+        ACORNS_COUNT,
         BLUEBERRIES_COUNT,
-        STONE_REDUCED,
+        ACORN_REDUCED,
         WIN_SCORE,
         BLUEBERRY_SCORE,
         GOLD_SCORE,
         DIE_PENALTY,
-        STONE_SCORE,
+        ACORN_SCORE,
         EAT_SCORE,
         SCORE_COUNTING_TYPE;
 
@@ -86,16 +86,16 @@ public class GameSettings extends SettingsImpl implements AllSettings<GameSettin
         integer(FLYING_PILLS_COUNT, 2);
         integer(FURY_PILLS_COUNT, 2);
         integer(GOLD_COUNT, 5);
-        integer(STONES_COUNT, 10);
+        integer(ACORNS_COUNT, 10);
         integer(BLUEBERRIES_COUNT, 30);
 
-        integer(STONE_REDUCED, 3);
+        integer(ACORN_REDUCED, 3);
 
         integer(WIN_SCORE, 50);
         integer(BLUEBERRY_SCORE, 1);
         integer(GOLD_SCORE, 10);
         integer(DIE_PENALTY, -0);
-        integer(STONE_SCORE, 5);
+        integer(ACORN_SCORE, 5);
         integer(EAT_SCORE, 10);
 
         Levels.setup(this);

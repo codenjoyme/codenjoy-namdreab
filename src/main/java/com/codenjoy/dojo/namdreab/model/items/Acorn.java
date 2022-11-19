@@ -29,14 +29,14 @@ import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.printer.state.State;
 
-public class Stone extends PointImpl implements State<Element, Player> {
+public class Acorn extends PointImpl implements State<Element, Player> {
 
-    public Stone(Point pt) {
+    public Acorn(Point pt) {
         super(pt);
     }
 
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
-        return Element.STONE;
+        return Element.ACORN;
     }
 }

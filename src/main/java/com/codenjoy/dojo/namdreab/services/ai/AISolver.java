@@ -59,9 +59,9 @@ public class AISolver implements Solver<Board> {
                 int nx = to.getX();
                 int ny = to.getY();
 
-                // вероятность не есть камень 3/4
+                // вероятность не есть желудь 3/4
                 if (dice.next(4) != 0)
-                    if (board.isStoneAt(nx, ny))
+                    if (board.isAcornAt(nx, ny))
                         return false;
 
                 // вероятность не врезаться в противника 9/10

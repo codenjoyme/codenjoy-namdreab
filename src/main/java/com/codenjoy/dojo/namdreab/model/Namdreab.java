@@ -109,7 +109,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         generateFuryPills();
         generateFlyingPills();
         generateGold();
-        generateStones();
+        generateAcorns();
         generateBlueberries();
     }
 
@@ -134,11 +134,11 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                 Gold::new);
     }
 
-    private void generateStones() {
-        generate(stones(), size(),
-                settings, STONES_COUNT,
+    private void generateAcorns() {
+        generate(acorns(), size(),
+                settings, ACORNS_COUNT,
                 player -> freeRandom(),
-                Stone::new);
+                Acorn::new);
     }
 
     private void generateBlueberries() {
@@ -223,10 +223,10 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                 blueberries().removeAt(head);
                 hero.event(new Event(BLUEBERRY));
             }
-            if (stones().contains(head) && !hero.isFlying()) {
-                stones().removeAt(head);
+            if (acorns().contains(head) && !hero.isFlying()) {
+                acorns().removeAt(head);
                 if (hero.isAlive()) {
-                    hero.event(new Event(STONE));
+                    hero.event(new Event(ACORN));
                 }
             }
             if (gold().contains(head)) {
@@ -281,14 +281,14 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                 && freeOfHero(pt);
     }
 
-    public boolean isFreeForStone(Point pt) {
+    public boolean isFreeForAcorn(Point pt) {
         return isFree(pt)
                 && !starts().contains(LEFT.change(pt));
     }
 
     public boolean isFreeOfObjects(Point pt) {
         return !(blueberries().contains(pt)
-                || stones().contains(pt)
+                || acorns().contains(pt)
                 || rocks().contains(pt)
                 || starts().contains(pt)
                 || flyingPills().contains(pt)
@@ -314,8 +314,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public boolean isStone(Point pt) {
-        return stones().contains(pt);
+    public boolean isAcorn(Point pt) {
+        return acorns().contains(pt);
     }
 
     @Override
@@ -357,8 +357,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     public void addToPoint(Point pt) {
         if (pt instanceof Blueberry) {
             addBlueberry(pt);
-        } else if (pt instanceof Stone) {
-            addStone(pt);
+        } else if (pt instanceof Acorn) {
+            addAcorn(pt);
         } else if (pt instanceof FlyingPill) {
             addFlyingPill(pt);
         } else if (pt instanceof FuryPill) {
@@ -378,9 +378,9 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public boolean addStone(Point pt) {
-        if (isFreeForStone(pt)) {
-            stones().add(new Stone(pt));
+    public boolean addAcorn(Point pt) {
+        if (isFreeForAcorn(pt)) {
+            acorns().add(new Acorn(pt));
             return true;
         }
         return false;
@@ -446,7 +446,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
 
                     addAll(rocks().all());
                     addAll(blueberries().all());
-                    addAll(stones().all());
+                    addAll(acorns().all());
                     addAll(flyingPills().all());
                     addAll(furyPills().all());
                     addAll(gold().all());
@@ -480,8 +480,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         if (blueberries().contains(pt)) {
             return new Blueberry(pt);
         }
-        if (stones().contains(pt)) {
-            return new Stone(pt);
+        if (acorns().contains(pt)) {
+            return new Acorn(pt);
         }
         if (flyingPills().contains(pt)) {
             return new FlyingPill(pt);
@@ -522,8 +522,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public Accessor<Stone> stones() {
-        return field.of(Stone.class);
+    public Accessor<Acorn> acorns() {
+        return field.of(Acorn.class);
     }
 
     @Override

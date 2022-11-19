@@ -32,7 +32,7 @@ import org.junit.Test;
 
 import java.util.LinkedList;
 
-import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.STONE_REDUCED;
+import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.ACORN_REDUCED;
 import static com.codenjoy.dojo.services.PointImpl.pt;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -99,11 +99,11 @@ public class HeroTest {
         assertEquals("Неактивный бородач изменился!", startBody, hero.body());
         assertTrue("Бородач мертв!", hero.isAlive());
 
-        // если камень
-        stonesAtAllPoints(true);
+        // если желудь
+        acornsAtAllPoints(true);
         hero.tick();
         hero.eat();
-        stonesAtAllPoints(false);
+        acornsAtAllPoints(false);
         assertEquals("Неактивный бородач изменился!", startBody, hero.body());
         assertTrue("Бородач мертв!", hero.isAlive());
 
@@ -127,35 +127,35 @@ public class HeroTest {
         assertTrue("Бородач не погиб от препятствия!", !hero.isAlive());
     }
 
-    // тест что короткий бородач погибает от камня
+    // короткий бородач погибает от желудя
     @Test
-    public void diedByStone() {
-        heroIncreasing(stoneReduced() - 1);
-        stonesAtAllPoints(true);// впереди камень
+    public void diedByAcorn() {
+        heroIncreasing(acornReduced() - 1);
+        acornsAtAllPoints(true);// впереди желудь
         hero.tick();
         hero.eat();
-        stonesAtAllPoints(false);
-        assertTrue("Маленький бородач не погиб от камня!", !hero.isAlive());
+        acornsAtAllPoints(false);
+        assertTrue("Маленький бородач не погиб от желудя!", !hero.isAlive());
     }
 
-    // тест что большой бородач уменьшается от камня, но не погибает
+    // большой бородач уменьшается от желудя, но не погибает
     @Test
-    public void reduceByStone() {
-        heroIncreasing(stoneReduced());
+    public void reduceByAcorn() {
+        heroIncreasing(acornReduced());
         int before = hero.size();
-        stonesAtAllPoints(true);// впереди камень
+        acornsAtAllPoints(true);// впереди желудь
         hero.tick();
         hero.eat();
-        stonesAtAllPoints(false);
-        assertTrue("Большой бородач погиб от камня!", hero.isAlive());
+        acornsAtAllPoints(false);
+        assertTrue("Большой бородач погиб от желудя!", hero.isAlive());
         assertEquals("Бородач не укоротился на предполагаемую длину!",
-                before - stoneReduced(), hero.size());
+                before - acornReduced(), hero.size());
         hero.tick();
         hero.eat();
     }
 
-    private Integer stoneReduced() {
-        return settings.integer(STONE_REDUCED);
+    private Integer acornReduced() {
+        return settings.integer(ACORN_REDUCED);
     }
 
     // бородач может откусить себе хвост
@@ -177,37 +177,39 @@ public class HeroTest {
         assertEquals("Укусив свою бороду, бородач не укоротился!", 4, hero.size());
     }
 
-    // если бородач съела камень, камень внутри неё
-    // и она может вернуть его на поле
+    // если бородач съел желудь, желудь внутри него
+    // и он может вернуть его на поле )
     @Test
-    public void eatStone() {
+    public void eatAcorn() {
         int additionLength = 4;
-        int stonesCount = 0;
+        int acorns = 0;
         for (int i = 0; i < 4; i++) {
             heroIncreasing(additionLength);
-            stonesAtAllPoints(true);
+            acornsAtAllPoints(true);
             hero.tick();
             hero.eat();
-            stonesAtAllPoints(false);
+            acornsAtAllPoints(false);
             hero.tick();
             hero.eat();
             assertTrue("Бородач погиб!", hero.isAlive());
-            assertEquals("Съев камень, он не появился внутри бородача!", ++stonesCount, hero.stonesCount());
+            assertEquals("Съев желудь, он не появился внутри бородача!", ++acorns, hero.acornsCount());
         }
-        // возврат камней
+
+        // возврат желудей
         // невозможно поставить
-        canSetStone(false);
+        canSetAcorn(false);
         for (int i = 0; i < 4; i++) {
             hero.act();
             assertTrue("Бородач погиб!", hero.isAlive());
-            assertEquals("Количество камней в бородаче уменьшилось!", stonesCount, hero.stonesCount());
+            assertEquals("Количество желудей в бородаче уменьшилось!", acorns, hero.acornsCount());
         }
+
         // возможно поставить
-        canSetStone(true);
+        canSetAcorn(true);
         for (int i = 0; i < 4; i++) {
             hero.act();
             assertTrue("Бородач погиб!", hero.isAlive());
-            assertEquals("Количество камней в бородаче не уменьшилось!", --stonesCount, hero.stonesCount());
+            assertEquals("Количество желудей в бородаче не уменьшилось!", --acorns, hero.acornsCount());
         }
     }
 
@@ -259,16 +261,16 @@ public class HeroTest {
         when(game.isGold(any(Point.class))).thenReturn(enable);// впереди золото
     }
 
-    private void stonesAtAllPoints(boolean enable) {
-        when(game.isStone(any(Point.class))).thenReturn(enable);// впереди камень
+    private void acornsAtAllPoints(boolean enable) {
+        when(game.isAcorn(any(Point.class))).thenReturn(enable);// впереди желудь
     }
 
     private void rocksAtAllPoints(boolean enable) {
         when(game.isBarrier(any(Point.class))).thenReturn(enable);// впереди стена
     }
 
-    // установка камней
-    private void canSetStone(boolean enable) {
-        when(game.addStone(any(Point.class))).thenReturn(enable);
+    // установка желудей
+    private void canSetAcorn(boolean enable) {
+        when(game.addAcorn(any(Point.class))).thenReturn(enable);
     }
 }
