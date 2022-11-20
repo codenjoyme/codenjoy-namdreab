@@ -32,12 +32,14 @@ import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.field.AbstractLevel;
 import com.codenjoy.dojo.services.field.PointField;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 import static com.codenjoy.dojo.games.namdreab.Element.*;
 import static com.codenjoy.dojo.services.Direction.*;
 import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toList;
 
 public class Level extends AbstractLevel {
 
@@ -47,7 +49,13 @@ public class Level extends AbstractLevel {
         super(map);
     }
 
-    public Hero hero(Field field) {
+    public List<Hero> heroes() {
+        return Arrays.stream(new Hero[] { hero(), enemy() })
+                .filter(Objects::nonNull)
+                .collect(toList());
+    }
+
+    public Hero hero() {
         Point point = find(identity(),
                 HEAD_DOWN,
                 HEAD_UP,
@@ -64,13 +72,12 @@ public class Level extends AbstractLevel {
             return null;
         }
 
-        return parseHero(point, field);
+        return parseHero(point);
     }
 
-    private Hero parseHero(Point head, Field field) {
+    private Hero parseHero(Point head) {
         Direction direction = headDirection(head);
         Hero hero = new Hero(direction.inverted());
-        hero.init(field);
 
         Element headElement = elementAt(head);
         if (ElementUtils.isFly(headElement)) {
@@ -134,7 +141,7 @@ public class Level extends AbstractLevel {
         }
     }
 
-    public Hero enemy(Field field) {
+    public Hero enemy() {
         Point point = find(identity(),
                 ENEMY_HEAD_DOWN,
                 ENEMY_HEAD_UP,
@@ -152,7 +159,7 @@ public class Level extends AbstractLevel {
             return null;
         }
 
-        return parseHero(point, field);
+        return parseHero(point);
     }
 
     public List<Blueberry> blueberries() {

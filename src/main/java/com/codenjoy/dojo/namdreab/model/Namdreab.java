@@ -34,6 +34,7 @@ import com.codenjoy.dojo.services.field.Generator;
 import com.codenjoy.dojo.services.field.PointField;
 import com.codenjoy.dojo.services.printer.BoardReader;
 import com.codenjoy.dojo.services.round.RoundField;
+import com.codenjoy.dojo.utils.whatsnext.WhatsNextUtils;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -470,6 +471,12 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                 });
             }
         };
+    }
+
+    @Override
+    public List<Player> load(String board, Function<Hero, Player> player) {
+        level = new Level(board);
+        return WhatsNextUtils.load(this, level.heroes(), player);
     }
 
     private void fail(String message) {

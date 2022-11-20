@@ -67,7 +67,8 @@ public class AISolverTest {
 
         Namdreab game = new Namdreab(dice, level, settings);
 
-        Hero hero = level.hero(game);
+        Hero hero = level.hero();
+        hero.init(game);
         EventListener listener = mock(EventListener.class);
         Player player = new Player(listener, settings);
 

@@ -23,12 +23,8 @@ package com.codenjoy.dojo.namdreab.model;
  */
 
 
-import com.codenjoy.dojo.namdreab.TestGameSettings;
 import com.codenjoy.dojo.namdreab.model.items.*;
-import com.codenjoy.dojo.namdreab.services.GameSettings;
-import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.Point;
-import com.codenjoy.dojo.services.dice.MockDice;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -37,36 +33,17 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static com.codenjoy.dojo.services.PointImpl.pt;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-
 
 @RunWith(Parameterized.class)
-public class BoardAddObjectsTest {
-
-    private Namdreab game;
+public class BoardAddObjectsTest extends AbstractGameTest {
 
     private Point addition;
     boolean add;
-    private MockDice dice;
 
     public BoardAddObjectsTest(Point addition, boolean add) {
         this.addition = addition;
         this.add = add;
-    }
-
-    private void givenFl(String board) {
-        Level level = new Level(board);
-        dice = new MockDice();
-        GameSettings settings = new TestGameSettings();
-        game = new Namdreab(dice, level, settings);
-        Hero hero = level.hero(game);
-        EventListener listener = mock(EventListener.class);
-        Player player = new Player(listener, settings);
-        player.setHero(hero);
-        game.newGame(player);
-        hero.setActive(true);
     }
 
     @Parameterized.Parameters
@@ -133,26 +110,26 @@ public class BoardAddObjectsTest {
                 "☼ $●  ☼" +
                 "☼☼☼☼☼☼☼");
         int before = 1;
-        Point object = game.getAt(addition);
-        game.addToPoint(addition);
-        game.tick();
+        Point object = field().getAt(addition);
+        field().addToPoint(addition);
+        field().tick();
         int objectsAfter = 0;
         String objType = addition.getClass().toString().replaceAll(".*\\.", "");
         switch (objType) {
             case "Blueberry":
-                objectsAfter = game.blueberries().size();
+                objectsAfter = field().blueberries().size();
                 break;
             case "Acorn":
-                objectsAfter = game.acorns().size();
+                objectsAfter = field().acorns().size();
                 break;
             case "DeathCap":
-                objectsAfter = game.deathCaps().size();
+                objectsAfter = field().deathCaps().size();
                 break;
             case "FuryPill":
-                objectsAfter = game.furyPills().size();
+                objectsAfter = field().furyPills().size();
                 break;
             case "Gold":
-                objectsAfter = game.gold().size();
+                objectsAfter = field().gold().size();
                 break;
             default:
                 fail("Отсутствуют действия на объект типа " + objType);

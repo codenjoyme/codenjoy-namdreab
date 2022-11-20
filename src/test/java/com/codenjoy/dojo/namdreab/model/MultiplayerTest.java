@@ -23,252 +23,182 @@ package com.codenjoy.dojo.namdreab.model;
  */
 
 
-import com.codenjoy.dojo.namdreab.TestGameSettings;
-import com.codenjoy.dojo.namdreab.services.Event;
-import com.codenjoy.dojo.namdreab.services.GameSettings;
-import com.codenjoy.dojo.services.EventListener;
-import com.codenjoy.dojo.services.dice.MockDice;
-import com.codenjoy.dojo.services.printer.PrinterFactory;
-import com.codenjoy.dojo.services.printer.PrinterFactoryImpl;
-import com.codenjoy.dojo.utils.TestUtils;
-import com.codenjoy.dojo.utils.events.EventsListenersAssert;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
-
 import static com.codenjoy.dojo.services.round.RoundSettings.Keys.*;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
 
-public class MultiplayerTest {
-
-    private Namdreab game;
-    private MockDice dice;
-
-    private Hero hero;
-    private EventListener heroEvents;
-    private Player heroPlayer;
-
-    private Hero enemy;
-    private EventListener enemyEvents;
-    private Player enemyPlayer;
-
-    private PrinterFactory printer;
-    private EventsListenersAssert events;
-
-    private GameSettings settings;
-
-    @Before
-    public void setup() {
-        dice = new MockDice();
-        settings = new TestGameSettings()
-                .integer(ROUNDS_MIN_TICKS_FOR_WIN, 1);
-
-        printer = new PrinterFactoryImpl();
-        events = new EventsListenersAssert(() -> Arrays.asList(heroEvents, enemyEvents), Event.class);
-    }
-
-    @After
-    public void after() {
-        verifyAllEvents("");
-    }
-
-    public void verifyAllEvents(String expected) {
-        assertEquals(expected, events.getEvents());
-    }
-
-    private void givenFl(String board) {
-        Level level = new Level(board.replaceAll("\n", ""));
-
-        game = new Namdreab(dice, level, settings);
-
-        hero = level.hero(game);
-        hero.setActive(true);
-        heroEvents = mock(EventListener.class);
-        heroPlayer = new Player(heroEvents, settings);
-        heroPlayer.setHero(hero);
-        game.newGame(heroPlayer);
-
-        enemy = level.enemy(game);
-        enemy.setActive(true);
-        enemyEvents = mock(EventListener.class);
-        enemyPlayer = new Player(enemyEvents, settings);
-        enemyPlayer.setHero(enemy);
-        game.newGame(enemyPlayer);
-    }
+public class MultiplayerTest extends AbstractGameTest {
 
     // проверяем что соперник отображается на карте
     @Test
     public void shouldHeroWithEnemyOnField() {
-        givenFl("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ╘►  ☼" +
-                "☼     ☼" +
-                "☼ ×>  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ╘►  ☼\n" +
+                "☼     ☼\n" +
+                "☼ ×>  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ╘►  ☼" +
-                "☼     ☼" +
-                "☼ ×>  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ╘►  ☼\n" +
+                "☼     ☼\n" +
+                "☼ ×>  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ×>  ☼" +
-                "☼     ☼" +
-                "☼ ╘►  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ×>  ☼\n" +
+                "☼     ☼\n" +
+                "☼ ╘►  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
     }
 
     // спящие змеи
     @Test
     public void shouldSleepingHero_whenSetNotActive() {
-        givenFl("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ╘►  ☼" +
-                "☼     ☼" +
-                "☼ ×>  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ╘►  ☼\n" +
+                "☼     ☼\n" +
+                "☼ ×>  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
 
-        hero.setActive(false);
-        enemy.setActive(false);
+        hero(0).setActive(false);
+        hero(1).setActive(false);
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ~&  ☼" +
-                "☼     ☼" +
-                "☼ *ø  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ~&  ☼\n" +
+                "☼     ☼\n" +
+                "☼ *ø  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ *ø  ☼" +
-                "☼     ☼" +
-                "☼ ~&  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ *ø  ☼\n" +
+                "☼     ☼\n" +
+                "☼ ~&  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ~&  ☼" +
-                "☼     ☼" +
-                "☼ *ø  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ~&  ☼\n" +
+                "☼     ☼\n" +
+                "☼ *ø  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
     }
 
-    // если режим игры не rounds а multiple то змеи активны сразу
+    // если режим игры не rounds, а multiple, то змеи активны сразу
     @Test
     public void shouldNotSleepingHero_whenGameIsMultiplayer() {
         // given
-        settings.bool(ROUNDS_ENABLED, false);
+        settings().bool(ROUNDS_ENABLED, false);
 
-        givenFl("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ╘►  ☼" +
-                "☼     ☼" +
-                "☼ ×>  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ╘►  ☼\n" +
+                "☼     ☼\n" +
+                "☼ ×>  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
 
         // then
-        hero.setActive(true);
-        enemy.setActive(true);
+        hero(0).setActive(true);
+        hero(1).setActive(true);
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ╘►  ☼" +
-                "☼     ☼" +
-                "☼ ×>  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ╘►  ☼\n" +
+                "☼     ☼\n" +
+                "☼ ×>  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ×>  ☼" +
-                "☼     ☼" +
-                "☼ ╘►  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ×>  ☼\n" +
+                "☼     ☼\n" +
+                "☼ ╘►  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
 
         // when
-        game.tick();
+        tick();
 
         // then
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼  ╘► ☼" +
-                "☼     ☼" +
-                "☼  ×> ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼  ╘► ☼\n" +
+                "☼     ☼\n" +
+                "☼  ×> ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
     }
 
     // проверяем что обе змейки умирают, когда врезаются в равного соперника
     // и получаем оповещение о смерти
     @Test
     public void shouldDie_whenHeadCrashToOtherHero_bothDie() {
-        givenFl("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ╘►  ☼" +
-                "☼     ☼" +
-                "☼ ×>  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ╘►  ☼\n" +
+                "☼     ☼\n" +
+                "☼ ×>  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
 
-        hero.down();
-        enemy.up();
-        game.tick();
+        hero(0).down();
+        hero(1).up();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [DIE]\n");
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼  ╓  ☼" +
-                "☼  ☻  ☼" +
-                "☼  ¤  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼  ╓  ☼\n" +
+                "☼  ☻  ☼\n" +
+                "☼  ¤  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼  æ  ☼" +
-                "☼  ☺  ☼" +
-                "☼  ╙  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼  æ  ☼\n" +
+                "☼  ☺  ☼\n" +
+                "☼  ╙  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
     }
 
     // проверяем что меньшая змейка умирает, когда врезаются голова к голове
@@ -276,297 +206,297 @@ public class MultiplayerTest {
     // змейка перестаёт уменьшаться на следующий ход
     @Test
     public void shouldDie_whenHeadCrashToOtherHero_heroDie() {
-        givenFl("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼   ╘►☼" +
-                "☼     ☼" +
-                "☼ ×──>☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼   ╘►☼\n" +
+                "☼     ☼\n" +
+                "☼ ×──>☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼   ╘►☼" +
-                "☼     ☼" +
-                "☼ ×──>☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼   ╘►☼\n" +
+                "☼     ☼\n" +
+                "☼ ×──>☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼   ×>☼" +
-                "☼     ☼" +
-                "☼ ╘══►☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼   ×>☼\n" +
+                "☼     ☼\n" +
+                "☼ ╘══►☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
 
-        hero.down();
-        enemy.up();
-        game.tick();
+        hero(0).down();
+        hero(1).up();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [EAT[2], WIN]\n");
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼    ╓☼" +
-                "☼    ☻☼" +
-                "☼  ×─┘☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼    ╓☼\n" +
+                "☼    ☻☼\n" +
+                "☼  ×─┘☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼    æ☼" +
-                "☼    ☺☼" +
-                "☼  ╘═╝☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼    æ☼\n" +
+                "☼    ☺☼\n" +
+                "☼  ╘═╝☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼    ˄☼" +
-                "☼    ¤☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼    ˄☼\n" +
+                "☼    ¤☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼    ▲☼" +
-                "☼    ╙☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼    ▲☼\n" +
+                "☼    ╙☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼    ˄☼" +
-                "☼    ¤☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼    ˄☼\n" +
+                "☼    ¤☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
     }
 
     // проверяем что змейка умирает, когда врезается в тело другой змейки
     @Test
     public void shouldDie_whenBodyCrashToOtherHero_enemyDie() {
         // когда в игрока врезается противник
-        givenFl("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼╘═►  ☼" +
-                "☼ ×>  ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼╘═►  ☼\n" +
+                "☼ ×>  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼╘═►  ☼" +
-                "☼ ×>  ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼╘═►  ☼\n" +
+                "☼ ×>  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼×─>  ☼" +
-                "☼ ╘►  ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼×─>  ☼\n" +
+                "☼ ╘►  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
 
-        enemy.up();
-        game.tick();
+        hero(1).up();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ╘☺☻ ☼" +
-                "☼  ¤  ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ╘☺☻ ☼\n" +
+                "☼  ¤  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ×☻☺ ☼" +
-                "☼  ╙  ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ×☻☺ ☼\n" +
+                "☼  ╙  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [DIE]\n");
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
     }
 
     @Test
     public void shouldDie_whenBodyCrashToOtherHero_heroDie() {
         // такой же тест, но врезается игрок в противника
         // (последовательность героев в списке может оказывать значение на результат)
-        givenFl("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ╘►  ☼" +
-                "☼×─>  ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ╘►  ☼\n" +
+                "☼×─>  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ╘►  ☼" +
-                "☼×─>  ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ╘►  ☼\n" +
+                "☼×─>  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ×>  ☼" +
-                "☼╘═►  ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ×>  ☼\n" +
+                "☼╘═►  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
 
-        hero.down();
-        game.tick();
+        hero(0).down();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼  ╓  ☼" +
-                "☼ ×☻☺ ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼  ╓  ☼\n" +
+                "☼ ×☻☺ ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼  æ  ☼" +
-                "☼ ╘☺☻ ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼  æ  ☼\n" +
+                "☼ ╘☺☻ ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [DIE]\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
     }
 
     // проверяем что змейка умирает, когда врезается в хвост другой змейки
     @Test
     public void shouldDie_whenTailCrashToOtherHero_enemyDie() {
         // когда в игрока врезается противник
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼ ╘═►  ☼" +
-                "☼×─>   ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼ ╘═►  ☼\n" +
+                "☼×─>   ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼ ╘═►  ☼" +
-                "☼×─>   ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼ ╘═►  ☼\n" +
+                "☼×─>   ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼ ×─>  ☼" +
-                "☼╘═►   ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼ ×─>  ☼\n" +
+                "☼╘═►   ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        enemy.up();
-        game.tick();
+        hero(1).up();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [EAT[3], WIN]\n" +
                 "listener(1) => [DIE]\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  ☺═► ☼" +
-                "☼ ×┘   ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  ☺═► ☼\n" +
+                "☼ ×┘   ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  ☻─> ☼" +
-                "☼ ╘╝   ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  ☻─> ☼\n" +
+                "☼ ╘╝   ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼   ╘═►☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼   ╘═►☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼   ×─>☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼   ×─>☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents("");
     }
@@ -575,215 +505,215 @@ public class MultiplayerTest {
     @Test
     public void shouldDie_whenTailCrashToOtherHero_bothDie() {
         // когда в игрока врезается противник
-        givenFl("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼╘═►  ☼" +
-                "☼×─>  ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼╘═►  ☼\n" +
+                "☼×─>  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼╘═►  ☼" +
-                "☼×─>  ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼╘═►  ☼\n" +
+                "☼×─>  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼×─>  ☼" +
-                "☼╘═►  ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼×─>  ☼\n" +
+                "☼╘═►  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
 
-        enemy.up();
-        game.tick();
+        hero(1).up();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [DIE]\n");
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ╘☺☻ ☼" +
-                "☼ ×┘  ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ╘☺☻ ☼\n" +
+                "☼ ×┘  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ×☻☺ ☼" +
-                "☼ ╘╝  ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ×☻☺ ☼\n" +
+                "☼ ╘╝  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
     }
 
     // такой же тест, но врезается игрок в противника
     @Test
     public void shouldDie_whenTailCrashToOtherHero_heroDie() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╘═►   ☼" +
-                "☼ ×─>  ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╘═►   ☼\n" +
+                "☼ ×─>  ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╘═►   ☼" +
-                "☼ ×─>  ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╘═►   ☼\n" +
+                "☼ ×─>  ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼×─>   ☼" +
-                "☼ ╘═►  ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼×─>   ☼\n" +
+                "☼ ╘═►  ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        hero.down();
-        game.tick();
+        hero(0).down();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼ ╘╗   ☼" +
-                "☼  ☻─> ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼ ╘╗   ☼\n" +
+                "☼  ☻─> ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼ ×┐   ☼" +
-                "☼  ☺═► ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼ ×┐   ☼\n" +
+                "☼  ☺═► ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [EAT[3], WIN]\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼   ×─>☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼   ×─>☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼   ╘═►☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼   ╘═►☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
     }
 
     // а тут лобовое столкновение
     @Test
     public void shouldDie_whenTailCrashToOtherHero_bothDie2() {
-        givenFl("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼╘═►  ☼" +
-                "☼×─>  ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼╘═►  ☼\n" +
+                "☼×─>  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼╘═►  ☼" +
-                "☼×─>  ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼╘═►  ☼\n" +
+                "☼×─>  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼×─>  ☼" +
-                "☼╘═►  ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼×─>  ☼\n" +
+                "☼╘═►  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
 
-        hero.down();
-        game.tick();
+        hero(0).down();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [DIE]\n");
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ╘╗  ☼" +
-                "☼ ×☻☺ ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ╘╗  ☼\n" +
+                "☼ ×☻☺ ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ×┐  ☼" +
-                "☼ ╘☺☻ ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ×┐  ☼\n" +
+                "☼ ╘☺☻ ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
     }
 
     // TODO продолжить дальше улучшать
@@ -791,144 +721,144 @@ public class MultiplayerTest {
     // в полёте змейки не вредят друг-другу (летишь сам)
     @Test
     public void flyOverEnemy() {
-        givenFl("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼╘►©  ☼" +
-                "☼     ☼" +
-                "☼×>   ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼╘►©  ☼\n" +
+                "☼     ☼\n" +
+                "☼×>   ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [DEATH_CAP]\n");
 
-        hero.down();
-        enemy.up();
-        game.tick();
+        hero(0).down();
+        hero(1).up();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼  ╓  ☼" +
-                "☼  ♠  ☼" +
-                "☼  ¤  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼  ╓  ☼\n" +
+                "☼  ♠  ☼\n" +
+                "☼  ¤  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼  ˄  ☼" +
-                "☼  ╓  ☼" +
-                "☼  ♠  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼  ˄  ☼\n" +
+                "☼  ╓  ☼\n" +
+                "☼  ♠  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼  ˄  ☼" +
-                "☼  ¤  ☼" +
-                "☼     ☼" +
-                "☼  ╓  ☼" +
-                "☼  ♠  ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼  ˄  ☼\n" +
+                "☼  ¤  ☼\n" +
+                "☼     ☼\n" +
+                "☼  ╓  ☼\n" +
+                "☼  ♠  ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
     }
 
     // в полёте змейки не вредят друг-другу (летит враг)
     @Test
     public void flyOverHero() {
-        givenFl("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼╘►   ☼" +
-                "☼     ☼" +
-                "☼×>©  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼╘►   ☼\n" +
+                "☼     ☼\n" +
+                "☼×>©  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(1) => [DEATH_CAP]\n");
 
-        hero.down();
-        enemy.up();
-        game.tick();
+        hero(0).down();
+        hero(1).up();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼  ╓  ☼" +
-                "☼  ♦  ☼" +
-                "☼  ¤  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼  ╓  ☼\n" +
+                "☼  ♦  ☼\n" +
+                "☼  ¤  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼  ♦  ☼" +
-                "☼  ¤  ☼" +
-                "☼  ▼  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼  ♦  ☼\n" +
+                "☼  ¤  ☼\n" +
+                "☼  ▼  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼  ♦  ☼" +
-                "☼  ¤  ☼" +
-                "☼     ☼" +
-                "☼  ╓  ☼" +
-                "☼  ▼  ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼  ♦  ☼\n" +
+                "☼  ¤  ☼\n" +
+                "☼     ☼\n" +
+                "☼  ╓  ☼\n" +
+                "☼  ▼  ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
     }
 
     // в случае ярости, змея может съесть другую
     @Test
     public void eatEnemy() {
-        givenFl("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ╘►® ☼" +
-                "☼     ☼" +
-                "☼ ×>○○☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ╘►® ☼\n" +
+                "☼     ☼\n" +
+                "☼ ×>○○☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
 
-        game.tick();
-        game.tick();
+        tick();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [FURY]\n" +
                 "listener(1) => [BLUEBERRY, BLUEBERRY]\n");
 
-        hero.down();
-        enemy.up();
-        game.tick();
+        hero(0).down();
+        hero(1).up();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼    ╓☼" +
-                "☼    ☺☼" +
-                "☼  ×─┘☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼    ╓☼\n" +
+                "☼    ☺☼\n" +
+                "☼  ×─┘☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
         verifyAllEvents(
                 "listener(0) => [EAT[4], WIN]\n" +
                 "listener(1) => [DIE]\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼    ╓☼" +
-                "☼    ♥☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼    ╓☼\n" +
+                "☼    ♥☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
         verifyAllEvents("");
     }
@@ -937,150 +867,136 @@ public class MultiplayerTest {
     @Test
     public void eatEnemyTail() {
         // когда в игрока врезается противник
-        givenFl("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼╘►○○ ☼" +
-                "☼     ☼" +
-                "☼×>®  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼╘►○○ ☼\n" +
+                "☼     ☼\n" +
+                "☼×>®  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
         verifyAllEvents(
                 "listener(0) => [BLUEBERRY]\n" +
                 "listener(1) => [FURY]\n");
 
-        enemy.up();
-        game.tick();
+        hero(1).up();
+        tick();
         verifyAllEvents(
                 "listener(0) => [BLUEBERRY]\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼  ♣╘►☼" +
-                "☼  ¤  ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼  ♣╘►☼\n" +
+                "☼  ¤  ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
         // такой же тест, но врезается игрок в противника
         // (последовательность героев в списке может оказывать значение на результат)
-        givenFl("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼╘►®  ☼" +
-                "☼     ☼" +
-                "☼×>○  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼╘►®  ☼\n" +
+                "☼     ☼\n" +
+                "☼×>○  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [FURY]\n" +
                 "listener(1) => [BLUEBERRY]\n");
 
-        hero.down();
-        game.tick();
-        game.tick();
+        hero(0).down();
+        tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼  ╓  ☼" +
-                "☼  ♥×>☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  ╓  ☼\n" +
+                "☼  ♥×>☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
         verifyAllEvents(
                 "listener(0) => [EAT[1]]\n");
     }
 
-    private void assertH(String expected) {
-        assertBoard(expected, heroPlayer);
-    }
-
-    private void assertBoard(String expected, Player player) {
-        assertEquals(TestUtils.injectN(expected.replaceAll("\n", "")),
-                printer.getPrinter(game.reader(), player).print());
-    }
-
-    private void assertE(String expected) {
-        assertBoard(expected, enemyPlayer);
-    }
-
     // если твоя змейка осталась на поле сама, а все противники погибли - тебе WIN
     @Test
     public void shouldWin_whenOneOnBoardAfterEnemyDie() {
-        givenFl("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼╘►   ☼" +
-                "☼     ☼" +
-                "☼  ×> ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼╘►   ☼\n" +
+                "☼     ☼\n" +
+                "☼  ×> ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ╘►  ☼" +
-                "☼     ☼" +
-                "☼   ×>☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ╘►  ☼\n" +
+                "☼     ☼\n" +
+                "☼   ×>☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ×>  ☼" +
-                "☼     ☼" +
-                "☼   ╘►☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ×>  ☼\n" +
+                "☼     ☼\n" +
+                "☼   ╘►☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [WIN]\n" +
                 "listener(1) => [DIE]\n");
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼  ╘► ☼" +
-                "☼     ☼" +
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼  ╘► ☼\n" +
+                "☼     ☼\n" +
                 "☼    ×☺" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼  ×> ☼" +
-                "☼     ☼" +
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼  ×> ☼\n" +
+                "☼     ☼\n" +
                 "☼    ╘☻" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        verifyNoMoreInteractions(enemyEvents);
-        verifyNoMoreInteractions(heroEvents);
+        verifyAllEvents("");
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼   ╘►☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼   ╘►☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼   ×>☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼   ×>☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
 
     }
 
@@ -1088,491 +1004,484 @@ public class MultiplayerTest {
     // как противник удалился (не через die) - тебе WIN
     @Test
     public void shouldWin_whenOneOnBoardAfterEnemyLeaveRoom() {
-        givenFl("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼╘►   ☼" +
-                "☼     ☼" +
-                "☼×>   ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼╘►   ☼\n" +
+                "☼     ☼\n" +
+                "☼×>   ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ╘►  ☼" +
-                "☼     ☼" +
-                "☼ ×>  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ╘►  ☼\n" +
+                "☼     ☼\n" +
+                "☼ ×>  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ×>  ☼" +
-                "☼     ☼" +
-                "☼ ╘►  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ×>  ☼\n" +
+                "☼     ☼\n" +
+                "☼ ╘►  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
 
-        game.remove(heroPlayer);
-        game.tick();
+        remove(0);
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [WIN]\n");
 
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼  ×> ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  ×> ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼  ╘► ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼  ╘► ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        verifyNoMoreInteractions(enemyEvents);
-        verifyNoMoreInteractions(heroEvents);
+        verifyAllEvents("");
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼   ×>☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼   ×>☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼     ☼" +
-                "☼   ╘►☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼     ☼\n" +
+                "☼   ╘►☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 1);
     }
 
     // змейка не стартует сразу если стоит таймер
     @Test
     public void shouldWaitTillTimer_thenStart() {
-        settings.integer(ROUNDS_TIME_BEFORE_START, 4);
+        settings().integer(ROUNDS_TIME_BEFORE_START, 4);
 
-        givenFl("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼╘►   ☼" +
-                "☼     ☼" +
-                "☼×>   ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼╘►   ☼\n" +
+                "☼     ☼\n" +
+                "☼×>   ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n");
 
         // ждем 4 тика
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [[...3...]]\n" +
                 "listener(1) => [[...3...]]\n");
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [[..2..]]\n" +
                 "listener(1) => [[..2..]]\n");
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [[.1.]]\n" +
                 "listener(1) => [[.1.]]\n");
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [START, [Round 1]]\n" +
                 "listener(1) => [START, [Round 1]]\n");
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼╘►   ☼" +
-                "☼     ☼" +
-                "☼×>   ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼╘►   ☼\n" +
+                "☼     ☼\n" +
+                "☼×>   ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼ ╘►  ☼" +
-                "☼     ☼" +
-                "☼ ×>  ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼ ╘►  ☼\n" +
+                "☼     ☼\n" +
+                "☼ ×>  ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼  ╘► ☼" +
-                "☼     ☼" +
-                "☼  ×> ☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼  ╘► ☼\n" +
+                "☼     ☼\n" +
+                "☼  ×> ☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼" +
-                "☼     ☼" +
-                "☼   ╘►☼" +
-                "☼     ☼" +
-                "☼   ×>☼" +
-                "☼     ☼" +
-                "☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼\n" +
+                "☼     ☼\n" +
+                "☼   ╘►☼\n" +
+                "☼     ☼\n" +
+                "☼   ×>☼\n" +
+                "☼     ☼\n" +
+                "☼☼☼☼☼☼☼\n", 0);
     }
 
     // если одна змейка погибает, стартует новый раунд
     @Test
     public void shouldStartNewGame_whenGameOver() {
-        settings.integer(ROUNDS_TIME_BEFORE_START, 1)
+        settings().integer(ROUNDS_TIME_BEFORE_START, 1)
                 .integer(ROUNDS_PER_MATCH, 3);
 
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼☼     ☼" +
-                "☼☼     ☼" +
-                "☼#   ╘►☼" +
-                "☼#×>   ☼" +
-                "☼☼     ☼" +
-                "☼☼     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼#   ╘►☼\n" +
+                "☼#×>   ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        assertEquals(true, heroPlayer.isAlive());
-        assertEquals(true, heroPlayer.isActive());
+        assertEquals(true, player(0).isAlive());
+        assertEquals(true, player(0).isActive());
 
-        assertEquals(true, enemyPlayer.isAlive());
-        assertEquals(true, enemyPlayer.isActive());
+        assertEquals(true, player(1).isAlive());
+        assertEquals(true, player(1).isActive());
 
         // ждем перехода на первый уровнь
-        game.tick();
+        tick();
 
-        assertEquals(true, heroPlayer.isAlive());
-        assertEquals(true, heroPlayer.isActive());
+        assertEquals(true, player(0).isAlive());
+        assertEquals(true, player(0).isActive());
 
-        assertEquals(true, enemyPlayer.isAlive());
-        assertEquals(true, enemyPlayer.isActive());
+        assertEquals(true, player(1).isAlive());
+        assertEquals(true, player(1).isActive());
 
         verifyAllEvents(
                 "listener(0) => [START, [Round 1]]\n" +
                 "listener(1) => [START, [Round 1]]\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼☼     ☼" +
-                "☼☼     ☼" +
-                "☼#   ╘►☼" +
-                "☼#×>   ☼" +
-                "☼☼     ☼" +
-                "☼☼     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼#   ╘►☼\n" +
+                "☼#×>   ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼☼     ☼" +
-                "☼☼     ☼" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
                 "☼#    ╘☻" +
-                "☼# ×>  ☼" +
-                "☼☼     ☼" +
-                "☼☼     ☼" +
-                "☼☼☼☼☼☼☼☼");
+                "☼# ×>  ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [WIN]\n");
-        verifyNoMoreInteractions(heroEvents, enemyEvents);
-        reset(heroEvents, enemyEvents);
 
-        assertEquals(false, heroPlayer.isAlive());
-        assertEquals(true, heroPlayer.isActive());
+        assertEquals(false, player(0).isAlive());
+        assertEquals(true, player(0).isActive());
 
-        assertEquals(true, enemyPlayer.isAlive());
-        assertEquals(true, enemyPlayer.isActive());
+        assertEquals(true, player(1).isAlive());
+        assertEquals(true, player(1).isActive());
 
-        dice.then(0); // стартовый спот для героя
-        game.newGame(heroPlayer); // это делает автоматом фреймворк потому что heroPlayer.!isAlive()
+        dice(0); // стартовый спот для героя
+        field().newGame(player(0)); // это делает автоматом фреймворк потому что player(0).!isAlive()
 
-        assertEquals(true, heroPlayer.isAlive());
-        assertEquals(false, heroPlayer.isActive());
+        assertEquals(true, player(0).isAlive());
+        assertEquals(false, player(0).isActive());
 
-        assertEquals(true, enemyPlayer.isAlive());
-        assertEquals(true, enemyPlayer.isActive());
+        assertEquals(true, player(1).isAlive());
+        assertEquals(true, player(1).isActive());
 
-        game.tick();
+        tick();
 
-        assertEquals(true, heroPlayer.isAlive());
-        assertEquals(false, heroPlayer.isActive());
+        assertEquals(true, player(0).isAlive());
+        assertEquals(false, player(0).isActive());
 
-        assertEquals(true, enemyPlayer.isAlive());
-        assertEquals(true, enemyPlayer.isActive());
+        assertEquals(true, player(1).isAlive());
+        assertEquals(true, player(1).isActive());
 
-        assertH("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼☼     ☼\n" +
                 "☼☼     ☼\n" +
                 "~&     ☼\n" +
                 "☼#  ×> ☼\n" +
                 "☼☼     ☼\n" +
                 "☼☼     ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 0);
 
         // последний победный тик героя!
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼☼     ☼\n" +
                 "☼☼     ☼\n" +
                 "~&     ☼\n" +
                 "*ø     ☼\n" +
                 "☼☼     ☼\n" +
                 "☼☼     ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 0);
 
         // ждем перехода на второй уровень
-        game.tick();
+        tick();
 
-        assertEquals(true, heroPlayer.isAlive());
-        assertEquals(true, heroPlayer.isActive());
+        assertEquals(true, player(0).isAlive());
+        assertEquals(true, player(0).isActive());
 
-        assertEquals(true, enemyPlayer.isAlive());
-        assertEquals(true, enemyPlayer.isActive());
+        assertEquals(true, player(1).isAlive());
+        assertEquals(true, player(1).isActive());
 
         verifyAllEvents(
                 "listener(0) => [START, [Round 2]]\n" +
                 "listener(1) => [START, [Round 2]]\n");
 
-        assertEquals(true, heroPlayer.isActive());
-        assertEquals(true, enemyPlayer.isActive());
+        assertEquals(true, player(0).isActive());
+        assertEquals(true, player(1).isActive());
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼☼     ☼" +
-                "☼☼     ☼" +
-                "╘►     ☼" +
-                "×>     ☼" +
-                "☼☼     ☼" +
-                "☼☼     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
+                "╘►     ☼\n" +
+                "×>     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        game.tick();
-        game.tick();
-        game.tick();
-        game.tick();
-        game.tick();
-        game.tick();
+        tick();
+        tick();
+        tick();
+        tick();
+        tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼☼     ☼" +
-                "☼☼     ☼" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
                 "☼#    ╘☻" +
                 "☼#    ×☺" +
-                "☼☼     ☼" +
-                "☼☼     ☼" +
-                "☼☼☼☼☼☼☼☼");
+                "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [DIE]\n");
-        verifyNoMoreInteractions(heroEvents, enemyEvents);
-        reset(heroEvents, enemyEvents);
 
-        assertEquals(false, heroPlayer.isAlive());
-        assertEquals(true, heroPlayer.isActive());
+        assertEquals(false, player(0).isAlive());
+        assertEquals(true, player(0).isActive());
 
-        assertEquals(false, enemyPlayer.isAlive());
-        assertEquals(true, enemyPlayer.isActive());
+        assertEquals(false, player(1).isAlive());
+        assertEquals(true, player(1).isActive());
 
-        game.newGame(heroPlayer);  // это делает автоматом фреймворк потому что heroPlayer.!isAlive()
-        game.newGame(enemyPlayer); // это делает автоматом фреймворк потому что enemyPlayer.!isAlive()
+        field().newGame(player(0));  // это делает автоматом фреймворк потому что player(0).!isAlive()
+        field().newGame(player(1)); // это делает автоматом фреймворк потому что player(1).!isAlive()
 
-        assertEquals(true, heroPlayer.isAlive());
-        assertEquals(false, heroPlayer.isActive());
+        assertEquals(true, player(0).isAlive());
+        assertEquals(false, player(0).isActive());
 
-        assertEquals(true, enemyPlayer.isAlive());
-        assertEquals(false, enemyPlayer.isActive());
+        assertEquals(true, player(1).isAlive());
+        assertEquals(false, player(1).isActive());
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼☼     ☼" +
-                "☼☼     ☼" +
-                "~&     ☼" +
-                "*ø     ☼" +
-                "☼☼     ☼" +
-                "☼☼     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
+                "~&     ☼\n" +
+                "*ø     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
         // последний тик победителя тут неуместен, все погибли
-        // game.tick();
+        // tick();
 
         // ждем перехода на третий уровень
-        game.tick();
+        tick();
 
-        assertEquals(true, heroPlayer.isAlive());
-        assertEquals(true, heroPlayer.isActive());
+        assertEquals(true, player(0).isAlive());
+        assertEquals(true, player(0).isActive());
 
-        assertEquals(true, enemyPlayer.isAlive());
-        assertEquals(true, enemyPlayer.isActive());
+        assertEquals(true, player(1).isAlive());
+        assertEquals(true, player(1).isActive());
 
         verifyAllEvents(
                 "listener(0) => [START, [Round 3]]\n" +
                 "listener(1) => [START, [Round 3]]\n");
 
-        assertEquals(true, heroPlayer.isActive());
-        assertEquals(true, enemyPlayer.isActive());
+        assertEquals(true, player(0).isActive());
+        assertEquals(true, player(1).isActive());
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼☼     ☼" +
-                "☼☼     ☼" +
-                "╘►     ☼" +
-                "×>     ☼" +
-                "☼☼     ☼" +
-                "☼☼     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
+                "╘►     ☼\n" +
+                "×>     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        game.tick();
-        game.tick();
-        game.tick();
-        game.tick();
-        game.tick();
+        tick();
+        tick();
+        tick();
+        tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼☼     ☼" +
-                "☼☼     ☼" +
-                "☼#   ╘►☼" +
-                "☼#   ×>☼" +
-                "☼☼     ☼" +
-                "☼☼     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼#   ╘►☼\n" +
+                "☼#   ×>☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertEquals(true, heroPlayer.isAlive());
-        assertEquals(true, heroPlayer.isActive());
+        assertEquals(true, player(0).isAlive());
+        assertEquals(true, player(0).isActive());
 
-        assertEquals(true, enemyPlayer.isAlive());
-        assertEquals(true, enemyPlayer.isActive());
+        assertEquals(true, player(1).isAlive());
+        assertEquals(true, player(1).isActive());
 
-        assertEquals(false, heroPlayer.shouldLeave());
-        assertEquals(false, enemyPlayer.shouldLeave());
+        assertEquals(false, player(0).shouldLeave());
+        assertEquals(false, player(1).shouldLeave());
 
-        game.tick();
+        tick();
 
-        assertEquals(true, heroPlayer.shouldLeave());
-        assertEquals(true, enemyPlayer.shouldLeave());
+        assertEquals(true, player(0).shouldLeave());
+        assertEquals(true, player(1).shouldLeave());
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼☼     ☼" +
-                "☼☼     ☼" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
                 "☼#    ╘☻" +
                 "☼#    ×☺" +
-                "☼☼     ☼" +
-                "☼☼     ☼" +
-                "☼☼☼☼☼☼☼☼");
+                "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [DIE]\n");
-        verifyNoMoreInteractions(heroEvents, enemyEvents);
-        reset(heroEvents, enemyEvents);
 
-        assertEquals(false, heroPlayer.isAlive());
-        assertEquals(true, heroPlayer.isActive());
+        assertEquals(false, player(0).isAlive());
+        assertEquals(true, player(0).isActive());
 
-        assertEquals(false, enemyPlayer.isAlive());
-        assertEquals(true, enemyPlayer.isActive());
+        assertEquals(false, player(1).isAlive());
+        assertEquals(true, player(1).isActive());
 
-        game.remove(heroPlayer);  // это делает автоматом фреймворк потому что heroPlayer.shouldLeave()
-        game.remove(enemyPlayer); // это делает автоматом фреймворк потому что enemyPlayer.shouldLeave()
+        field().remove(player(0));  // это делает автоматом фреймворк потому что player(0).shouldLeave()
+        field().remove(player(1)); // это делает автоматом фреймворк потому что player(1).shouldLeave()
 
     }
 
     // Лобовое столкновение змеек - одна под fury
     @Test
     public void shouldDie_whenHeadAttack() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╘═►   ☼" +
-                "☼    ® ☼" +
-                "☼    ˄ ☼" +
-                "☼    ¤ ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╘═►   ☼\n" +
+                "☼    ® ☼\n" +
+                "☼    ˄ ☼\n" +
+                "☼    ¤ ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╘═►   ☼" +
-                "☼    ® ☼" +
-                "☼    ˄ ☼" +
-                "☼    ¤ ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╘═►   ☼\n" +
+                "☼    ® ☼\n" +
+                "☼    ˄ ☼\n" +
+                "☼    ¤ ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼×─>   ☼" +
-                "☼    ® ☼" +
-                "☼    ▲ ☼" +
-                "☼    ╙ ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼×─>   ☼\n" +
+                "☼    ® ☼\n" +
+                "☼    ▲ ☼\n" +
+                "☼    ╙ ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
         verifyAllEvents("listener(1) => [FURY]\n");
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [EAT[3], WIN]\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  ╘═☻ ☼" +
-                "☼    ¤ ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  ╘═☻ ☼\n" +
+                "☼    ¤ ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  ×─☺ ☼" +
-                "☼    ╙ ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  ×─☺ ☼\n" +
+                "☼    ╙ ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼    ♣ ☼" +
-                "☼    ¤ ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼    ♣ ☼\n" +
+                "☼    ¤ ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼    ♥ ☼" +
-                "☼    ╙ ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼    ♥ ☼\n" +
+                "☼    ╙ ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents("");
     }
@@ -1581,208 +1490,208 @@ public class MultiplayerTest {
     // идея в том, чтоб под таблеткой ярости откусить конец хвоста, оставив только голову
     @Test
     public void shouldDie_whenEatAllTailOtherHero_with1Length() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╘═►   ☼" +
-                "☼   ®  ☼" +
-                "☼   ˄  ☼" +
-                "☼   ¤  ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╘═►   ☼\n" +
+                "☼   ®  ☼\n" +
+                "☼   ˄  ☼\n" +
+                "☼   ¤  ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╘═►   ☼" +
-                "☼   ®  ☼" +
-                "☼   ˄  ☼" +
-                "☼   ¤  ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╘═►   ☼\n" +
+                "☼   ®  ☼\n" +
+                "☼   ˄  ☼\n" +
+                "☼   ¤  ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼×─>   ☼" +
-                "☼   ®  ☼" +
-                "☼   ▲  ☼" +
-                "☼   ╙  ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼×─>   ☼\n" +
+                "☼   ®  ☼\n" +
+                "☼   ▲  ☼\n" +
+                "☼   ╙  ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
         verifyAllEvents(
                 "listener(1) => [FURY]\n");
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [EAT[3], WIN]\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  ╘♣☻ ☼" +
-                "☼   ¤  ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  ╘♣☻ ☼\n" +
+                "☼   ¤  ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  ×♥☺ ☼" +
-                "☼   ╙  ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  ×♥☺ ☼\n" +
+                "☼   ╙  ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼   ♣  ☼" +
-                "☼   ¤  ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼   ♣  ☼\n" +
+                "☼   ¤  ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼   ♥  ☼" +
-                "☼   ╙  ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼   ♥  ☼\n" +
+                "☼   ╙  ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents("");
     }
 
     @Test
     public void shouldCutTail_whenFury() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╘═►   ☼" +
-                "☼  ®   ☼" +
-                "☼  ˄   ☼" +
-                "☼  ¤   ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╘═►   ☼\n" +
+                "☼  ®   ☼\n" +
+                "☼  ˄   ☼\n" +
+                "☼  ¤   ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╘═►   ☼" +
-                "☼  ®   ☼" +
-                "☼  ˄   ☼" +
-                "☼  ¤   ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╘═►   ☼\n" +
+                "☼  ®   ☼\n" +
+                "☼  ˄   ☼\n" +
+                "☼  ¤   ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼×─>   ☼" +
-                "☼  ®   ☼" +
-                "☼  ▲   ☼" +
-                "☼  ╙   ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼×─>   ☼\n" +
+                "☼  ®   ☼\n" +
+                "☼  ▲   ☼\n" +
+                "☼  ╙   ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(1) => [FURY]\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼ ╘═►  ☼" +
-                "☼  ♣   ☼" +
-                "☼  ¤   ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼ ╘═►  ☼\n" +
+                "☼  ♣   ☼\n" +
+                "☼  ¤   ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼ ×─>  ☼" +
-                "☼  ♥   ☼" +
-                "☼  ╙   ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼ ×─>  ☼\n" +
+                "☼  ♥   ☼\n" +
+                "☼  ╙   ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(1) => [EAT[1]]\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  ♣╘► ☼" +
-                "☼  ¤   ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  ♣╘► ☼\n" +
+                "☼  ¤   ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  ♥×> ☼" +
-                "☼  ╙   ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  ♥×> ☼\n" +
+                "☼  ╙   ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼  ♣   ☼" +
-                "☼  ¤ ╘►☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼  ♣   ☼\n" +
+                "☼  ¤ ╘►☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼  ♥   ☼" +
-                "☼  ╙ ×>☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼  ♥   ☼\n" +
+                "☼  ╙ ×>☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents("");
     }
 
     @Test
     public void shouldCutLongTail_whenFury() {
-        givenFl("☼☼☼☼☼☼☼☼☼☼" +
-                "☼╔══════╗☼" +
-                "☼║╔════╕║☼" +
-                "☼║╚═════╝☼" +
-                "☼╚═══►   ☼" +
-                "☼    ®   ☼" +
-                "☼    ˄   ☼" +
-                "☼    ¤   ☼" +
-                "☼        ☼" +
-                "☼☼☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼☼☼\n" +
+                "☼╔══════╗☼\n" +
+                "☼║╔════╕║☼\n" +
+                "☼║╚═════╝☼\n" +
+                "☼╚═══►   ☼\n" +
+                "☼    ®   ☼\n" +
+                "☼    ˄   ☼\n" +
+                "☼    ¤   ☼\n" +
+                "☼        ☼\n" +
+                "☼☼☼☼☼☼☼☼☼☼\n");
 
-        assertH("☼☼☼☼☼☼☼☼☼☼" +
-                "☼╔══════╗☼" +
-                "☼║╔════╕║☼" +
-                "☼║╚═════╝☼" +
-                "☼╚═══►   ☼" +
-                "☼    ®   ☼" +
-                "☼    ˄   ☼" +
-                "☼    ¤   ☼" +
-                "☼        ☼" +
-                "☼☼☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼☼☼\n" +
+                "☼╔══════╗☼\n" +
+                "☼║╔════╕║☼\n" +
+                "☼║╚═════╝☼\n" +
+                "☼╚═══►   ☼\n" +
+                "☼    ®   ☼\n" +
+                "☼    ˄   ☼\n" +
+                "☼    ¤   ☼\n" +
+                "☼        ☼\n" +
+                "☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼┌──────┐☼\n" +
                 "☼│┌────ö│☼\n" +
                 "☼│└─────┘☼\n" +
@@ -1791,14 +1700,14 @@ public class MultiplayerTest {
                 "☼    ▲   ☼\n" +
                 "☼    ╙   ☼\n" +
                 "☼        ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(1) => [FURY]\n");
 
-        assertH("☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╔══════╗☼\n" +
                 "☼║╔═══╕ ║☼\n" +
                 "☼║╚═════╝☼\n" +
@@ -1807,9 +1716,9 @@ public class MultiplayerTest {
                 "☼    ¤   ☼\n" +
                 "☼        ☼\n" +
                 "☼        ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼┌──────┐☼\n" +
                 "☼│┌───ö │☼\n" +
                 "☼│└─────┘☼\n" +
@@ -1818,15 +1727,15 @@ public class MultiplayerTest {
                 "☼    ╙   ☼\n" +
                 "☼        ☼\n" +
                 "☼        ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼\n", 1);
 
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(1) => [EAT[27]]\n");
 
-        assertH("☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼        ☼\n" +
                 "☼        ☼\n" +
                 "☼        ☼\n" +
@@ -1835,9 +1744,9 @@ public class MultiplayerTest {
                 "☼        ☼\n" +
                 "☼        ☼\n" +
                 "☼        ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼        ☼\n" +
                 "☼        ☼\n" +
                 "☼        ☼\n" +
@@ -1846,11 +1755,11 @@ public class MultiplayerTest {
                 "☼        ☼\n" +
                 "☼        ☼\n" +
                 "☼        ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼        ☼\n" +
                 "☼        ☼\n" +
                 "☼    ♣   ☼\n" +
@@ -1859,9 +1768,9 @@ public class MultiplayerTest {
                 "☼        ☼\n" +
                 "☼        ☼\n" +
                 "☼        ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼        ☼\n" +
                 "☼        ☼\n" +
                 "☼    ♥   ☼\n" +
@@ -1870,7 +1779,7 @@ public class MultiplayerTest {
                 "☼        ☼\n" +
                 "☼        ☼\n" +
                 "☼        ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents("");
     }
@@ -1879,65 +1788,65 @@ public class MultiplayerTest {
     // при этом на месте героя появится много ягод черники :)
     @Test
     public void shouldDieAndLeaveBlueberries_whenAct0() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼╔═══╕ ☼" +
-                "☼║     ☼" +
-                "☼╚═══╗ ☼" +
-                "☼  ©◄╝ ☼" +
-                "☼      ☼" +
-                "☼×>    ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼╔═══╕ ☼\n" +
+                "☼║     ☼\n" +
+                "☼╚═══╗ ☼\n" +
+                "☼  ©◄╝ ☼\n" +
+                "☼      ☼\n" +
+                "☼×>    ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
         verifyAllEvents(
                 "listener(0) => [DEATH_CAP]\n");
 
-        hero.up();
-        game.tick();
-        game.tick();
+        hero(0).up();
+        tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼╔╕    ☼" +
-                "☼║ ♠   ☼" +
-                "☼╚═║═╗ ☼" +
-                "☼  ╚═╝ ☼" +
-                "☼      ☼" +
-                "☼   ×> ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼╔╕    ☼\n" +
+                "☼║ ♠   ☼\n" +
+                "☼╚═║═╗ ☼\n" +
+                "☼  ╚═╝ ☼\n" +
+                "☼      ☼\n" +
+                "☼   ×> ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼┌ö    ☼" +
-                "☼│ ♦   ☼" +
-                "☼└─│─┐ ☼" +
-                "☼  └─┘ ☼" +
-                "☼      ☼" +
-                "☼   ╘► ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼┌ö    ☼\n" +
+                "☼│ ♦   ☼\n" +
+                "☼└─│─┐ ☼\n" +
+                "☼  └─┘ ☼\n" +
+                "☼      ☼\n" +
+                "☼   ╘► ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        hero.act(0);
-        game.tick();
+        hero(0).act(0);
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [WIN]\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼○○    ☼" +
-                "☼○ ○   ☼" +
-                "☼○○○○○ ☼" +
-                "☼  ○○○ ☼" +
-                "☼      ☼" +
-                "☼    ×>☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼○○    ☼\n" +
+                "☼○ ○   ☼\n" +
+                "☼○○○○○ ☼\n" +
+                "☼  ○○○ ☼\n" +
+                "☼      ☼\n" +
+                "☼    ×>☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼○○    ☼" +
-                "☼○ ○   ☼" +
-                "☼○○○○○ ☼" +
-                "☼  ○○○ ☼" +
-                "☼      ☼" +
-                "☼    ╘►☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼○○    ☼\n" +
+                "☼○ ○   ☼\n" +
+                "☼○○○○○ ☼\n" +
+                "☼  ○○○ ☼\n" +
+                "☼      ☼\n" +
+                "☼    ╘►☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents("");
     }
@@ -1945,239 +1854,239 @@ public class MultiplayerTest {
     // Кейз когда змейки сталкиваются головами
     @Test
     public void shouldCase6() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼┌─┐   ☼" +
-                "☼│ ¤   ☼" +
-                "☼│     ☼" +
-                "☼˅     ☼" +
-                "☼◄══╕  ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼┌─┐   ☼\n" +
+                "☼│ ¤   ☼\n" +
+                "☼│     ☼\n" +
+                "☼˅     ☼\n" +
+                "☼◄══╕  ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        enemy.right();
-        hero.up();
-        game.tick();
+        hero(1).right();
+        hero(0).up();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [EAT[4], WIN]\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼┌─ö   ☼" +
-                "☼│     ☼" +
-                "☼│     ☼" +
-                "☼☻>    ☼" +
-                "☼╚═╕   ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼┌─ö   ☼\n" +
+                "☼│     ☼\n" +
+                "☼│     ☼\n" +
+                "☼☻>    ☼\n" +
+                "☼╚═╕   ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼╔═╕   ☼" +
-                "☼║     ☼" +
-                "☼║     ☼" +
-                "☼☺►    ☼" +
-                "☼└─ö   ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼╔═╕   ☼\n" +
+                "☼║     ☼\n" +
+                "☼║     ☼\n" +
+                "☼☺►    ☼\n" +
+                "☼└─ö   ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼×─>   ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼×─>   ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╘═►   ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╘═►   ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents("");
     }
 
     @Test
     public void shouldCase6_2() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼╔═╗   ☼" +
-                "☼║ ╙   ☼" +
-                "☼║     ☼" +
-                "☼▼     ☼" +
-                "☼<──ö  ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼╔═╗   ☼\n" +
+                "☼║ ╙   ☼\n" +
+                "☼║     ☼\n" +
+                "☼▼     ☼\n" +
+                "☼<──ö  ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        hero.right();
-        enemy.up();
-        game.tick();
+        hero(0).right();
+        hero(1).up();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [EAT[4], WIN]\n" +
                 "listener(1) => [DIE]\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼╔═╕   ☼" +
-                "☼║     ☼" +
-                "☼║     ☼" +
-                "☼☺►    ☼" +
-                "☼└─ö   ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼╔═╕   ☼\n" +
+                "☼║     ☼\n" +
+                "☼║     ☼\n" +
+                "☼☺►    ☼\n" +
+                "☼└─ö   ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼┌─ö   ☼" +
-                "☼│     ☼" +
-                "☼│     ☼" +
-                "☼☻>    ☼" +
-                "☼╚═╕   ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼┌─ö   ☼\n" +
+                "☼│     ☼\n" +
+                "☼│     ☼\n" +
+                "☼☻>    ☼\n" +
+                "☼╚═╕   ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╘═►   ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╘═►   ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼×─>   ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼×─>   ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents("");
     }
 
     @Test
     public void shouldCase6_3() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼│     ☼" +
-                "☼│     ☼" +
-                "☼˅     ☼" +
-                "☼◄════╕☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼│     ☼\n" +
+                "☼│     ☼\n" +
+                "☼˅     ☼\n" +
+                "☼◄════╕☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        enemy.right();
-        hero.up();
-        game.tick();
+        hero(1).right();
+        hero(0).up();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [EAT[4], WIN]\n" +
                 "listener(1) => [DIE]\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼æ     ☼" +
-                "☼│     ☼" +
-                "☼└☺    ☼" +
-                "☼╚═══╕ ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼æ     ☼\n" +
+                "☼│     ☼\n" +
+                "☼└☺    ☼\n" +
+                "☼╚═══╕ ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼╓     ☼" +
-                "☼║     ☼" +
-                "☼╚☻    ☼" +
-                "☼└───ö ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼╓     ☼\n" +
+                "☼║     ☼\n" +
+                "☼╚☻    ☼\n" +
+                "☼└───ö ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼▲     ☼" +
-                "☼╙     ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼▲     ☼\n" +
+                "☼╙     ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼˄     ☼" +
-                "☼¤     ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼˄     ☼\n" +
+                "☼¤     ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents("");
     }
 
     @Test
     public void shouldCase7() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼┌─┐   ☼" +
-                "☼│ ¤   ☼" +
-                "☼│     ☼" +
-                "☼˅     ☼" +
-                "☼◄══╕  ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼┌─┐   ☼\n" +
+                "☼│ ¤   ☼\n" +
+                "☼│     ☼\n" +
+                "☼˅     ☼\n" +
+                "☼◄══╕  ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        hero.up();
-        game.tick();
+        hero(0).up();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [EAT[4], WIN]\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼┌─ö   ☼" +
-                "☼│     ☼" +
-                "☼│     ☼" +
-                "☼☻     ☼" +
-                "☼╚═╕   ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼┌─ö   ☼\n" +
+                "☼│     ☼\n" +
+                "☼│     ☼\n" +
+                "☼☻     ☼\n" +
+                "☼╚═╕   ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼╔═╕   ☼" +
-                "☼║     ☼" +
-                "☼║     ☼" +
-                "☼☺     ☼" +
-                "☼└─ö   ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼╔═╕   ☼\n" +
+                "☼║     ☼\n" +
+                "☼║     ☼\n" +
+                "☼☺     ☼\n" +
+                "☼└─ö   ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼æ     ☼" +
-                "☼│     ☼" +
-                "☼˅     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼æ     ☼\n" +
+                "☼│     ☼\n" +
+                "☼˅     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╓     ☼" +
-                "☼║     ☼" +
-                "☼▼     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╓     ☼\n" +
+                "☼║     ☼\n" +
+                "☼▼     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents("");
     }
@@ -2186,60 +2095,60 @@ public class MultiplayerTest {
     // затем съедение объекта выжившей змейкой (если такая есть).
     @Test
     public void firstFightThenEatFury() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼┌─┐   ☼" +
-                "☼│ ¤   ☼" +
-                "☼│     ☼" +
-                "☼˅     ☼" +
-                "☼®◄═══╕☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼┌─┐   ☼\n" +
+                "☼│ ¤   ☼\n" +
+                "☼│     ☼\n" +
+                "☼˅     ☼\n" +
+                "☼®◄═══╕☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [EAT[5], FURY, WIN]\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼┌─ö   ☼" +
-                "☼│     ☼" +
-                "☼│     ☼" +
-                "☼│     ☼" +
-                "☼☻═══╕ ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼┌─ö   ☼\n" +
+                "☼│     ☼\n" +
+                "☼│     ☼\n" +
+                "☼│     ☼\n" +
+                "☼☻═══╕ ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼╔═╕   ☼" +
-                "☼║     ☼" +
-                "☼║     ☼" +
-                "☼║     ☼" +
-                "☼☺───ö ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼╔═╕   ☼\n" +
+                "☼║     ☼\n" +
+                "☼║     ☼\n" +
+                "☼║     ☼\n" +
+                "☼☺───ö ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼æ     ☼" +
-                "☼♣     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼æ     ☼\n" +
+                "☼♣     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╓     ☼" +
-                "☼♥     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╓     ☼\n" +
+                "☼♥     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        assertEquals(0, game.furyPills().size());
+        assertEquals(0, field().furyPills().size());
         verifyAllEvents("");
     }
 
@@ -2247,60 +2156,60 @@ public class MultiplayerTest {
     // Предыдущий тест в инвертированных ролях. Эти два теста вместе показывают что порядок игроков
     // в списке List<Player> больше не влияет на результат таких столкновений.
     public void firstFightThenEatFuryInverted() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼╔═╗   ☼" +
-                "☼║ ╙   ☼" +
-                "☼║     ☼" +
-                "☼▼     ☼" +
-                "☼®<───ö☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼╔═╗   ☼\n" +
+                "☼║ ╙   ☼\n" +
+                "☼║     ☼\n" +
+                "☼▼     ☼\n" +
+                "☼®<───ö☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [EAT[5], FURY, WIN]\n" +
                 "listener(1) => [DIE]\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼╔═╕   ☼" +
-                "☼║     ☼" +
-                "☼║     ☼" +
-                "☼║     ☼" +
-                "☼☺───ö ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼╔═╕   ☼\n" +
+                "☼║     ☼\n" +
+                "☼║     ☼\n" +
+                "☼║     ☼\n" +
+                "☼☺───ö ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼┌─ö   ☼" +
-                "☼│     ☼" +
-                "☼│     ☼" +
-                "☼│     ☼" +
-                "☼☻═══╕ ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼┌─ö   ☼\n" +
+                "☼│     ☼\n" +
+                "☼│     ☼\n" +
+                "☼│     ☼\n" +
+                "☼☻═══╕ ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╓     ☼" +
-                "☼♥     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╓     ☼\n" +
+                "☼♥     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼æ     ☼" +
-                "☼♣     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼æ     ☼\n" +
+                "☼♣     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        assertEquals(0, game.furyPills().size());
+        assertEquals(0, field().furyPills().size());
         verifyAllEvents("");
     }
 
@@ -2309,60 +2218,60 @@ public class MultiplayerTest {
     // оба героя умерли бы.
     @Test
     public void firstFightThenEatBlueberry() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼┌─┐   ☼" +
-                "☼│ ¤   ☼" +
-                "☼│     ☼" +
-                "☼˅     ☼" +
-                "☼○◄═══╕☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼┌─┐   ☼\n" +
+                "☼│ ¤   ☼\n" +
+                "☼│     ☼\n" +
+                "☼˅     ☼\n" +
+                "☼○◄═══╕☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [EAT[5], BLUEBERRY, WIN]\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼┌─┐   ☼" +
-                "☼│ ¤   ☼" +
-                "☼│     ☼" +
-                "☼│     ☼" +
-                "☼☻═══╕ ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼┌─┐   ☼\n" +
+                "☼│ ¤   ☼\n" +
+                "☼│     ☼\n" +
+                "☼│     ☼\n" +
+                "☼☻═══╕ ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼╔═╗   ☼" +
-                "☼║ ╙   ☼" +
-                "☼║     ☼" +
-                "☼║     ☼" +
-                "☼☺───ö ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼╔═╗   ☼\n" +
+                "☼║ ╙   ☼\n" +
+                "☼║     ☼\n" +
+                "☼║     ☼\n" +
+                "☼☺───ö ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼æ     ☼" +
-                "☼│     ☼" +
-                "☼˅     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼æ     ☼\n" +
+                "☼│     ☼\n" +
+                "☼˅     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╓     ☼" +
-                "☼║     ☼" +
-                "☼▼     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╓     ☼\n" +
+                "☼║     ☼\n" +
+                "☼▼     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        assertEquals(0, game.blueberries().size());
+        assertEquals(0, field().blueberries().size());
         verifyAllEvents("");
     }
 
@@ -2370,60 +2279,60 @@ public class MultiplayerTest {
     // на сервере не влияет на исход столкновения.
     @Test
     public void firstFightThenEatBlueberryInverted() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼╔═╗   ☼" +
-                "☼║ ╙   ☼" +
-                "☼║     ☼" +
-                "☼▼     ☼" +
-                "☼○<───ö☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼╔═╗   ☼\n" +
+                "☼║ ╙   ☼\n" +
+                "☼║     ☼\n" +
+                "☼▼     ☼\n" +
+                "☼○<───ö☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [EAT[5], BLUEBERRY, WIN]\n" +
                 "listener(1) => [DIE]\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼╔═╗   ☼" +
-                "☼║ ╙   ☼" +
-                "☼║     ☼" +
-                "☼║     ☼" +
-                "☼☺───ö ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼╔═╗   ☼\n" +
+                "☼║ ╙   ☼\n" +
+                "☼║     ☼\n" +
+                "☼║     ☼\n" +
+                "☼☺───ö ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼┌─┐   ☼" +
-                "☼│ ¤   ☼" +
-                "☼│     ☼" +
-                "☼│     ☼" +
-                "☼☻═══╕ ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼┌─┐   ☼\n" +
+                "☼│ ¤   ☼\n" +
+                "☼│     ☼\n" +
+                "☼│     ☼\n" +
+                "☼☻═══╕ ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╓     ☼" +
-                "☼║     ☼" +
-                "☼▼     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╓     ☼\n" +
+                "☼║     ☼\n" +
+                "☼▼     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼æ     ☼" +
-                "☼│     ☼" +
-                "☼˅     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼æ     ☼\n" +
+                "☼│     ☼\n" +
+                "☼˅     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        assertEquals(0, game.blueberries().size());
+        assertEquals(0, field().blueberries().size());
         verifyAllEvents("");
     }
 
@@ -2431,16 +2340,16 @@ public class MultiplayerTest {
     // Если бы желудь "съелся" короткой змейкой до обработки столкновения, она умерла бы не повредив длинную.
     @Test
     public void firstFightThenEatAcorn() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼┌─┐   ☼" +
-                "☼│ ¤   ☼" +
-                "☼│     ☼" +
-                "☼˅     ☼" +
-                "☼●◄╕   ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼┌─┐   ☼\n" +
+                "☼│ ¤   ☼\n" +
+                "☼│     ☼\n" +
+                "☼˅     ☼\n" +
+                "☼●◄╕   ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
@@ -2450,106 +2359,106 @@ public class MultiplayerTest {
         // съедение желудя приводит к мгновенной утрате длинны (на 3),
         // тогда как убийство соперника приводит к утрате длинны только на следующий тик.
         // лично я бы апдейтил длинну выжившей змейки тоже сразу и не показывал бы части умерших змеек.
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼æ     ☼" +
-                "☼│     ☼" +
-                "☼│     ☼" +
-                "☼☻╕    ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼æ     ☼\n" +
+                "☼│     ☼\n" +
+                "☼│     ☼\n" +
+                "☼☻╕    ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼╓     ☼" +
-                "☼║     ☼" +
-                "☼║     ☼" +
-                "☼☺ö    ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼╓     ☼\n" +
+                "☼║     ☼\n" +
+                "☼║     ☼\n" +
+                "☼☺ö    ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼æ     ☼" +
-                "☼˅     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼æ     ☼\n" +
+                "☼˅     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╓     ☼" +
-                "☼▼     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╓     ☼\n" +
+                "☼▼     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        assertEquals("[]", game.acorns().toString());
+        assertEquals("[]", field().acorns().toString());
         verifyAllEvents("");
     }
 
-    // Тест зеркальный предыдущему, показывает что порядок игроков 
+    // Тест зеркальный предыдущему, показывает что порядок игроков
     // на сервере не влияет на исход столкновения.
     @Test
     public void firstFightThenEatAcornInverted() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼╔═╗   ☼" +
-                "☼║ ╙   ☼" +
-                "☼║     ☼" +
-                "☼▼     ☼" +
-                "☼●<ö   ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼╔═╗   ☼\n" +
+                "☼║ ╙   ☼\n" +
+                "☼║     ☼\n" +
+                "☼▼     ☼\n" +
+                "☼●<ö   ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [EAT[2], ACORN, WIN]\n" +
                 "listener(1) => [DIE]\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼╓     ☼" +
-                "☼║     ☼" +
-                "☼║     ☼" +
-                "☼☺ö    ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼╓     ☼\n" +
+                "☼║     ☼\n" +
+                "☼║     ☼\n" +
+                "☼☺ö    ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼æ     ☼" +
-                "☼│     ☼" +
-                "☼│     ☼" +
-                "☼☻╕    ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼æ     ☼\n" +
+                "☼│     ☼\n" +
+                "☼│     ☼\n" +
+                "☼☻╕    ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╓     ☼" +
-                "☼▼     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╓     ☼\n" +
+                "☼▼     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼æ     ☼" +
-                "☼˅     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼æ     ☼\n" +
+                "☼˅     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        assertEquals("[]", game.acorns().toString());
+        assertEquals("[]", field().acorns().toString());
         verifyAllEvents("");
     }
 
@@ -2557,314 +2466,314 @@ public class MultiplayerTest {
     // где был хвост второго в момент когда второй кушает чернику.
     @Test
     public void eatTailThatGrows_Fury() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼  ╓   ☼" +
-                "☼˄®║   ☼" +
-                "☼¤ ▼ ○ ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼  ╓   ☼\n" +
+                "☼˄®║   ☼\n" +
+                "☼¤ ▼ ○ ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        enemy.right();
-        hero.right();
-        game.tick();
+        hero(1).right();
+        hero(0).right();
+        tick();
 
         verifyAllEvents(
                 "listener(1) => [FURY]\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼×♣╓   ☼" +
-                "☼  ╚►○ ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼×♣╓   ☼\n" +
+                "☼  ╚►○ ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╘♥æ   ☼" +
-                "☼  └>○ ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╘♥æ   ☼\n" +
+                "☼  └>○ ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [BLUEBERRY]\n" +
                 "listener(1) => [EAT[1]]\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼ ×♣   ☼" +
-                "☼  ╘═► ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼ ×♣   ☼\n" +
+                "☼  ╘═► ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼ ╘♥   ☼" +
-                "☼  ×─> ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼ ╘♥   ☼\n" +
+                "☼  ×─> ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  ×♣  ☼" +
-                "☼   ╘═►☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  ×♣  ☼\n" +
+                "☼   ╘═►☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  ╘♥  ☼" +
-                "☼   ×─>☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  ╘♥  ☼\n" +
+                "☼   ×─>☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        assertEquals(0, game.blueberries().size());
+        assertEquals(0, field().blueberries().size());
         verifyAllEvents("");
     }
 
     // Тестируем врезание в отросший хвост.
     @Test
     public void eatTailThatGrows() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼×>╓   ☼" +
-                "☼  ╚►○ ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼×>╓   ☼\n" +
+                "☼  ╚►○ ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [BLUEBERRY, EAT[2], WIN]\n" +
                 "listener(1) => [DIE]\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼ ×☺   ☼" +
-                "☼  ╚═► ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼ ×☺   ☼\n" +
+                "☼  ╚═► ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼ ╘☻   ☼" +
-                "☼  └─> ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼ ╘☻   ☼\n" +
+                "☼  └─> ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  ╘══►☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  ╘══►☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  ×──>☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  ×──>☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        assertEquals(0, game.blueberries().size());
+        assertEquals(0, field().blueberries().size());
         verifyAllEvents("");
     }
 
     @Test
     public void fightCase1() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼╔═╗   ☼" +
-                "☼║ ╙   ☼" +
-                "☼║     ☼" +
-                "☼▼     ☼" +
-                "☼ <───ö☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼╔═╗   ☼\n" +
+                "☼║ ╙   ☼\n" +
+                "☼║     ☼\n" +
+                "☼▼     ☼\n" +
+                "☼ <───ö☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼╔═╕   ☼" +
-                "☼║     ☼" +
-                "☼║     ☼" +
-                "☼║     ☼" +
-                "☼☺───ö ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼╔═╕   ☼\n" +
+                "☼║     ☼\n" +
+                "☼║     ☼\n" +
+                "☼║     ☼\n" +
+                "☼☺───ö ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼┌─ö   ☼" +
-                "☼│     ☼" +
-                "☼│     ☼" +
-                "☼│     ☼" +
-                "☼☻═══╕ ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼┌─ö   ☼\n" +
+                "☼│     ☼\n" +
+                "☼│     ☼\n" +
+                "☼│     ☼\n" +
+                "☼☻═══╕ ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [EAT[5], WIN]\n" +
                 "listener(1) => [DIE]\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╓     ☼" +
-                "☼▼     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╓     ☼\n" +
+                "☼▼     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼æ     ☼" +
-                "☼˅     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼æ     ☼\n" +
+                "☼˅     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
     }
 
     @Test
     public void fightCase2() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼╔═╗   ☼" +
-                "☼║ ╙   ☼" +
-                "☼║     ☼" +
-                "☼▼     ☼" +
-                "☼<────ö☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼╔═╗   ☼\n" +
+                "☼║ ╙   ☼\n" +
+                "☼║     ☼\n" +
+                "☼▼     ☼\n" +
+                "☼<────ö☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼╔═╕   ☼" +
-                "☼║     ☼" +
-                "☼║     ☼" +
-                "☼║     ☼" +
-                "☺☻───ö ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼╔═╕   ☼\n" +
+                "☼║     ☼\n" +
+                "☼║     ☼\n" +
+                "☼║     ☼\n" +
+                "☺☻───ö ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼┌─ö   ☼" +
-                "☼│     ☼" +
-                "☼│     ☼" +
-                "☼│     ☼" +
-                "☻☺═══╕ ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼┌─ö   ☼\n" +
+                "☼│     ☼\n" +
+                "☼│     ☼\n" +
+                "☼│     ☼\n" +
+                "☻☺═══╕ ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [DIE]\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
     }
 
     @Test
     public void fightCase3() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼╔═╗   ☼" +
-                "☼║ ╙   ☼" +
-                "☼║     ☼" +
-                "☼║     ☼" +
-                "☼▼<───ö☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼╔═╗   ☼\n" +
+                "☼║ ╙   ☼\n" +
+                "☼║     ☼\n" +
+                "☼║     ☼\n" +
+                "☼▼<───ö☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼╔═╕   ☼" +
-                "☼║     ☼" +
-                "☼║     ☼" +
-                "☼║     ☼" +
-                "☼☺───ö ☼" +
-                "☼▼     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼╔═╕   ☼\n" +
+                "☼║     ☼\n" +
+                "☼║     ☼\n" +
+                "☼║     ☼\n" +
+                "☼☺───ö ☼\n" +
+                "☼▼     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼┌─ö   ☼" +
-                "☼│     ☼" +
-                "☼│     ☼" +
-                "☼│     ☼" +
-                "☼☻═══╕ ☼" +
-                "☼˅     ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼┌─ö   ☼\n" +
+                "☼│     ☼\n" +
+                "☼│     ☼\n" +
+                "☼│     ☼\n" +
+                "☼☻═══╕ ☼\n" +
+                "☼˅     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [EAT[5], WIN]\n" +
                 "listener(1) => [DIE]\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╓     ☼" +
-                "☼║     ☼" +
-                "☼☻☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╓     ☼\n" +
+                "☼║     ☼\n" +
+                "☼☻☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼æ     ☼" +
-                "☼│     ☼" +
-                "☼☺☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼æ     ☼\n" +
+                "☼│     ☼\n" +
+                "☼☺☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n");
@@ -2872,63 +2781,63 @@ public class MultiplayerTest {
 
     @Test
     public void fightCase4() {
-        givenFl("☼☼☼☼☼☼☼☼☼" +
-                "☼╔═╗    ☼" +
-                "☼║ ╙    ☼" +
-                "☼║      ☼" +
-                "☼║      ☼" +
-                "☼║<───ö ☼" +
-                "☼▼      ☼" +
-                "☼       ☼" +
-                "☼☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼☼\n" +
+                "☼╔═╗    ☼\n" +
+                "☼║ ╙    ☼\n" +
+                "☼║      ☼\n" +
+                "☼║      ☼\n" +
+                "☼║<───ö ☼\n" +
+                "☼▼      ☼\n" +
+                "☼       ☼\n" +
+                "☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼" +
-                "☼╔═╕    ☼" +
-                "☼║      ☼" +
-                "☼║      ☼" +
-                "☼║      ☼" +
-                "☼☺───ö  ☼" +
-                "☼║      ☼" +
-                "☼▼      ☼" +
-                "☼☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼☼\n" +
+                "☼╔═╕    ☼\n" +
+                "☼║      ☼\n" +
+                "☼║      ☼\n" +
+                "☼║      ☼\n" +
+                "☼☺───ö  ☼\n" +
+                "☼║      ☼\n" +
+                "☼▼      ☼\n" +
+                "☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼" +
-                "☼┌─ö    ☼" +
-                "☼│      ☼" +
-                "☼│      ☼" +
-                "☼│      ☼" +
-                "☼☻═══╕  ☼" +
-                "☼│      ☼" +
-                "☼˅      ☼" +
-                "☼☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼☼\n" +
+                "☼┌─ö    ☼\n" +
+                "☼│      ☼\n" +
+                "☼│      ☼\n" +
+                "☼│      ☼\n" +
+                "☼☻═══╕  ☼\n" +
+                "☼│      ☼\n" +
+                "☼˅      ☼\n" +
+                "☼☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [EAT[5], WIN]\n" +
                 "listener(1) => [DIE]\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼" +
-                "☼╔╕     ☼" +
-                "☼║      ☼" +
-                "☼║      ☼" +
-                "☼║      ☼" +
-                "☼║      ☼" +
-                "☼║      ☼" +
-                "☼║      ☼" +
-                "☼☻☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼☼\n" +
+                "☼╔╕     ☼\n" +
+                "☼║      ☼\n" +
+                "☼║      ☼\n" +
+                "☼║      ☼\n" +
+                "☼║      ☼\n" +
+                "☼║      ☼\n" +
+                "☼║      ☼\n" +
+                "☼☻☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼" +
-                "☼┌ö     ☼" +
-                "☼│      ☼" +
-                "☼│      ☼" +
-                "☼│      ☼" +
-                "☼│      ☼" +
-                "☼│      ☼" +
-                "☼│      ☼" +
-                "☼☺☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼☼\n" +
+                "☼┌ö     ☼\n" +
+                "☼│      ☼\n" +
+                "☼│      ☼\n" +
+                "☼│      ☼\n" +
+                "☼│      ☼\n" +
+                "☼│      ☼\n" +
+                "☼│      ☼\n" +
+                "☼☺☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n");
@@ -2937,62 +2846,62 @@ public class MultiplayerTest {
     // если тиков для победы недостаточно, то WIN ты не получишь
     @Test
     public void shouldNoWin_whenIsNotEnoughTicksForWin() {
-        settings.integer(ROUNDS_MIN_TICKS_FOR_WIN, 10);
+        settings().integer(ROUNDS_MIN_TICKS_FOR_WIN, 10);
 
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼┌─┐   ☼" +
-                "☼│ ¤   ☼" +
-                "☼│     ☼" +
-                "☼˅     ☼" +
-                "☼◄══╕  ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼┌─┐   ☼\n" +
+                "☼│ ¤   ☼\n" +
+                "☼│     ☼\n" +
+                "☼˅     ☼\n" +
+                "☼◄══╕  ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        enemy.right();
-        hero.up();
-        game.tick();
+        hero(1).right();
+        hero(0).up();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [EAT[4]]\n");
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼┌─ö   ☼" +
-                "☼│     ☼" +
-                "☼│     ☼" +
-                "☼☻>    ☼" +
-                "☼╚═╕   ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼┌─ö   ☼\n" +
+                "☼│     ☼\n" +
+                "☼│     ☼\n" +
+                "☼☻>    ☼\n" +
+                "☼╚═╕   ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼╔═╕   ☼" +
-                "☼║     ☼" +
-                "☼║     ☼" +
-                "☼☺►    ☼" +
-                "☼└─ö   ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼╔═╕   ☼\n" +
+                "☼║     ☼\n" +
+                "☼║     ☼\n" +
+                "☼☺►    ☼\n" +
+                "☼└─ö   ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼×─>   ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼×─>   ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╘═►   ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╘═►   ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents("");
     }
@@ -3029,13 +2938,13 @@ public class MultiplayerTest {
                 "☼#                           ☼\n" +
                 "☼☼                  ®    ©   ☼\n" +
                 "☼☼                           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        hero.eatDeathCap(); // добрали бледную поганку
+        hero(0).eatDeathCap(); // добрали таблетку полета
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼☼                           ☼\n" +
                 "☼#                           ☼\n" +
                 "☼☼      ○                    ☼\n" +
@@ -3064,13 +2973,13 @@ public class MultiplayerTest {
                 "☼#                           ☼\n" +
                 "☼☼                  ®    ©   ☼\n" +
                 "☼☼                           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        hero.right();
-        enemy.down();
-        game.tick();
+        hero(0).right();
+        hero(1).down();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼☼                           ☼\n" +
                 "☼#                           ☼\n" +
                 "☼☼      ○                    ☼\n" +
@@ -3099,25 +3008,25 @@ public class MultiplayerTest {
                 "☼#                           ☼\n" +
                 "☼☼                  ®    ©   ☼\n" +
                 "☼☼                           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        game.tick();
-        game.tick();
+        tick();
+        tick();
 
-        hero.tickPills();
-        hero.tickPills();
-        hero.tickPills();
-        hero.tickPills();
-        assertEquals(2, hero.furyCount());
-        assertEquals(2, hero.flyingCount());
-        hero.tickPills();
-        assertEquals(1, hero.furyCount());
-        assertEquals(1, hero.flyingCount());
+        hero(0).tickPills();
+        hero(0).tickPills();
+        hero(0).tickPills();
+        hero(0).tickPills();
+        assertEquals(2, hero(0).furyCount());
+        assertEquals(2, hero(0).flyingCount());
+        hero(0).tickPills();
+        assertEquals(1, hero(0).furyCount());
+        assertEquals(1, hero(0).flyingCount());
 
-        enemy.left();
-        game.tick();
+        hero(1).left();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼☼                           ☼\n" +
                 "☼#                           ☼\n" +
                 "☼☼      ○                    ☼\n" +
@@ -3146,7 +3055,7 @@ public class MultiplayerTest {
                 "☼#                           ☼\n" +
                 "☼☼                  ®    ©   ☼\n" +
                 "☼☼                           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
         verifyAllEvents(
                 "listener(1) => [BLUEBERRY]\n");
@@ -3185,11 +3094,11 @@ public class MultiplayerTest {
                 "☼#                           ☼\n" +
                 "☼☼                  ®    ©   ☼\n" +
                 "☼☼                           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼☼                           ☼\n" +
                 "☼#                           ☼\n" +
                 "☼☼      ○                    ☼\n" +
@@ -3218,17 +3127,17 @@ public class MultiplayerTest {
                 "☼#                           ☼\n" +
                 "☼☼                  ®    ©   ☼\n" +
                 "☼☼                           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        hero.right();
-        enemy.down();
-        game.tick();
+        hero(0).right();
+        hero(1).down();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [EAT[2], EAT[1]]\n" +
                 "listener(1) => [BLUEBERRY]\n");
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼☼                           ☼\n" +
                 "☼#                           ☼\n" +
                 "☼☼      ○                    ☼\n" +
@@ -3257,13 +3166,13 @@ public class MultiplayerTest {
                 "☼#                           ☼\n" +
                 "☼☼                  ®    ©   ☼\n" +
                 "☼☼                           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        game.tick();
+        tick();
 
         verifyAllEvents("");
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼☼                           ☼\n" +
                 "☼#                           ☼\n" +
                 "☼☼      ○                    ☼\n" +
@@ -3292,7 +3201,7 @@ public class MultiplayerTest {
                 "☼#                           ☼\n" +
                 "☼☼                  ®    ©   ☼\n" +
                 "☼☼                           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
     }
 
@@ -3330,11 +3239,11 @@ public class MultiplayerTest {
                 "☼#                           ☼\n" +
                 "☼☼                  ®    ©   ☼\n" +
                 "☼☼                           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼☼                           ☼\n" +
                 "☼#                           ☼\n" +
                 "☼☼      ○                    ☼\n" +
@@ -3363,13 +3272,13 @@ public class MultiplayerTest {
                 "☼#                           ☼\n" +
                 "☼☼                  ®    ©   ☼\n" +
                 "☼☼                           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        hero.right();
-        enemy.down();
-        game.tick();
+        hero(0).right();
+        hero(1).down();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼☼                           ☼\n" +
                 "☼#                           ☼\n" +
                 "☼☼      ○                    ☼\n" +
@@ -3398,14 +3307,14 @@ public class MultiplayerTest {
                 "☼#                           ☼\n" +
                 "☼☼                  ®    ©   ☼\n" +
                 "☼☼                           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(1) => [BLUEBERRY]\n");
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼☼                           ☼\n" +
                 "☼#                           ☼\n" +
                 "☼☼      ○                    ☼\n" +
@@ -3434,21 +3343,21 @@ public class MultiplayerTest {
                 "☼#                           ☼\n" +
                 "☼☼                  ®    ©   ☼\n" +
                 "☼☼                           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        hero.tickPills();
-        hero.tickPills();
-        hero.tickPills();
-        hero.tickPills();
-        hero.tickPills();
-        hero.tickPills();
-        assertEquals(1, hero.flyingCount());
-        hero.tickPills();
-        assertEquals(0, hero.flyingCount());
+        hero(0).tickPills();
+        hero(0).tickPills();
+        hero(0).tickPills();
+        hero(0).tickPills();
+        hero(0).tickPills();
+        hero(0).tickPills();
+        assertEquals(1, hero(0).flyingCount());
+        hero(0).tickPills();
+        assertEquals(0, hero(0).flyingCount());
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼☼                           ☼\n" +
                 "☼#                           ☼\n" +
                 "☼☼      ○                    ☼\n" +
@@ -3477,7 +3386,7 @@ public class MultiplayerTest {
                 "☼#                           ☼\n" +
                 "☼☼                  ®    ©   ☼\n" +
                 "☼☼                           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
@@ -3487,40 +3396,40 @@ public class MultiplayerTest {
 
     @Test
     public void shouldChangeHeadSprite() {
-        givenFl("☼☼☼☼☼☼☼☼☼" +
-                "☼       ☼" +
-                "☼       ☼" +
-                "☼╘►     ☼" +
-                "☼       ☼" +
-                "☼×>     ☼" +
-                "☼       ☼" +
-                "☼       ☼" +
-                "☼☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼☼\n" +
+                "☼       ☼\n" +
+                "☼       ☼\n" +
+                "☼╘►     ☼\n" +
+                "☼       ☼\n" +
+                "☼×>     ☼\n" +
+                "☼       ☼\n" +
+                "☼       ☼\n" +
+                "☼☼☼☼☼☼☼☼☼\n");
 
-        assertH("☼☼☼☼☼☼☼☼☼" +
-                "☼       ☼" +
-                "☼       ☼" +
-                "☼╘►     ☼" +
-                "☼       ☼" +
-                "☼×>     ☼" +
-                "☼       ☼" +
-                "☼       ☼" +
-                "☼☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼☼\n" +
+                "☼       ☼\n" +
+                "☼       ☼\n" +
+                "☼╘►     ☼\n" +
+                "☼       ☼\n" +
+                "☼×>     ☼\n" +
+                "☼       ☼\n" +
+                "☼       ☼\n" +
+                "☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼" +
-                "☼       ☼" +
-                "☼       ☼" +
-                "☼×>     ☼" +
-                "☼       ☼" +
-                "☼╘►     ☼" +
-                "☼       ☼" +
-                "☼       ☼" +
-                "☼☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼☼\n" +
+                "☼       ☼\n" +
+                "☼       ☼\n" +
+                "☼×>     ☼\n" +
+                "☼       ☼\n" +
+                "☼╘►     ☼\n" +
+                "☼       ☼\n" +
+                "☼       ☼\n" +
+                "☼☼☼☼☼☼☼☼☼\n", 1);
 
-        hero.eatDeathCap();
-        enemy.eatFury();
+        hero(0).eatDeathCap();
+        hero(1).eatFury();
 
-        assertH("☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
                 "☼╘♠     ☼\n" +
@@ -3528,22 +3437,22 @@ public class MultiplayerTest {
                 "☼×♣     ☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
-                "☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼" +
-                "☼       ☼" +
-                "☼       ☼" +
-                "☼×♦     ☼" +
-                "☼       ☼" +
-                "☼╘♥     ☼" +
-                "☼       ☼" +
-                "☼       ☼" +
-                "☼☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼☼\n" +
+                "☼       ☼\n" +
+                "☼       ☼\n" +
+                "☼×♦     ☼\n" +
+                "☼       ☼\n" +
+                "☼╘♥     ☼\n" +
+                "☼       ☼\n" +
+                "☼       ☼\n" +
+                "☼☼☼☼☼☼☼☼☼\n", 1);
 
-        hero.eatFury();
-        enemy.eatDeathCap();
+        hero(0).eatFury();
+        hero(1).eatDeathCap();
 
-        assertH("☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
                 "☼╘♠     ☼\n" +
@@ -3551,22 +3460,22 @@ public class MultiplayerTest {
                 "☼×♦     ☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
-                "☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼" +
-                "☼       ☼" +
-                "☼       ☼" +
-                "☼×♦     ☼" +
-                "☼       ☼" +
-                "☼╘♠     ☼" +
-                "☼       ☼" +
-                "☼       ☼" +
-                "☼☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼☼\n" +
+                "☼       ☼\n" +
+                "☼       ☼\n" +
+                "☼×♦     ☼\n" +
+                "☼       ☼\n" +
+                "☼╘♠     ☼\n" +
+                "☼       ☼\n" +
+                "☼       ☼\n" +
+                "☼☼☼☼☼☼☼☼☼\n", 1);
 
-        hero.removeFlying();
-        enemy.removeFury();
+        hero(0).removeFlying();
+        hero(1).removeFury();
 
-        assertH("☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
                 "☼╘♥     ☼\n" +
@@ -3574,40 +3483,40 @@ public class MultiplayerTest {
                 "☼×♦     ☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
-                "☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼" +
-                "☼       ☼" +
-                "☼       ☼" +
-                "☼×♣     ☼" +
-                "☼       ☼" +
-                "☼╘♠     ☼" +
-                "☼       ☼" +
-                "☼       ☼" +
-                "☼☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼☼\n" +
+                "☼       ☼\n" +
+                "☼       ☼\n" +
+                "☼×♣     ☼\n" +
+                "☼       ☼\n" +
+                "☼╘♠     ☼\n" +
+                "☼       ☼\n" +
+                "☼       ☼\n" +
+                "☼☼☼☼☼☼☼☼☼\n", 1);
 
-        hero.removeFury();
-        enemy.removeFlying();
+        hero(0).removeFury();
+        hero(1).removeFlying();
 
-        assertH("☼☼☼☼☼☼☼☼☼" +
-                "☼       ☼" +
-                "☼       ☼" +
-                "☼╘►     ☼" +
-                "☼       ☼" +
-                "☼×>     ☼" +
-                "☼       ☼" +
-                "☼       ☼" +
-                "☼☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼☼\n" +
+                "☼       ☼\n" +
+                "☼       ☼\n" +
+                "☼╘►     ☼\n" +
+                "☼       ☼\n" +
+                "☼×>     ☼\n" +
+                "☼       ☼\n" +
+                "☼       ☼\n" +
+                "☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼" +
-                "☼       ☼" +
-                "☼       ☼" +
-                "☼×>     ☼" +
-                "☼       ☼" +
-                "☼╘►     ☼" +
-                "☼       ☼" +
-                "☼       ☼" +
-                "☼☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼☼\n" +
+                "☼       ☼\n" +
+                "☼       ☼\n" +
+                "☼×>     ☼\n" +
+                "☼       ☼\n" +
+                "☼╘►     ☼\n" +
+                "☼       ☼\n" +
+                "☼       ☼\n" +
+                "☼☼☼☼☼☼☼☼☼\n", 1);
     }
 
     @Test
@@ -3641,12 +3550,12 @@ public class MultiplayerTest {
                 "☼#                  └┐     ● ☼\n" +
                 "☼☼               ┌───┘╓      ☼\n" +
                 "☼☼               └───♣╚► ©   ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        hero.up();
-        game.tick();
+        hero(0).up();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼☼                         ● ☼\n" +
                 "☼#        ○                  ☼\n" +
                 "☼☼       ●                   ☼\n" +
@@ -3675,11 +3584,11 @@ public class MultiplayerTest {
                 "☼#                  └┐     ● ☼\n" +
                 "☼☼               ┌───┘ ▲     ☼\n" +
                 "☼☼               └────♣╙ ©   ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼☼                         ● ☼\n" +
                 "☼#        ○                  ☼\n" +
                 "☼☼       ●                   ☼\n" +
@@ -3708,7 +3617,7 @@ public class MultiplayerTest {
                 "☼#                  └┐ ▲   ● ☼\n" +
                 "☼☼               ┌───┘ ╙     ☼\n" +
                 "☼☼               └─────♣ ©   ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
         verifyAllEvents(
                 "listener(1) => [EAT[1]]\n");
@@ -3716,34 +3625,34 @@ public class MultiplayerTest {
 
     @Test
     public void headStrikeDisplay() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼æ     ☼" +
-                "☼˅     ☼" +
-                "☼ ◄══╕ ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼æ     ☼\n" +
+                "☼˅     ☼\n" +
+                "☼ ◄══╕ ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼æ     ☼" +
-                "☼☺══╕  ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼æ     ☼\n" +
+                "☼☺══╕  ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╓     ☼" +
-                "☼☻──ö  ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╓     ☼\n" +
+                "☼☻──ö  ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [EAT[2], WIN]\n" +
@@ -3752,34 +3661,34 @@ public class MultiplayerTest {
 
     @Test
     public void headStrikeDisplayInverted() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╓     ☼" +
-                "☼▼     ☼" +
-                "☼ <──ö ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╓     ☼\n" +
+                "☼▼     ☼\n" +
+                "☼ <──ö ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╓     ☼" +
-                "☼☻──ö  ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╓     ☼\n" +
+                "☼☻──ö  ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼æ     ☼" +
-                "☼☺══╕  ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼æ     ☼\n" +
+                "☼☺══╕  ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
@@ -3788,34 +3697,36 @@ public class MultiplayerTest {
 
     @Test
     public void headStrikeDisplay_sameSize() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼æ     ☼" +
-                "☼│     ☼" +
-                "☼˅     ☼" +
-                "☼ ◄═╕  ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼æ     ☼\n" +
+                "☼│     ☼\n" +
+                "☼˅     ☼\n" +
+                "☼ ◄═╕  ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼æ     ☼" +
-                "☼│     ☼" +
-                "☼☻═╕   ☼" + // TODO тут рисуется не та голова, как в 90% случаев
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        // TODO тут рисуется не та голова, как в 90% случаев
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼æ     ☼\n" +
+                "☼│     ☼\n" +
+                "☼☻═╕   ☼\n" + // TODO тут рисуется не та голова, как в 90% случаев
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╓     ☼" +
-                "☼║     ☼" +
-                "☼☺─ö   ☼" +  // TODO тут рисуется не та голова, как в 90% случаев
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        // TODO тут рисуется не та голова, как в 90% случаев
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╓     ☼\n" +
+                "☼║     ☼\n" +
+                "☼☺─ö   ☼\n" +  // TODO тут рисуется не та голова, как в 90% случаев
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
@@ -3824,34 +3735,34 @@ public class MultiplayerTest {
 
     @Test
     public void headStrikeDisplayInverted_sameSize() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼╓     ☼" +
-                "☼║     ☼" +
-                "☼▼     ☼" +
-                "☼ <─ö  ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼╓     ☼\n" +
+                "☼║     ☼\n" +
+                "☼▼     ☼\n" +
+                "☼ <─ö  ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╓     ☼" +
-                "☼║     ☼" +
-                "☼☻─ö   ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╓     ☼\n" +
+                "☼║     ☼\n" +
+                "☼☻─ö   ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼æ     ☼" +
-                "☼│     ☼" +
-                "☼☺═╕   ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼æ     ☼\n" +
+                "☼│     ☼\n" +
+                "☼☺═╕   ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
@@ -3860,34 +3771,36 @@ public class MultiplayerTest {
 
     @Test
     public void headStrikeDisplay2() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼æ     ☼" +
-                "☼│     ☼" +
-                "☼˅     ☼" +
-                "☼ ◄╕   ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼æ     ☼\n" +
+                "☼│     ☼\n" +
+                "☼˅     ☼\n" +
+                "☼ ◄╕   ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼æ     ☼" +
-                "☼│     ☼" +
-                "☼☻╕    ☼" + // TODO тут рисуется не та голова, как в 90% случаев
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        // TODO тут рисуется не та голова, как в 90% случаев
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼æ     ☼\n" +
+                "☼│     ☼\n" +
+                "☼☻╕    ☼\n" + // TODO тут рисуется не та голова, как в 90% случаев
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╓     ☼" +
-                "☼║     ☼" +
-                "☼☺ö    ☼" + // TODO тут рисуется не та голова, как в 90% случаев
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        // TODO тут рисуется не та голова, как в 90% случаев
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╓     ☼\n" +
+                "☼║     ☼\n" +
+                "☼☺ö    ☼\n" + // TODO тут рисуется не та голова, как в 90% случаев
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
@@ -3896,34 +3809,36 @@ public class MultiplayerTest {
 
     @Test
     public void headStrikeDisplayInverted2() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼╓     ☼" +
-                "☼║     ☼" +
-                "☼▼     ☼" +
-                "☼ <ö   ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼╓     ☼\n" +
+                "☼║     ☼\n" +
+                "☼▼     ☼\n" +
+                "☼ <ö   ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼╓     ☼" +
-                "☼║     ☼" +
-                "☼☺ö    ☼" + // TODO тут рисуется не та голова, как в 90% случаев
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        // TODO тут рисуется не та голова, как в 90% случаев
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼╓     ☼\n" +
+                "☼║     ☼\n" +
+                "☼☺ö    ☼\n" + // TODO тут рисуется не та голова, как в 90% случаев
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼æ     ☼" +
-                "☼│     ☼" +
-                "☼☻╕    ☼" + // TODO тут рисуется не та голова, как в 90% случаев
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        // TODO тут рисуется не та голова, как в 90% случаев
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼æ     ☼\n" +
+                "☼│     ☼\n" +
+                "☼☻╕    ☼\n" + // TODO тут рисуется не та голова, как в 90% случаев
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
@@ -3932,34 +3847,34 @@ public class MultiplayerTest {
 
     @Test
     public void bodyStrikeDisplay() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  æ   ☼" +
-                "☼  ˅   ☼" +
-                "☼ ◄══╕ ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  æ   ☼\n" +
+                "☼  ˅   ☼\n" +
+                "☼ ◄══╕ ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  æ   ☼" +
-                "☼◄═☺╕  ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  æ   ☼\n" +
+                "☼◄═☺╕  ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  ╓   ☼" +
-                "☼<─☻ö  ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  ╓   ☼\n" +
+                "☼<─☻ö  ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [EAT[2], WIN]\n" +
@@ -3968,34 +3883,34 @@ public class MultiplayerTest {
 
     @Test
     public void bodyStrikeDisplayInverted() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  ╓   ☼" +
-                "☼  ▼   ☼" +
-                "☼ <──ö ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  ╓   ☼\n" +
+                "☼  ▼   ☼\n" +
+                "☼ <──ö ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  ╓   ☼" +
-                "☼<─☻ö  ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  ╓   ☼\n" +
+                "☼<─☻ö  ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  æ   ☼" +
-                "☼◄═☺╕  ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  æ   ☼\n" +
+                "☼◄═☺╕  ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
@@ -4004,59 +3919,59 @@ public class MultiplayerTest {
 
     @Test
     public void flightOverBodyDisplay() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼  æ   ☼" +
-                "☼  ˅   ☼" +
-                "☼  ©   ☼" +
-                "☼  ◄══╕☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼  æ   ☼\n" +
+                "☼  ˅   ☼\n" +
+                "☼  ©   ☼\n" +
+                "☼  ◄══╕☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(1) => [DEATH_CAP]\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  æ   ☼" +
-                "☼◄═♦╕  ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  æ   ☼\n" +
+                "☼◄═♦╕  ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  ╓   ☼" +
-                "☼<─♠ö  ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  ╓   ☼\n" +
+                "☼<─♠ö  ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☻══æ   ☼\n" +
                 "☼  ♦   ☼\n" +
-                "☼☼☼☼☼☼☼☼");
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☺──╓   ☼\n" +
                 "☼  ♠   ☼\n" +
-                "☼☼☼☼☼☼☼☼");
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
@@ -4065,59 +3980,59 @@ public class MultiplayerTest {
 
     @Test
     public void flightOverBodyDisplayInverted() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼  ╓   ☼" +
-                "☼  ▼   ☼" +
-                "☼  ©   ☼" +
-                "☼  <──ö☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼  ╓   ☼\n" +
+                "☼  ▼   ☼\n" +
+                "☼  ©   ☼\n" +
+                "☼  <──ö☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [DEATH_CAP]\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  ╓   ☼" +
-                "☼<─♠ö  ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  ╓   ☼\n" +
+                "☼<─♠ö  ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  æ   ☼" +
-                "☼◄═♦╕  ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  æ   ☼\n" +
+                "☼◄═♦╕  ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☺──╓   ☼\n" +
                 "☼  ♠   ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☻══æ   ☼\n" +
                 "☼  ♦   ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [WIN]\n" +
@@ -4126,139 +4041,139 @@ public class MultiplayerTest {
 
     @Test
     public void flightOverHeadDisplay() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼  æ   ☼" +
-                "☼  ˅   ☼" +
-                "☼  ©   ☼" +
-                "☼    ◄╕☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼  æ   ☼\n" +
+                "☼  ˅   ☼\n" +
+                "☼  ©   ☼\n" +
+                "☼    ◄╕☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(1) => [DEATH_CAP]\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  æ   ☼" +
-                "☼  ♦╕  ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  æ   ☼\n" +
+                "☼  ♦╕  ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  ╓   ☼" +
-                "☼  ♠ö  ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  ╓   ☼\n" +
+                "☼  ♠ö  ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼ ◄æ   ☼\n" +
                 "☼  ♦   ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼ <╓   ☼\n" +
                 "☼  ♠   ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 1);
     }
 
     @Test
     public void flightOverHeadDisplayInverted() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼  ╓   ☼" +
-                "☼  ▼   ☼" +
-                "☼  ©   ☼" +
-                "☼    <ö☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼  ╓   ☼\n" +
+                "☼  ▼   ☼\n" +
+                "☼  ©   ☼\n" +
+                "☼    <ö☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
         verifyAllEvents(
                 "listener(0) => [DEATH_CAP]\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  ╓   ☼" +
-                "☼  ♠ö  ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  ╓   ☼\n" +
+                "☼  ♠ö  ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼      ☼" +
-                "☼  æ   ☼" +
-                "☼  ♦╕  ☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼      ☼\n" +
+                "☼  æ   ☼\n" +
+                "☼  ♦╕  ☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼ <╓   ☼\n" +
                 "☼  ♠   ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼ ◄æ   ☼\n" +
                 "☼  ♦   ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 1);
     }
 
     @Test
     public void headTwoFlyingHeroes_drawSmallerOnTop_start() {
-        givenFl("☼☼☼☼☼☼☼☼☼☼☼☼☼" +
-                "☼           ☼" +
-                "☼           ☼" +
-                "☼           ☼" +
-                "☼           ☼" +
-                "☼           ☼" +
-                "☼   ┌─> ◄══╕☼" +
-                "☼   │       ☼" +
-                "☼   │       ☼" +
-                "☼   └───ö   ☼" +
-                "☼           ☼" +
-                "☼           ☼" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+                "☼           ☼\n" +
+                "☼           ☼\n" +
+                "☼           ☼\n" +
+                "☼           ☼\n" +
+                "☼           ☼\n" +
+                "☼   ┌─> ◄══╕☼\n" +
+                "☼   │       ☼\n" +
+                "☼   │       ☼\n" +
+                "☼   └───ö   ☼\n" +
+                "☼           ☼\n" +
+                "☼           ☼\n" +
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        hero.eatDeathCap();
-        enemy.eatDeathCap();
-        game.tick();
+        hero(0).eatDeathCap();
+        hero(1).eatDeathCap();
+        field().tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
@@ -4270,9 +4185,9 @@ public class MultiplayerTest {
                 "☼   └──ö    ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
@@ -4284,11 +4199,11 @@ public class MultiplayerTest {
                 "☼   ╚══╕    ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
@@ -4300,9 +4215,9 @@ public class MultiplayerTest {
                 "☼   └─ö     ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
@@ -4314,11 +4229,11 @@ public class MultiplayerTest {
                 "☼   ╚═╕     ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
@@ -4330,9 +4245,9 @@ public class MultiplayerTest {
                 "☼   └ö      ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
@@ -4344,11 +4259,11 @@ public class MultiplayerTest {
                 "☼   ╚╕      ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
@@ -4360,9 +4275,9 @@ public class MultiplayerTest {
                 "☼   ¤       ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
@@ -4374,12 +4289,12 @@ public class MultiplayerTest {
                 "☼   ╙       ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 1);
 
-        hero.down();
-        game.tick();
+        hero(0).down();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
@@ -4391,9 +4306,9 @@ public class MultiplayerTest {
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
@@ -4405,17 +4320,17 @@ public class MultiplayerTest {
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 1);
     }
 
     @Test
     public void headTwoFlyingHeroes_drawSmallerOnTop_finishWithFlying() {
         headTwoFlyingHeroes_drawSmallerOnTop_start();
 
-        enemy.up();
-        game.tick();
+        hero(1).up();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
@@ -4427,9 +4342,9 @@ public class MultiplayerTest {
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
@@ -4441,11 +4356,11 @@ public class MultiplayerTest {
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
@@ -4457,9 +4372,9 @@ public class MultiplayerTest {
                 "☼   ♠       ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
@@ -4471,11 +4386,11 @@ public class MultiplayerTest {
                 "☼   ♦       ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼          ♦☼\n" +
@@ -4487,9 +4402,9 @@ public class MultiplayerTest {
                 "☼   ║       ☼\n" +
                 "☼   ♠       ☼\n" +
                 "☼           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼          ♠☼\n" +
@@ -4501,23 +4416,23 @@ public class MultiplayerTest {
                 "☼   │       ☼\n" +
                 "☼   ♦       ☼\n" +
                 "☼           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 1);
     }
 
     @Test
     public void headTwoFlyingHeros_drawSmallerOnTop_finishWithoutFlying() {
         headTwoFlyingHeroes_drawSmallerOnTop_start();
 
-        hero.removeFlying();
-        enemy.removeFlying();
+        hero(0).removeFlying();
+        hero(1).removeFlying();
 
-        assertEquals(0, hero.flyingCount());
-        assertEquals(0, enemy.flyingCount());
+        assertEquals(0, hero(0).flyingCount());
+        assertEquals(0, hero(1).flyingCount());
 
-        enemy.up();
-        game.tick();
+        hero(1).up();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
@@ -4529,9 +4444,9 @@ public class MultiplayerTest {
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
@@ -4543,11 +4458,11 @@ public class MultiplayerTest {
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
@@ -4559,9 +4474,9 @@ public class MultiplayerTest {
                 "☼   ▼       ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
@@ -4573,11 +4488,11 @@ public class MultiplayerTest {
                 "☼   ˅       ☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼          ˄☼\n" +
@@ -4589,9 +4504,9 @@ public class MultiplayerTest {
                 "☼   ║       ☼\n" +
                 "☼   ▼       ☼\n" +
                 "☼           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼           ☼\n" +
                 "☼           ☼\n" +
                 "☼          ▲☼\n" +
@@ -4603,31 +4518,31 @@ public class MultiplayerTest {
                 "☼   │       ☼\n" +
                 "☼   ˅       ☼\n" +
                 "☼           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 1);
     }
 
     @Test
     public void twoFlyingHeros_andOneBlueberry_whoIsFirst() {
-        givenFl("☼☼☼☼☼☼☼☼☼☼☼" +
-                "☼         ☼" +
-                "☼         ☼" +
-                "☼         ☼" +
-                "☼         ☼" +
-                "☼ ┌─>○◄═╕ ☼" +
-                "☼         ☼" +
-                "☼         ☼" +
-                "☼         ☼" +
-                "☼         ☼" +
-                "☼☼☼☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
+                "☼         ☼\n" +
+                "☼         ☼\n" +
+                "☼         ☼\n" +
+                "☼         ☼\n" +
+                "☼ ┌─>○◄═╕ ☼\n" +
+                "☼         ☼\n" +
+                "☼         ☼\n" +
+                "☼         ☼\n" +
+                "☼         ☼\n" +
+                "☼☼☼☼☼☼☼☼☼☼☼\n");
 
-        hero.eatDeathCap();
-        enemy.eatDeathCap();
-        game.tick();
+        hero(0).eatDeathCap();
+        hero(1).eatDeathCap();
+        field().tick();
 
         verifyAllEvents(
                 "listener(0) => [BLUEBERRY]\n");
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4637,9 +4552,9 @@ public class MultiplayerTest {
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4649,11 +4564,11 @@ public class MultiplayerTest {
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4663,9 +4578,9 @@ public class MultiplayerTest {
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4675,11 +4590,11 @@ public class MultiplayerTest {
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4689,9 +4604,9 @@ public class MultiplayerTest {
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4701,11 +4616,11 @@ public class MultiplayerTest {
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4715,9 +4630,9 @@ public class MultiplayerTest {
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4727,11 +4642,11 @@ public class MultiplayerTest {
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4741,9 +4656,9 @@ public class MultiplayerTest {
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -4753,7 +4668,7 @@ public class MultiplayerTest {
                 "☼         ☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼\n", 1);
     }
 
     @Test
@@ -4787,17 +4702,17 @@ public class MultiplayerTest {
                 "☼#             ┌┘    ┌─────┐ ☼\n" +
                 "☼☼             └─────┘    <┘ ☼\n" +
                 "☼☼                           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
 
         // hero идет по инерции вниз
         // enemy идет по инерции влево
-        game.tick();
+        tick();
 
-        hero.left();
+        hero(0).left();
         // enemy идет по инерции влево
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼☼            ○              ☼\n" +
                 "☼#   ©  ○                    ☼\n" +
                 "☼☼               ○         ○ ☼\n" +
@@ -4826,7 +4741,7 @@ public class MultiplayerTest {
                 "☼#                         ♥╝☼\n" +
                 "☼☼                      <──ö ☼\n" +
                 "☼☼                           ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
         verifyAllEvents(
                 "listener(0) => [EAT[30]]\n");
@@ -4837,192 +4752,192 @@ public class MultiplayerTest {
     // если во время откусывания по fury скушать чернику
     @Test
     public void eatTwiceSameHero() {
-        givenFl("☼☼☼☼☼☼☼☼" +
-                "☼      ☼" +
-                "☼  ╓   ☼" +
-                "☼○ ▼   ☼" +
-                "☼○ ®®  ☼" +
-                "☼○○<──ö☼" +
-                "☼      ☼" +
-                "☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼      ☼\n" +
+                "☼  ╓   ☼\n" +
+                "☼○ ▼   ☼\n" +
+                "☼○ ®®  ☼\n" +
+                "☼○○<──ö☼\n" +
+                "☼      ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼○ ╓   ☼\n" +
                 "☼○ ♥®  ☼\n" +
                 "☼○<───ö☼\n" +
                 "☼      ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼○ æ   ☼\n" +
                 "☼○ ♣®  ☼\n" +
                 "☼○◄═══╕☼\n" +
                 "☼      ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [FURY]\n" +
                 "listener(1) => [BLUEBERRY]\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼○     ☼\n" +
                 "☼○ ╓®  ☼\n" +
                 "☼<ö♥   ☼\n" +
                 "☼      ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼○     ☼\n" +
                 "☼○ æ®  ☼\n" +
                 "☼◄╕♣   ☼\n" +
                 "☼      ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [EAT[3], EAT[1]]\n" +
                 "listener(1) => [BLUEBERRY]\n");
 
-        enemy.up();
-        game.tick();
+        hero(1).up();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼○     ☼\n" +
                 "☼˄  ®  ☼\n" +
                 "☼└ö╓   ☼\n" +
                 "☼  ♥   ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼○     ☼\n" +
                 "☼▲  ®  ☼\n" +
                 "☼╚╕æ   ☼\n" +
                 "☼  ♣   ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        hero.right();
-        game.tick();
+        hero(0).right();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼˄     ☼\n" +
                 "☼│  ®  ☼\n" +
                 "☼└ö    ☼\n" +
                 "☼  ╘♥  ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼▲     ☼\n" +
                 "☼║  ®  ☼\n" +
                 "☼╚╕    ☼\n" +
                 "☼  ×♣  ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        enemy.right();
-        hero.up();
-        game.tick();
+        hero(1).right();
+        hero(0).up();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼┌>    ☼\n" +
                 "☼│  ®  ☼\n" +
                 "☼¤  ♥  ☼\n" +
                 "☼   ╙  ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼╔►    ☼\n" +
                 "☼║  ®  ☼\n" +
                 "☼╙  ♣  ☼\n" +
                 "☼   ¤  ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼┌─>   ☼\n" +
                 "☼¤  ♥  ☼\n" +
                 "☼   ╙  ☼\n" +
                 "☼      ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼╔═►   ☼\n" +
                 "☼╙  ♣  ☼\n" +
                 "☼   ¤  ☼\n" +
                 "☼      ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [FURY]\n" +
                 "listener(1) => [BLUEBERRY, BLUEBERRY]\n");
 
-        hero.left();
-        game.tick();
+        hero(0).left();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼×──>  ☼\n" +
                 "☼  ♥╕  ☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼╘══►  ☼\n" +
                 "☼  ♣ö  ☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 1);
 
-        hero.up();
-        game.tick();
+        hero(0).up();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼  ♥×> ☼\n" +
                 "☼  ╙   ☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼  ♣╘► ☼\n" +
                 "☼  ¤   ☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
-                "☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [EAT[2]]\n");
@@ -5030,22 +4945,22 @@ public class MultiplayerTest {
 
     @Test
     public void eat() {
-        givenFl("☼☼☼☼☼☼☼☼☼☼" +
-                "☼        ☼" +
-                "☼        ☼" +
-                "☼   ╔♥   ☼" +
-                "☼   ║┌>  ☼" +
-                "☼  ╔╝└─┐ ☼" +
-                "☼  ╙ ×─┘ ☼" +
-                "☼        ☼" +
-                "☼        ☼" +
-                "☼☼☼☼☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼☼☼☼☼\n" +
+                "☼        ☼\n" +
+                "☼        ☼\n" +
+                "☼   ╔♥   ☼\n" +
+                "☼   ║┌>  ☼\n" +
+                "☼  ╔╝└─┐ ☼\n" +
+                "☼  ╙ ×─┘ ☼\n" +
+                "☼        ☼\n" +
+                "☼        ☼\n" +
+                "☼☼☼☼☼☼☼☼☼☼\n");
 
-        hero.down();
-        enemy.up();
-        game.tick();
+        hero(0).down();
+        hero(1).up();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼        ☼\n" +
                 "☼        ☼\n" +
                 "☼   ╔╗˄  ☼\n" +
@@ -5054,9 +4969,9 @@ public class MultiplayerTest {
                 "☼        ☼\n" +
                 "☼        ☼\n" +
                 "☼        ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼        ☼\n" +
                 "☼        ☼\n" +
                 "☼   ┌┐▲  ☼\n" +
@@ -5065,14 +4980,14 @@ public class MultiplayerTest {
                 "☼        ☼\n" +
                 "☼        ☼\n" +
                 "☼        ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
                 "listener(0) => [EAT[6]]\n");
 
-        game.tick();
+        tick();
 
-        assertH("☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼        ☼\n" +
                 "☼     ˄  ☼\n" +
                 "☼   ╔╗¤  ☼\n" +
@@ -5081,9 +4996,9 @@ public class MultiplayerTest {
                 "☼        ☼\n" +
                 "☼        ☼\n" +
                 "☼        ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼\n", 0);
 
-        assertE("☼☼☼☼☼☼☼☼☼☼\n" +
+        assertF("☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼        ☼\n" +
                 "☼     ▲  ☼\n" +
                 "☼   ┌┐╙  ☼\n" +
@@ -5092,7 +5007,7 @@ public class MultiplayerTest {
                 "☼        ☼\n" +
                 "☼        ☼\n" +
                 "☼        ☼\n" +
-                "☼☼☼☼☼☼☼☼☼☼\n");
+                "☼☼☼☼☼☼☼☼☼☼\n", 1);
     }
 }
 
