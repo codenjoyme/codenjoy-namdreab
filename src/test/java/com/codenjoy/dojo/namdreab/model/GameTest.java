@@ -29,7 +29,8 @@ public class GameTest extends AbstractGameTest {
 
     // карта со своим героем
     @Test
-    public void shouldHeroOnBoard() {
+    public void shouldHeroOnBoard_whenStartGame() {
+        // given when
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼ ╘►  ☼\n" +
@@ -38,6 +39,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼ ╘►  ☼\n" +
@@ -49,7 +51,8 @@ public class GameTest extends AbstractGameTest {
 
     // старт героя из "стартового бокса"
     @Test
-    public void shouldGetOutFromStartPoint() {
+    public void shouldGetOutFromStartPoint_whenAddNewPlayer_saseSingleSpot() {
+        // given
         givenFl("☼☼☼☼☼☼☼☼\n" +
                 "☼☼     ☼\n" +
                 "☼#     ☼\n" +
@@ -59,9 +62,11 @@ public class GameTest extends AbstractGameTest {
                 "☼☼     ☼\n" +
                 "☼☼☼☼☼☼☼☼\n");
 
+        // when
         dice(0);
         givenPlayer();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼☼     ☼\n" +
                 "╘►     ☼\n" +
@@ -96,7 +101,8 @@ public class GameTest extends AbstractGameTest {
 
     // старт героя из другого "стартового бокса"
     @Test
-    public void shouldGetOutFromStartPoint_caseAnotherSpot() {
+    public void shouldGetOutFromStartPoint_whenAddNewPlayer_caseAnotherSpot() {
+        // given
         givenFl("☼☼☼☼☼☼☼☼\n" +
                 "☼☼     ☼\n" +
                 "☼#     ☼\n" +
@@ -106,9 +112,11 @@ public class GameTest extends AbstractGameTest {
                 "☼☼     ☼\n" +
                 "☼☼☼☼☼☼☼☼\n");
 
-        dice(1); // другой спот
+        // when
+        dice(1); // select another spot
         givenPlayer();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼☼     ☼\n" +
                 "☼#     ☼\n" +
@@ -143,7 +151,8 @@ public class GameTest extends AbstractGameTest {
 
     // карта с черникой, желудями, бледными поганками, пилюлями ярости, деньгами
     @Test
-    public void shouldBoardWithElements() {
+    public void shouldDrawBoardWithElements_whenStartGame() {
+        // given when
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼ ╘►  ☼\n" +
                 "☼     ☼\n" +
@@ -152,6 +161,7 @@ public class GameTest extends AbstractGameTest {
                 "☼  © ○☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼ ╘►  ☼\n" +
                 "☼     ☼\n" +
@@ -161,9 +171,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // тест событий
     @Test
     public void shouldGoldEvent_whenEatIt() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -180,8 +190,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         verifyAllEvents("[GOLD]");
 
         assertF("☼☼☼☼☼☼☼\n" +
@@ -193,9 +205,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // тест событий
     @Test
     public void shouldBlueberryEvent_whenEatIt() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -212,8 +224,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         verifyAllEvents("[BLUEBERRY]");
 
         assertF("☼☼☼☼☼☼☼\n" +
@@ -226,7 +240,8 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldAcornAndDieEvents_whenEatAcorn_lengthIsTooShort() {
+    public void shouldDie_whenEatAcorn_caseLengthIsTooShort() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -243,8 +258,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         verifyAllEvents("[DIE]");
 
         assertEquals(false, hero().isAlive());
@@ -258,8 +275,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -273,7 +292,8 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldAcornAndAlive_whenEatAcorn_lengthIsOk() {
+    public void shouldAlive_whenEatAcorn_caseLengthIsOk() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼╔═══╗☼\n" +
                 "☼╚═╗╘╝☼\n" +
@@ -290,8 +310,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         verifyAllEvents("[ACORN]");
 
         assertEquals(true, hero().isAlive());
@@ -305,8 +327,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╔╕   ☼\n" +
                 "☼╚═╗  ☼\n" +
@@ -321,7 +345,8 @@ public class GameTest extends AbstractGameTest {
 
     // тест продолжения движения без дополнительных указаний
     @Test
-    public void shouldMoveByInertia_whenNoCommand_directionLeftToRight() {
+    public void shouldMoveByInertia_whenNoCommand_caseDirectionFromLeftToRight() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -330,8 +355,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -340,8 +367,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -350,8 +379,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -362,7 +393,8 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldMoveByInertia_whenNoCommand_directionRightToLeft() {
+    public void shouldMoveByInertia_whenNoCommand_caseDirectionFromRightToLeft() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -371,8 +403,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -381,8 +415,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -391,8 +427,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -403,7 +441,8 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldMoveByInertia_whenNoCommand_directionUpToDown() {
+    public void shouldMoveByInertia_whenNoCommand_caseDirectionUpToDown() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼  ╓  ☼\n" +
                 "☼  ▼  ☼\n" +
@@ -412,8 +451,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ╓  ☼\n" +
@@ -422,8 +463,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -432,8 +475,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -444,7 +489,8 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldMoveByInertia_whenNoCommand_directionDownToUp() {
+    public void shouldMoveByInertia_whenNoCommand_caseDirectionDownToUp() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -453,8 +499,10 @@ public class GameTest extends AbstractGameTest {
                 "☼  ╙  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -463,8 +511,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ▲  ☼\n" +
@@ -473,8 +523,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ▲  ☼\n" +
                 "☼  ╙  ☼\n" +
@@ -485,8 +537,10 @@ public class GameTest extends AbstractGameTest {
     }
 
     // тесты движения в заданную сторону
+
     @Test
     public void shouldTurnDown() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -495,9 +549,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().down();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -509,6 +565,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldTurnRight() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ╓  ☼\n" +
@@ -517,9 +574,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().right();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -531,6 +590,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldTurnUp() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -539,9 +599,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().up();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼   ▲ ☼\n" +
@@ -553,6 +615,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldTurnLeft() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ╓  ☼\n" +
@@ -561,9 +624,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().left();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -574,8 +639,10 @@ public class GameTest extends AbstractGameTest {
     }
 
     // рост бороды
+
     @Test
     public void shouldGrow_whenEatBlueberry() {
+        // given
         givenFl("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -588,8 +655,10 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         verifyAllEvents("[BLUEBERRY]");
 
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -604,8 +673,10 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -618,8 +689,10 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         verifyAllEvents("[BLUEBERRY]");
 
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -634,8 +707,10 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -648,8 +723,10 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         verifyAllEvents("[BLUEBERRY]");
 
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -664,8 +741,10 @@ public class GameTest extends AbstractGameTest {
                 "☼         ☼\n" +
                 "☼☼☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼         ☼\n" +
                 "☼         ☼\n" +
@@ -682,6 +761,7 @@ public class GameTest extends AbstractGameTest {
     // тест смерти об стену
     @Test
     public void shouldDie_whenEatRock() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -700,8 +780,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         verifyAllEvents("[DIE]");
 
         assertEquals(false, hero().isAlive());
@@ -715,8 +797,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -729,9 +813,10 @@ public class GameTest extends AbstractGameTest {
         assertEquals(true, hero().isActive());
     }
 
-    // пока змея не активна, её направление "последнего движения" не меняется
+    // пока герой не активен, его направление движения не меняется
     @Test
     public void shouldStopAndDontMove_whenNotActive() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -740,9 +825,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().setActive(false);
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -751,9 +838,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().up();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -762,6 +851,7 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().left();
         tick();
 
@@ -769,6 +859,7 @@ public class GameTest extends AbstractGameTest {
         hero().left();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -778,9 +869,10 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // змея не может разворачиваться в противоположную сторону
+    // герой не может разворачиваться в противоположную сторону
     @Test
-    public void shouldCantMovingBack_fromRightToLeft() {
+    public void shouldCantMovingBack_caseMovingFromRightToLeft() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -789,9 +881,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().left();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -802,7 +896,8 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldCantMovingBack_fromLeftToRight() {
+    public void shouldCantMovingBack_caseMovingFromLeftToRight() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -811,9 +906,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().right();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -824,7 +921,8 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldCantMovingBack_fromUpToDown() {
+    public void shouldCantMovingBack_caseMovingFromUpToDown() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -833,9 +931,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().down();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ▲  ☼\n" +
@@ -846,7 +946,8 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldCantMovingBack_fromDownToUp() {
+    public void shouldCantMovingBack_caseMovingFromDownToUp() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ╓  ☼\n" +
@@ -855,9 +956,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().up();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -869,6 +972,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldTurnClockwise() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼ ╘═► ☼\n" +
@@ -877,9 +981,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().down();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ╘╗ ☼\n" +
@@ -887,7 +993,6 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
-
 
         tick();
 
@@ -899,9 +1004,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().left();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -920,9 +1027,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().up();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -941,9 +1050,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().right();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼ ╔►  ☼\n" +
@@ -965,6 +1076,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldTurnContrClockwise() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -973,9 +1085,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().up();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -994,9 +1108,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().left();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ◄╗ ☼\n" +
@@ -1015,9 +1131,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().down();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼ ╔╕  ☼\n" +
@@ -1036,9 +1154,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().right();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1058,9 +1178,10 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // съедая бледную поганку, герой перелетает желуди
+    // съедая бледную поганку, герой пропускает желуди отсавляя их не тронутыми
     @Test
     public void shouldFlyingOverAcorns_whenEatDeathCap() {
+        // given
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
@@ -1071,6 +1192,7 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // then
         assertEquals(false, hero().isFlying());
 
         tick();
@@ -1090,8 +1212,10 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertEquals(9, hero().flyingCount());
         assertEquals(true, hero().isFlying());
 
@@ -1105,8 +1229,10 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertEquals(8, hero().flyingCount());
         assertEquals(0, hero().furyCount());
         assertEquals(0, hero().acornsCount());
@@ -1123,9 +1249,11 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
         tick();
 
+        // then
         assertEquals(6, hero().flyingCount());
         assertEquals(0, hero().acornsCount());
         assertEquals(true, hero().isFlying());
@@ -1144,7 +1272,8 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldDisableDeathCapEffect_when10Ticks() {
+    public void shouldDisableDeathCapEffect_when10TicksHavePassed() {
+        // given
         shouldFlyingOverAcorns_whenEatDeathCap();
 
         assertF("☼☼☼☼☼☼☼☼☼\n" +
@@ -1157,11 +1286,13 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero().up();
         tick();
         tick();
         tick();
 
+        // then
         assertEquals(3, hero().flyingCount());
         assertEquals(true, hero().isFlying());
 
@@ -1175,10 +1306,12 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero().left();
         tick();
         tick();
 
+        // then
         assertEquals(1, hero().flyingCount());
         assertEquals(true, hero().isFlying());
 
@@ -1192,8 +1325,10 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertEquals(0, hero().flyingCount());
         assertEquals(false, hero().isFlying());
 
@@ -1208,9 +1343,10 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼\n");
     }
 
-    // съедая бледную поганку, герой может летать над собой
+    // съедая бледную поганку, герой может пролетать над своей бородой
     @Test
     public void shouldFlyingOverMyself_whenEatDeathCap() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼╓    ☼\n" +
                 "☼║    ☼\n" +
@@ -1221,6 +1357,7 @@ public class GameTest extends AbstractGameTest {
 
         tick();
 
+        // then
         verifyAllEvents("[DEATH_CAP]");
 
         assertEquals(9, hero().size());
@@ -1233,10 +1370,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().up();
         tick();
 
-        // змея не укоротилась
+        // then
+        // борода не укоротилась
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1247,8 +1386,10 @@ public class GameTest extends AbstractGameTest {
 
         assertEquals(9, hero().size());
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ♠  ☼\n" +
@@ -1257,8 +1398,10 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ♠  ☼\n" +
                 "☼  ║  ☼\n" +
@@ -1267,9 +1410,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().left();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼ ♠╗  ☼\n" +
                 "☼  ║  ☼\n" +
@@ -1279,9 +1424,10 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
     }
 
-    // съедая пилюлю ярости, герой ест желуди без ущерба
+    // съедая пилюлю ярости, герой ест желуди без ущерба для бороды
     @Test
-    public void shouldEatAcorns_whenEatFuryPill() {
+    public void shouldEatAcornsWithoutAnyCuts_whenEatFuryPill() {
+        // given
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
@@ -1296,6 +1442,7 @@ public class GameTest extends AbstractGameTest {
 
         tick();
 
+        // then
         verifyAllEvents("[FURY]");
 
         assertEquals(10, hero().furyCount());
@@ -1311,8 +1458,10 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertEquals(9, hero().furyCount());
         assertEquals(0, hero().acornsCount());
         assertEquals(true, hero().isFury());
@@ -1327,8 +1476,10 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         verifyAllEvents("[ACORN]");
 
         assertEquals(8, hero().furyCount());
@@ -1347,9 +1498,11 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
         tick();
 
+        // then
         assertEquals(6, hero().furyCount());
         assertEquals(1, hero().acornsCount());
         assertEquals(true, hero().isFury());
@@ -1368,9 +1521,11 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldDropAcorn_afterFury() {
-        shouldEatAcorns_whenEatFuryPill();
+    public void shouldDropAcornPickedUpAfterEatingFuryPill_whenHeroDoAct() {
+        // given
+        shouldEatAcornsWithoutAnyCuts_whenEatFuryPill();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
                 "☼       ☼\n" +
@@ -1396,10 +1551,11 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-
+        // when
         hero().act();
         tick();
 
+        // then
         assertEquals(0, hero().acornsCount());
 
         assertF("☼☼☼☼☼☼☼☼☼\n" +
@@ -1426,8 +1582,9 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldDisableFuryPillEffect_when10Ticks() {
-        shouldEatAcorns_whenEatFuryPill();
+    public void shouldDisableFuryPillEffect_when10TicksHavePassed() {
+        // given
+        shouldEatAcornsWithoutAnyCuts_whenEatFuryPill();
 
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -1439,11 +1596,13 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero().up();
         tick();
         tick();
         tick();
 
+        // then
         assertEquals(3, hero().furyCount());
         assertEquals(true, hero().isFury());
 
@@ -1457,10 +1616,12 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         hero().left();
         tick();
         tick();
 
+        // then
         assertEquals(1, hero().furyCount());
         assertEquals(true, hero().isFury());
 
@@ -1474,8 +1635,10 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
+        // when
         tick();
 
+        // then
         assertEquals(0, hero().furyCount());
         assertEquals(false, hero().isFury());
 
@@ -1492,8 +1655,10 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldDropAcorn_afterFuryDisabled() {
-        shouldDisableFuryPillEffect_when10Ticks();
+        // given
+        shouldDisableFuryPillEffect_when10TicksHavePassed();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼   ◄╕  ☼\n" +
                 "☼       ☼\n" +
@@ -1506,9 +1671,11 @@ public class GameTest extends AbstractGameTest {
 
         assertEquals(1, hero().acornsCount());
 
+        // when
         hero().act();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼  ◄╕●  ☼\n" +
                 "☼       ☼\n" +
@@ -1519,11 +1686,12 @@ public class GameTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n");
 
-
         assertEquals(0, hero().acornsCount());
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼ ◄╕ ●  ☼\n" +
                 "☼       ☼\n" +
@@ -1537,7 +1705,8 @@ public class GameTest extends AbstractGameTest {
 
     // разворот на 180 коротким героем невозможен
     @Test
-    public void shouldTurn180_whenLengthIs2() {
+    public void shoulCantTurn180_whenLengthIs2() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1546,10 +1715,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().up(); // раньше так срабатывало
         hero().left();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1561,7 +1732,8 @@ public class GameTest extends AbstractGameTest {
 
     // разворот на 180 с откусыванием бороды невозможен
     @Test
-    public void shouldTurn180_whenLengthIs5() {
+    public void shouldCantTurn180_whenLengthIs5() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1570,10 +1742,12 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero().down(); // раньше так срабатывало
         hero().left();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -1584,5 +1758,4 @@ public class GameTest extends AbstractGameTest {
 
         verifyAllEvents("[DIE]");
     }
-
 }
