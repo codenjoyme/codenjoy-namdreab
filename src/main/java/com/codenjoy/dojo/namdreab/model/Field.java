@@ -30,27 +30,27 @@ import com.codenjoy.dojo.services.round.RoundGameField;
 
 public interface Field extends RoundGameField<Player, Hero> {
 
-    boolean isBarrier(Point p);
+    boolean isBarrier(Point pt);
 
-    boolean isBlueberry(Point p);
+    boolean isBlueberry(Point pt);
 
-    boolean isAcorn(Point p);
+    boolean isAcorn(Point pt);
 
-    boolean isDeathCap(Point p);
+    boolean isDeathCap(Point pt);
 
-    boolean isFuryPill(Point p);
+    boolean isFuryPill(Point pt);
 
-    boolean isGold(Point p);
+    boolean isGold(Point pt);
 
-    void addBlueberry(Point p);
+    void addBlueberry(Point pt);
 
-    boolean addAcorn(Point p);
+    boolean addAcorn(Point pt);
 
-    void addDeathCap(Point p);
+    void addDeathCap(Point pt);
 
-    void addFuryPill(Point p);
+    void addFuryPill(Point pt);
 
-    void addGold(Point p);
+    void addGold(Point pt);
 
     Hero enemyEatenWith(Hero h);
 
