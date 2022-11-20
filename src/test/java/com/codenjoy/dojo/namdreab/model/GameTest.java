@@ -50,8 +50,6 @@ public class GameTest extends AbstractGameTest {
     // старт героя из "стартового бокса"
     @Test
     public void shouldGetOutFromStartPoint() {
-        dice(0);
-
         givenFl("☼☼☼☼☼☼☼☼\n" +
                 "☼☼     ☼\n" +
                 "☼#     ☼\n" +
@@ -60,6 +58,9 @@ public class GameTest extends AbstractGameTest {
                 "☼☼     ☼\n" +
                 "☼☼     ☼\n" +
                 "☼☼☼☼☼☼☼☼\n");
+
+        dice(0);
+        givenPlayer();
 
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼☼     ☼\n" +
@@ -89,6 +90,53 @@ public class GameTest extends AbstractGameTest {
                 "☼☼     ☼\n" +
                 "☼☼     ☼\n" +
                 "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
+    }
+
+    // старт героя из другого "стартового бокса"
+    @Test
+    public void shouldGetOutFromStartPoint_caseAnotherSpot() {
+        givenFl("☼☼☼☼☼☼☼☼\n" +
+                "☼☼     ☼\n" +
+                "☼#     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼#     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
+
+        dice(1); // другой спот
+        givenPlayer();
+
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼☼     ☼\n" +
+                "☼#     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
+                "╘►     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
+
+        tick();
+
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼☼     ☼\n" +
+                "☼#     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼╘►    ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼☼☼☼☼☼☼\n");
+
+        tick();
+
+        assertF("☼☼☼☼☼☼☼☼\n" +
+                "☼☼     ☼\n" +
+                "☼#     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼☼     ☼\n" +
+                "☼#╘►   ☼\n" +
                 "☼☼     ☼\n" +
                 "☼☼☼☼☼☼☼☼\n");
     }
