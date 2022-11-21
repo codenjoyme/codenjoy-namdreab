@@ -35,7 +35,7 @@ public class TestGameSettings extends GameSettings {
     public TestGameSettings() {
         bool(ROUNDS_ENABLED, true);
         integer(ROUNDS_PER_MATCH, 5);
-        integer(ROUNDS_MIN_TICKS_FOR_WIN, 2);
+        integer(ROUNDS_MIN_TICKS_FOR_WIN, 1);
         integer(ROUNDS_TIME_BEFORE_START, 0);
         integer(ROUNDS_TIME, 300);
         integer(ROUNDS_TIME_FOR_WINNER, 1);

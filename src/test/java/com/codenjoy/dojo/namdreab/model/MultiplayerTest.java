@@ -31,7 +31,8 @@ public class MultiplayerTest extends AbstractGameTest {
 
     // проверяем что соперник отображается на карте
     @Test
-    public void shouldHeroWithEnemyOnField() {
+    public void shouldHeroWithEnemyOnField_whenStart() {
+        // given when
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼ ╘►  ☼\n" +
@@ -40,6 +41,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼ ╘►  ☼\n" +
@@ -57,9 +59,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n", 1);
     }
 
-    // спящие змеи
+    // спящие герои
     @Test
     public void shouldSleepingHero_whenSetNotActive() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼ ╘►  ☼\n" +
@@ -71,6 +74,7 @@ public class MultiplayerTest extends AbstractGameTest {
         hero(0).setActive(false);
         hero(1).setActive(false);
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼ ~&  ☼\n" +
@@ -78,7 +82,6 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼ *ø  ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 0);
-
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -88,8 +91,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 1);
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼ ~&  ☼\n" +
@@ -99,9 +104,8 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n", 0);
     }
 
-    // если режим игры не rounds, а multiple, то змеи активны сразу
     @Test
-    public void shouldNotSleepingHero_whenGameIsMultiplayer() {
+    public void shouldNotSleepingHero_whenSetActive_caseGameIsMultiplayer() {
         // given
         settings().bool(ROUNDS_ENABLED, false);
 
@@ -113,10 +117,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        // then
         hero(0).setActive(true);
         hero(1).setActive(true);
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼ ╘►  ☼\n" +
@@ -146,10 +150,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n", 0);
     }
 
-    // проверяем что обе змейки умирают, когда врезаются в равного соперника
-    // и получаем оповещение о смерти
+    // проверяем что оба героя погибают, когда врезаются в равного соперника
     @Test
-    public void shouldDie_whenHeadCrashToOtherHero_bothDie() {
+    public void shouldDie_whenHeadCrashToOtherHero_caseBothDie() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼ ╘►  ☼\n" +
@@ -158,10 +162,12 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // when
         hero(0).down();
         hero(1).up();
         tick();
 
+        // then
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [DIE]\n");
@@ -182,8 +188,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 1);
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -201,11 +209,12 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n", 1);
     }
 
-    // проверяем что меньшая змейка умирает, когда врезаются голова к голове
-    // большая змейка уменьшается на размер маленькой
-    // змейка перестаёт уменьшаться на следующий ход
+    // проверяем что меньший герой умирает, когда врезаются голова к голове
+    // больший герой уменьшается на размер меньшего
+    // переставая уменьшаться на следующий ход
     @Test
-    public void shouldDie_whenHeadCrashToOtherHero_heroDie() {
+    public void shouldDie_whenHeadCrashToOtherHero_caseShortestHeroDie() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼   ╘►☼\n" +
@@ -214,6 +223,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼   ╘►☼\n" +
@@ -230,10 +240,12 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 1);
 
+        // when
         hero(0).down();
         hero(1).up();
         tick();
 
+        // then
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [EAT[2], WIN]\n");
@@ -254,8 +266,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 1);
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼    ˄☼\n" +
@@ -272,8 +286,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 1);
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼    ˄☼\n" +
                 "☼    ¤☼\n" +
@@ -283,10 +299,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n", 0);
     }
 
-    // проверяем что змейка умирает, когда врезается в тело другой змейки
+    // проверяем что герой умирает, когда врезается в "шею" другого героя
     @Test
-    public void shouldDie_whenBodyCrashToOtherHero_enemyDie() {
-        // когда в игрока врезается противник
+    public void shouldDie_whenNeckCrashToOtherHero_caseHeroAtack_caseBothDie() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼╘═►  ☼\n" +
@@ -295,6 +311,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼╘═►  ☼\n" +
@@ -311,8 +328,14 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 1);
 
+        // when
         hero(1).up();
         tick();
+
+        // then
+        verifyAllEvents(
+                "listener(0) => [DIE]\n" +
+                "listener(1) => [DIE]\n");
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -330,11 +353,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 1);
 
-        verifyAllEvents(
-                "listener(0) => [DIE]\n" +
-                "listener(1) => [DIE]\n");
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -352,10 +374,11 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n", 1);
     }
 
+    // такой же тест, но врезается игрок в противника
+    // (последовательность героев в списке может оказывать значение на результат)
     @Test
-    public void shouldDie_whenBodyCrashToOtherHero_heroDie() {
-        // такой же тест, но врезается игрок в противника
-        // (последовательность героев в списке может оказывать значение на результат)
+    public void shouldDie_whenNeckCrashToOtherHero_caseEnemyAtack_caseBothDie() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼ ╘►  ☼\n" +
@@ -364,6 +387,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼ ╘►  ☼\n" +
@@ -380,8 +404,14 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 1);
 
+        // when
         hero(0).down();
         tick();
+
+        // then
+        verifyAllEvents(
+                "listener(0) => [DIE]\n" +
+                "listener(1) => [DIE]\n");
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -399,12 +429,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 1);
 
-        verifyAllEvents(
-                "listener(0) => [DIE]\n" +
-                "listener(1) => [DIE]\n");
-
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -422,10 +450,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n", 1);
     }
 
-    // проверяем что змейка умирает, когда врезается в хвост другой змейки
+    // проверяем что герой умирает, когда врезается в хвост бороды другого игрока
     @Test
-    public void shouldDie_whenTailCrashToOtherHero_enemyDie() {
-        // когда в игрока врезается противник
+    public void shouldDie_whenBeardCrashToOtherHero_caseEnemyDie() {
+        // given
         givenFl("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
@@ -435,6 +463,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼      ☼\n" +
                 "☼☼☼☼☼☼☼☼\n");
 
+        // then
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
@@ -453,9 +482,11 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼      ☼\n" +
                 "☼☼☼☼☼☼☼☼\n", 1);
 
+        // when
         hero(1).up();
         tick();
 
+        // then
         verifyAllEvents(
                 "listener(0) => [EAT[3], WIN]\n" +
                 "listener(1) => [DIE]\n");
@@ -478,8 +509,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼      ☼\n" +
                 "☼☼☼☼☼☼☼☼\n", 1);
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
@@ -497,14 +530,11 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼      ☼\n" +
                 "☼      ☼\n" +
                 "☼☼☼☼☼☼☼☼\n", 1);
-
-        verifyAllEvents("");
     }
 
-    // а если лобовое столкновение
     @Test
-    public void shouldDie_whenTailCrashToOtherHero_bothDie() {
-        // когда в игрока врезается противник
+    public void shouldDie_whenNeckCrashToOtherHero_caseSameLength_caseBothDie() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼╘═►  ☼\n" +
@@ -513,6 +543,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼╘═►  ☼\n" +
@@ -529,9 +560,11 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 1);
 
+        // when
         hero(1).up();
         tick();
 
+        // then
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [DIE]\n");
@@ -552,8 +585,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 1);
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -573,7 +608,8 @@ public class MultiplayerTest extends AbstractGameTest {
 
     // такой же тест, но врезается игрок в противника
     @Test
-    public void shouldDie_whenTailCrashToOtherHero_heroDie() {
+    public void shouldDie_whenNeckCrashToOtherHero_caseAttackingHeroDie() {
+        // given
         givenFl("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
@@ -583,6 +619,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼      ☼\n" +
                 "☼☼☼☼☼☼☼☼\n");
 
+        // then
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
@@ -601,8 +638,14 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼      ☼\n" +
                 "☼☼☼☼☼☼☼☼\n", 1);
 
+        // when
         hero(0).down();
         tick();
+
+        // then
+        verifyAllEvents(
+                "listener(0) => [DIE]\n" +
+                "listener(1) => [EAT[3], WIN]\n");
 
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
@@ -622,12 +665,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼      ☼\n" +
                 "☼☼☼☼☼☼☼☼\n", 1);
 
-        verifyAllEvents(
-                "listener(0) => [DIE]\n" +
-                "listener(1) => [EAT[3], WIN]\n");
-
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
@@ -649,7 +690,8 @@ public class MultiplayerTest extends AbstractGameTest {
 
     // а тут лобовое столкновение
     @Test
-    public void shouldDie_whenTailCrashToOtherHero_bothDie2() {
+    public void shouldDie_whenNeckCrashToOtherHero_caseSameLength_caseEnemyAtack_caseBothDie() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼╘═►  ☼\n" +
@@ -658,6 +700,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼╘═►  ☼\n" +
@@ -674,9 +717,11 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 1);
 
+        // when
         hero(0).down();
         tick();
 
+        // then
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
                 "listener(1) => [DIE]\n");
@@ -697,8 +742,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 1);
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -718,9 +765,10 @@ public class MultiplayerTest extends AbstractGameTest {
 
     // TODO продолжить дальше улучшать
 
-    // в полёте змейки не вредят друг-другу (летишь сам)
+    // в полёте герои не вредят друг-другу (летишь сам)
     @Test
-    public void flyOverEnemy() {
+    public void shouldFlyOverEnemy_whenEatDeathCap() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼╘►©  ☼\n" +
@@ -734,10 +782,12 @@ public class MultiplayerTest extends AbstractGameTest {
         verifyAllEvents(
                 "listener(0) => [DEATH_CAP]\n");
 
+        // when
         hero(0).down();
         hero(1).up();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ╓  ☼\n" +
@@ -746,8 +796,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 0);
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ˄  ☼\n" +
@@ -756,8 +808,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 0);
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ˄  ☼\n" +
                 "☼  ¤  ☼\n" +
@@ -767,9 +821,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n", 0);
     }
 
-    // в полёте змейки не вредят друг-другу (летит враг)
+    // в полёте герои не вредят друг-другу (летишь сам)
     @Test
-    public void flyOverHero() {
+    public void shouldFlyOverHero_whenEatDeathCap() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼╘►   ☼\n" +
@@ -783,10 +838,12 @@ public class MultiplayerTest extends AbstractGameTest {
         verifyAllEvents(
                 "listener(1) => [DEATH_CAP]\n");
 
+        // when
         hero(0).down();
         hero(1).up();
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ╓  ☼\n" +
@@ -795,8 +852,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 0);
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ♦  ☼\n" +
@@ -805,8 +864,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 0);
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼  ♦  ☼\n" +
                 "☼  ¤  ☼\n" +
@@ -816,9 +877,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n", 0);
     }
 
-    // в случае ярости, змея может съесть другую
+    // в случае ярости, герой может съесть другого
     @Test
-    public void eatEnemy() {
+    public void shouldEatEnemy_whenFurryPill_caseHeadAttack() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼ ╘►® ☼\n" +
@@ -834,9 +896,15 @@ public class MultiplayerTest extends AbstractGameTest {
                 "listener(0) => [FURY]\n" +
                 "listener(1) => [BLUEBERRY, BLUEBERRY]\n");
 
+        // when
         hero(0).down();
         hero(1).up();
         tick();
+
+        // then
+        verifyAllEvents(
+                "listener(0) => [EAT[4], WIN]\n" +
+                "listener(1) => [DIE]\n");
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -846,12 +914,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 0);
 
-        verifyAllEvents(
-                "listener(0) => [EAT[4], WIN]\n" +
-                "listener(1) => [DIE]\n");
-
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼     ☼\n" +
@@ -859,14 +925,13 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼    ♥☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 0);
-
-        verifyAllEvents("");
     }
 
-    // в случае ярости, можно откусить кусок змейки соперника
+    // в случае ярости, можно откусить кусок бороды соперника
+    // когда в игрока врезается противник
     @Test
-    public void eatEnemyTail() {
-        // когда в игрока врезается противник
+    public void shouldEatEnemy_whenFurryPill_caseBeardCrashByHero() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼╘►○○ ☼\n" +
@@ -876,16 +941,23 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         tick();
+
         verifyAllEvents(
                 "listener(0) => [BLUEBERRY]\n" +
                 "listener(1) => [FURY]\n");
 
         hero(1).up();
         tick();
+
         verifyAllEvents(
                 "listener(0) => [BLUEBERRY]\n");
 
+        // when
         tick();
+
+        // then
+        verifyAllEvents(
+                "listener(1) => [EAT[2]]\n");
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -894,9 +966,14 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 0);
+    }
 
-        // такой же тест, но врезается игрок в противника
-        // (последовательность героев в списке может оказывать значение на результат)
+    // в случае ярости, можно откусить кусок бороды соперника
+    // такой же тест, но врезается игрок в противника
+    // (последовательность героев в списке может оказывать значение на результат)
+    @Test
+    public void shouldEatEnemy_whenFurryPill_caseBeardCrashByEnemy() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼╘►®  ☼\n" +
@@ -911,9 +988,14 @@ public class MultiplayerTest extends AbstractGameTest {
                 "listener(0) => [FURY]\n" +
                 "listener(1) => [BLUEBERRY]\n");
 
+        // when
         hero(0).down();
         tick();
         tick();
+
+        // then
+        verifyAllEvents(
+                "listener(0) => [EAT[1]]\n");
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -922,14 +1004,12 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼  ♥×>☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 0);
-
-        verifyAllEvents(
-                "listener(0) => [EAT[1]]\n");
     }
 
-    // если твоя змейка осталась на поле сама, а все противники погибли - тебе WIN
+    // если твоЙ герой остался на поле сам, а все противники погибли - тебе WIN
     @Test
-    public void shouldWin_whenOneOnBoardAfterEnemyDie() {
+    public void shouldWin_whenOneOnBoard_caseEnemyDie() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼╘►   ☼\n" +
@@ -956,8 +1036,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 1);
 
+        // when
         tick();
 
+        // then
         verifyAllEvents(
                 "listener(0) => [WIN]\n" +
                 "listener(1) => [DIE]\n");
@@ -966,7 +1048,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼  ╘► ☼\n" +
                 "☼     ☼\n" +
-                "☼    ×☺" +
+                "☼    ×☺\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 0);
 
@@ -974,12 +1056,14 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼  ×> ☼\n" +
                 "☼     ☼\n" +
-                "☼    ╘☻" +
+                "☼    ╘☻\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 1);
 
+        // when
         tick();
 
+        // then
         verifyAllEvents("");
 
         assertF("☼☼☼☼☼☼☼\n" +
@@ -997,13 +1081,13 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 1);
-
     }
 
-    // если твоя змейка осталась на поле сама после того
+    // если твой герой остался на поле сам после того,
     // как противник удалился (не через die) - тебе WIN
     @Test
-    public void shouldWin_whenOneOnBoardAfterEnemyLeaveRoom() {
+    public void shouldWin_whenOneOnBoard_caseEnemyLeaveRoom() {
+        // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼╘►   ☼\n" +
@@ -1030,13 +1114,12 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 1);
 
+        // when
         remove(0);
         tick();
 
-        verifyAllEvents(
-                "listener(0) => [DIE]\n" +
-                "listener(1) => [WIN]\n");
-
+        // then
+        verifyAllEvents("[WIN]");
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1054,8 +1137,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 1);
 
+        // when
         tick();
 
+        // then
         verifyAllEvents("");
 
         assertF("☼☼☼☼☼☼☼\n" +
@@ -1075,9 +1160,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n", 1);
     }
 
-    // змейка не стартует сразу если стоит таймер
+    // герой не стартует сразу если стоит таймер
     @Test
-    public void shouldWaitTillTimer_thenStart() {
+    public void shouldWaitTillTimerThanStart() {
+        // given
         settings().integer(ROUNDS_TIME_BEFORE_START, 4);
 
         givenFl("☼☼☼☼☼☼☼\n" +
@@ -1089,26 +1175,35 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n");
 
         // ждем 4 тика
+
+        // when
         tick();
 
+        // then
         verifyAllEvents(
                 "listener(0) => [[...3...]]\n" +
                 "listener(1) => [[...3...]]\n");
 
+        // when
         tick();
 
+        // then
         verifyAllEvents(
                 "listener(0) => [[..2..]]\n" +
                 "listener(1) => [[..2..]]\n");
 
+        // when
         tick();
 
+        // then
         verifyAllEvents(
                 "listener(0) => [[.1.]]\n" +
                 "listener(1) => [[.1.]]\n");
 
+        // when
         tick();
 
+        // then
         verifyAllEvents(
                 "listener(0) => [START, [Round 1]]\n" +
                 "listener(1) => [START, [Round 1]]\n");
@@ -1121,8 +1216,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 0);
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼ ╘►  ☼\n" +
@@ -1131,8 +1228,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 0);
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼  ╘► ☼\n" +
@@ -1141,8 +1240,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n", 0);
 
+        // when
         tick();
 
+        // then
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
                 "☼   ╘►☼\n" +
@@ -1152,7 +1253,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼\n", 0);
     }
 
-    // если одна змейка погибает, стартует новый раунд
+    // если один герой погибает, стартует новый раунд
     @Test
     public void shouldStartNewGame_whenGameOver() {
         settings().integer(ROUNDS_TIME_BEFORE_START, 1)
@@ -1200,7 +1301,7 @@ public class MultiplayerTest extends AbstractGameTest {
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼☼     ☼\n" +
                 "☼☼     ☼\n" +
-                "☼#    ╘☻" +
+                "☼#    ╘☻\n" +
                 "☼# ×>  ☼\n" +
                 "☼☼     ☼\n" +
                 "☼☼     ☼\n" +
@@ -1289,8 +1390,8 @@ public class MultiplayerTest extends AbstractGameTest {
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼☼     ☼\n" +
                 "☼☼     ☼\n" +
-                "☼#    ╘☻" +
-                "☼#    ×☺" +
+                "☼#    ╘☻\n" +
+                "☼#    ×☺\n" +
                 "☼☼     ☼\n" +
                 "☼☼     ☼\n" +
                 "☼☼☼☼☼☼☼☼\n", 0);
@@ -1385,8 +1486,8 @@ public class MultiplayerTest extends AbstractGameTest {
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼☼     ☼\n" +
                 "☼☼     ☼\n" +
-                "☼#    ╘☻" +
-                "☼#    ×☺" +
+                "☼#    ╘☻\n" +
+                "☼#    ×☺\n" +
                 "☼☼     ☼\n" +
                 "☼☼     ☼\n" +
                 "☼☼☼☼☼☼☼☼\n", 0);
@@ -1486,8 +1587,9 @@ public class MultiplayerTest extends AbstractGameTest {
         verifyAllEvents("");
     }
 
-    // Змейка с одной только головой не живет
-    // идея в том, чтоб под таблеткой ярости откусить конец хвоста, оставив только голову
+    // Герой с одной только головой не живет
+    // идея в том, чтоб под таблеткой ярости откусить
+    // конец хвоста, оставив только голову
     @Test
     public void shouldDie_whenEatAllTailOtherHero_with1Length() {
         givenFl("☼☼☼☼☼☼☼☼\n" +
@@ -1851,7 +1953,7 @@ public class MultiplayerTest extends AbstractGameTest {
         verifyAllEvents("");
     }
 
-    // Кейз когда змейки сталкиваются головами
+    // Кейз когда герои сталкиваются головами
     @Test
     public void shouldCase6() {
         givenFl("☼☼☼☼☼☼☼☼\n" +
@@ -2091,8 +2193,9 @@ public class MultiplayerTest extends AbstractGameTest {
         verifyAllEvents("");
     }
 
-    // Когда две змейки сталкиваются на объекте, сначала должно быть обработано столкновение, а уж
-    // затем съедение объекта выжившей змейкой (если такая есть).
+    // Когда два героя сталкиваются на объекте, сначала должно
+    // быть обработано столкновение, а уж
+    // затем съедение объекта выжившим героем (если такой есть).
     @Test
     public void firstFightThenEatFury() {
         givenFl("☼☼☼☼☼☼☼☼\n" +
@@ -2337,7 +2440,8 @@ public class MultiplayerTest extends AbstractGameTest {
     }
 
     // Тестируем что обработка столкновений происходите до съедения желудя.
-    // Если бы желудь "съелся" короткой змейкой до обработки столкновения, она умерла бы не повредив длинную.
+    // Если бы желудь "съелся" коротким героем до обработки
+    // столкновения, он умер бы не повредив длинного.
     @Test
     public void firstFightThenEatAcorn() {
         givenFl("☼☼☼☼☼☼☼☼\n" +
@@ -2358,7 +2462,7 @@ public class MultiplayerTest extends AbstractGameTest {
         // несмотря на то что на сервере столкновение обрабатывается до съедения желудя,
         // съедение желудя приводит к мгновенной утрате длинны (на 3),
         // тогда как убийство соперника приводит к утрате длинны только на следующий тик.
-        // лично я бы апдейтил длинну выжившей змейки тоже сразу и не показывал бы части умерших змеек.
+        // лично я бы апдейтил длинну выжившего героя тоже сразу и не показывал бы части умерших героев.
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼æ     ☼\n" +
@@ -4747,7 +4851,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "listener(0) => [EAT[30]]\n");
     }
 
-    // была бага, когда откусывали от змейки два раза, то она второй раз не давалась
+    // была бага, когда откусывали от героя два раза, то она второй раз не давалась
     // попутно в этом тесте тестируется что будет,
     // если во время откусывания по fury скушать чернику
     @Test
