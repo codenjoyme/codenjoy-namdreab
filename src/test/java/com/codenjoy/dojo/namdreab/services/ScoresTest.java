@@ -24,111 +24,67 @@ package com.codenjoy.dojo.namdreab.services;
 
 
 import com.codenjoy.dojo.namdreab.TestGameSettings;
-import com.codenjoy.dojo.services.event.Calculator;
-import com.codenjoy.dojo.services.event.ScoresImpl;
+import com.codenjoy.dojo.services.event.EventObject;
+import com.codenjoy.dojo.services.event.ScoresMap;
+import com.codenjoy.dojo.services.settings.SettingsReader;
+import com.codenjoy.dojo.utils.scorestest.AbstractScoresTest;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
 import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.ACORN_SCORE;
 import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.DIE_PENALTY;
-import static java.util.stream.Collectors.joining;
-import static org.junit.Assert.assertEquals;
 
 
-public class ScoresTest {
+public class ScoresTest extends AbstractScoresTest {
 
-    public static final String SEPARATOR_BEFORE_AFTER = " => ";
-    public static final String SEPARATOR_EVENT_PARAMETERS = ",";
-    public static final String SEPARATOR_EVENTS = " ";
-
-    private GameSettings settings;
-
-    public ScoresTest() {
-        settings = new TestGameSettings()
+    @Override
+    public GameSettings settings() {
+        return new TestGameSettings()
                 .integer(DIE_PENALTY, -10)
                 .integer(ACORN_SCORE, -1);
     }
 
-    private ScoresImpl givenScores(int score) {
-        return new ScoresImpl<>(score, new Calculator<>(new Scores(settings)));
+    @Override
+    public Function<SettingsReader, ? extends ScoresMap<?>> scores() {
+        return Scores::new;
+    }
+
+    @Override
+    protected Class<? extends EventObject> events() {
+        return Event.class;
+    }
+
+    @Override
+    protected Class<? extends Enum> eventTypes() {
+        return Event.Type.class;
     }
 
     @Test
-    public void eventsTest() {
-        assertEvents(
-                "0 START => +0 => 0\n" +
-                        "0 BLUEBERRY => +1 => 1\n" +
-                        "0 BLUEBERRY BLUEBERRY BLUEBERRY => +1 +1 +1 => 3\n" +
-                        "0 GOLD => +10 => 10\n" +
-                        "0 ACORN => +0 => 0\n" +
-                        "0 WIN => +50 => 50\n" +
-                        "0 DIE => +0 => 0\n" +
-                        "100 START => +0 => 100\n" +
-                        "100 BLUEBERRY => +1 => 101\n" +
-                        "100 GOLD => +10 => 110\n" +
-                        "100 ACORN => -1 => 99\n" +
-                        "100 WIN => +50 => 150\n" +
-                        "100 FURY => +0 => 100\n" +
-                        "100 DEATH_CAP => +0 => 100\n" +
-                        "100 EAT => +10 => 110\n" +
-                        "100 EAT,2 => +20 => 120\n" +
-                        "100 EAT,5 => +50 => 150\n" +
-                        "100 EAT,5 EAT,2 => +50 +20 => 170\n" +
-                        "100 DIE => -10 => 90\n" +
-                        "100 START GOLD ACORN BLUEBERRY WIN FURY EAT,5 DEATH_CAP EAT,2 DIE => +0 +10 -1 +1 +50 +0 +50 +0 +20 -10 => 220");
+    public void shouldCollectScores() {
+        assertEvents("100:\n" +
+                "START > +0 = 100\n" +
+                "BLUEBERRY > +1 = 101\n" +
+                "GOLD > +10 = 111\n" +
+                "ACORN > -1 = 110\n" +
+                "WIN > +50 = 160\n" +
+                "FURY > +0 = 160\n" +
+                "DEATH_CAP > +0 = 160\n" +
+                "EAT > +10 = 170\n" +
+                "EAT,2 > +20 = 190\n" +
+                "EAT,5 > +50 = 240\n" +
+                "DIE > -10 = 230");
     }
 
-    private void assertEvents(String expected) {
-        String actual = forAll(expected, this::run);
-        assertEquals(expected, actual);
+    @Test
+    public void shouldNotLessThanZero_ifAcorn() {
+        assertEvents("0:\n" +
+                "ACORN > +0 = 0");
     }
 
-    private String forAll(String expected, Function<String, String> lineProcessor) {
-        return Arrays.stream(expected.split("\n"))
-                .map(lineProcessor)
-                .collect(joining("\n"));
-    }
-
-    private String run(String expected) {
-        String left = expected.split(SEPARATOR_BEFORE_AFTER)[0];
-        String[] parts = left.split(SEPARATOR_EVENTS);
-
-        AtomicInteger score = new AtomicInteger(Integer.parseInt(parts[0]));
-        ScoresImpl scores = givenScores(score.get());
-
-        String scoresHistory = Arrays.asList(parts)
-                .subList(1, parts.length).stream()
-                .map(this::event)
-                .peek(scores::event)
-                .map(event -> sign(scores.getScore() - score.get()))
-                .peek(it -> score.set(scores.getScore()))
-                .collect(joining(SEPARATOR_EVENTS));
-
-        return String.format("%s%s%s%s%s",
-                left,
-                SEPARATOR_BEFORE_AFTER,
-                scoresHistory,
-                SEPARATOR_BEFORE_AFTER,
-                scores.getScore());
-    }
-
-    private String sign(int value) {
-        return (value >= 0)
-                ? "+" + value
-                : String.valueOf(value);
-    }
-
-    private Event event(String it) {
-        if (it.contains(SEPARATOR_EVENT_PARAMETERS)) {
-            String name = it.split(SEPARATOR_EVENT_PARAMETERS)[0];
-            Event.Type type = Event.Type.valueOf(name);
-            int value = Integer.parseInt(it.split(SEPARATOR_EVENT_PARAMETERS)[1]);
-            return new Event(type, value);
-        }
-
-        return new Event(Event.Type.valueOf(it));
+    @Test
+    public void shouldNotLessThanZero_ifDie() {
+        assertEvents("0:\n" +
+                "DIE > +0 = 0");
     }
 }
