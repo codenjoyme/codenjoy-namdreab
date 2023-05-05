@@ -246,11 +246,21 @@ public class Hero extends RoundPlayerHero<Field>
     }
 
     public void eatDeathCap() {
-        flyingCount += settings().integer(DEATH_CAP_EFFECT_TIMEOUT);
+        // TODO запусти test shouldCase13 там идет загрузка из текста борды,
+        //      еще до создания field когда создаются heroes идет запрос на
+        //      settings() и он возвращает null, поэтому тут надо проверять
+        flyingCount += (settings() != null)
+                ? settings().integer(DEATH_CAP_EFFECT_TIMEOUT)
+                : 10;
     }
 
     public void eatFury() {
-        furyCount += settings().integer(FURY_PILL_EFFECT_TIMEOUT);
+        // TODO запусти test shouldCase13 там идет загрузка из текста борды,
+        //      еще до создания field когда создаются heroes идет запрос на
+        //      settings() и он возвращает null, поэтому тут надо проверять
+        furyCount += (settings() != null)
+                ? settings().integer(FURY_PILL_EFFECT_TIMEOUT)
+                : 10;
     }
 
     public void tickPills() {
