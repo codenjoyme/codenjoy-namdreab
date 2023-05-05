@@ -29,6 +29,7 @@ import com.codenjoy.dojo.services.event.ScoresImpl;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
 import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.ACORN_SCORE;
@@ -58,18 +59,26 @@ public class ScoresTest {
     @Test
     public void eventsTest() {
         assertEvents(
-                "0 START => 0\n" +
-                "0 BLUEBERRY => +1\n" +
-                "0 GOLD => +10\n" +
-                "0 ACORN => 0\n" +
-                "0 WIN => +50\n" +
-                "0 DIE => 0\n" +
-                "100 START => 0\n" +
-                "100 BLUEBERRY => +1\n" +
-                "100 GOLD => +10\n" +
-                "100 ACORN => -1\n" +
-                "100 WIN => +50\n" +
-                "100 DIE => -10");
+                "0 START => +0 => 0\n" +
+                        "0 BLUEBERRY => +1 => 1\n" +
+                        "0 BLUEBERRY BLUEBERRY BLUEBERRY => +1 +1 +1 => 3\n" +
+                        "0 GOLD => +10 => 10\n" +
+                        "0 ACORN => +0 => 0\n" +
+                        "0 WIN => +50 => 50\n" +
+                        "0 DIE => +0 => 0\n" +
+                        "100 START => +0 => 100\n" +
+                        "100 BLUEBERRY => +1 => 101\n" +
+                        "100 GOLD => +10 => 110\n" +
+                        "100 ACORN => -1 => 99\n" +
+                        "100 WIN => +50 => 150\n" +
+                        "100 FURY => +0 => 100\n" +
+                        "100 DEATH_CAP => +0 => 100\n" +
+                        "100 EAT => +10 => 110\n" +
+                        "100 EAT,2 => +20 => 120\n" +
+                        "100 EAT,5 => +50 => 150\n" +
+                        "100 EAT,5 EAT,2 => +50 +20 => 170\n" +
+                        "100 DIE => -10 => 90\n" +
+                        "100 START GOLD ACORN BLUEBERRY WIN FURY EAT,5 DEATH_CAP EAT,2 DIE => +0 +10 -1 +1 +50 +0 +50 +0 +20 -10 => 220");
     }
 
     private void assertEvents(String expected) {
@@ -87,22 +96,27 @@ public class ScoresTest {
         String left = expected.split(SEPARATOR_BEFORE_AFTER)[0];
         String[] parts = left.split(SEPARATOR_EVENTS);
 
-        int score = Integer.parseInt(parts[0]);
-        ScoresImpl scores = givenScores(score);
+        AtomicInteger score = new AtomicInteger(Integer.parseInt(parts[0]));
+        ScoresImpl scores = givenScores(score.get());
 
-        Arrays.asList(parts)
+        String scoresHistory = Arrays.asList(parts)
                 .subList(1, parts.length).stream()
                 .map(this::event)
-                .forEach(scores::event);
+                .peek(scores::event)
+                .map(event -> sign(scores.getScore() - score.get()))
+                .peek(it -> score.set(scores.getScore()))
+                .collect(joining(SEPARATOR_EVENTS));
 
-        return String.format("%s%s%s",
+        return String.format("%s%s%s%s%s",
                 left,
                 SEPARATOR_BEFORE_AFTER,
-                sign(scores.getScore() - score));
+                scoresHistory,
+                SEPARATOR_BEFORE_AFTER,
+                scores.getScore());
     }
 
     private String sign(int value) {
-        return (value > 0)
+        return (value >= 0)
                 ? "+" + value
                 : String.valueOf(value);
     }
