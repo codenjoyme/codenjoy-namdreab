@@ -27,71 +27,94 @@ import com.codenjoy.dojo.namdreab.TestGameSettings;
 import com.codenjoy.dojo.services.event.Calculator;
 import com.codenjoy.dojo.services.event.ScoresImpl;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.function.Function;
 
-import static com.codenjoy.dojo.namdreab.services.Event.Type.*;
-import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.*;
+import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.ACORN_SCORE;
+import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.DIE_PENALTY;
+import static java.util.stream.Collectors.joining;
 import static org.junit.Assert.assertEquals;
 
 
-@RunWith(Parameterized.class)
 public class ScoresTest {
 
-    private GameSettings settings;
-    private ScoresImpl scores;
-    private Event[] events;
-    private int increase;
+    public static final String SEPARATOR_BEFORE_AFTER = " => ";
+    public static final String SEPARATOR_EVENT_PARAMETERS = ",";
+    public static final String SEPARATOR_EVENTS = " ";
 
-    public ScoresTest(int score, int increase, Event... events) {
+    private GameSettings settings;
+
+    public ScoresTest() {
         settings = new TestGameSettings()
-                .integer(WIN_SCORE, 30)
-                .integer(BLUEBERRY_SCORE, 1)
-                .integer(GOLD_SCORE, 5)
                 .integer(DIE_PENALTY, -10)
                 .integer(ACORN_SCORE, -1);
-        givenScores(score);
-        this.events = events;
-        this.increase = increase;
     }
 
-    private void givenScores(int score) {
-        scores = new ScoresImpl<>(score, new Calculator<>(new Scores(settings)));
-    }
-
-    @Parameterized.Parameters
-    public static Collection<Object[]> data() {
-        Object[][] params = new Object[][]{
-                {0, 0, new Event[]{new Event(START)}},
-                {0, +1, new Event[]{new Event(BLUEBERRY)}},
-                {0, +5, new Event[]{new Event(GOLD)}},
-                {0, 0, new Event[]{new Event(ACORN)}}, // счёт всегда >=0
-                {0, +30, new Event[]{new Event(WIN)}},
-                {0, 0, new Event[]{new Event(DIE)}}, // счёт всегда >=0
-                {100, 0, new Event[]{new Event(START)}},
-                {100, +1, new Event[]{new Event(BLUEBERRY)}},
-                {100, +5, new Event[]{new Event(GOLD)}},
-                {100, -1, new Event[]{new Event(ACORN)}},
-                {100, +30, new Event[]{new Event(WIN)}},
-                {100, -10, new Event[]{new Event(DIE)}},
-        };
-        return Arrays.asList(params);
+    private ScoresImpl givenScores(int score) {
+        return new ScoresImpl<>(score, new Calculator<>(new Scores(settings)));
     }
 
     @Test
-    public void eventTest() {
-        // given
-        int before = scores.getScore();
+    public void eventsTest() {
+        assertEvents(
+                "0 START => 0\n" +
+                "0 BLUEBERRY => +1\n" +
+                "0 GOLD => +10\n" +
+                "0 ACORN => 0\n" +
+                "0 WIN => +50\n" +
+                "0 DIE => 0\n" +
+                "100 START => 0\n" +
+                "100 BLUEBERRY => +1\n" +
+                "100 GOLD => +10\n" +
+                "100 ACORN => -1\n" +
+                "100 WIN => +50\n" +
+                "100 DIE => -10");
+    }
 
-        // when
-        Arrays.stream(events).forEach(event -> scores.event(event));
+    private void assertEvents(String expected) {
+        String actual = forAll(expected, this::run);
+        assertEquals(expected, actual);
+    }
 
-        // then
-        int after = scores.getScore();
-        assertEquals("After events " + Arrays.toString(events) + " score should be",
-                before + increase, after);
+    private String forAll(String expected, Function<String, String> lineProcessor) {
+        return Arrays.stream(expected.split("\n"))
+                .map(lineProcessor)
+                .collect(joining("\n"));
+    }
+
+    private String run(String expected) {
+        String left = expected.split(SEPARATOR_BEFORE_AFTER)[0];
+        String[] parts = left.split(SEPARATOR_EVENTS);
+
+        int score = Integer.parseInt(parts[0]);
+        ScoresImpl scores = givenScores(score);
+
+        Arrays.asList(parts)
+                .subList(1, parts.length).stream()
+                .map(this::event)
+                .forEach(scores::event);
+
+        return String.format("%s%s%s",
+                left,
+                SEPARATOR_BEFORE_AFTER,
+                sign(scores.getScore() - score));
+    }
+
+    private String sign(int value) {
+        return (value > 0)
+                ? "+" + value
+                : String.valueOf(value);
+    }
+
+    private Event event(String it) {
+        if (it.contains(SEPARATOR_EVENT_PARAMETERS)) {
+            String name = it.split(SEPARATOR_EVENT_PARAMETERS)[0];
+            Event.Type type = Event.Type.valueOf(name);
+            int value = Integer.parseInt(it.split(SEPARATOR_EVENT_PARAMETERS)[1]);
+            return new Event(type, value);
+        }
+
+        return new Event(Event.Type.valueOf(it));
     }
 }
