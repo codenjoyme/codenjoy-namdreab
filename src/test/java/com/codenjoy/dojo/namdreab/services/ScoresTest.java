@@ -43,10 +43,10 @@ public class ScoresTest {
 
     private GameSettings settings;
     private ScoresImpl scores;
-    private Event event;
-    private int changeValue;
+    private Event[] events;
+    private int increase;
 
-    public ScoresTest(int score, Event event, int changeValue) {
+    public ScoresTest(int score, int increase, Event... events) {
         settings = new TestGameSettings()
                 .integer(WIN_SCORE, 30)
                 .integer(BLUEBERRY_SCORE, 1)
@@ -54,8 +54,8 @@ public class ScoresTest {
                 .integer(DIE_PENALTY, -10)
                 .integer(ACORN_SCORE, -1);
         givenScores(score);
-        this.event = event;
-        this.changeValue = changeValue;
+        this.events = events;
+        this.increase = increase;
     }
 
     private void givenScores(int score) {
@@ -65,30 +65,33 @@ public class ScoresTest {
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         Object[][] params = new Object[][]{
-                {0, new Event(START), 0},
-                {0, new Event(BLUEBERRY), +1},
-                {0, new Event(GOLD), +5},
-                {0, new Event(ACORN), 0}, // счёт всегда >=0
-                {0, new Event(WIN), +30},
-                {0, new Event(DIE), 0}, // счёт всегда >=0
-                {100, new Event(START), 0},
-                {100, new Event(BLUEBERRY), +1},
-                {100, new Event(GOLD), +5},
-                {100, new Event(ACORN), -1},
-                {100, new Event(WIN), +30},
-                {100, new Event(DIE), -10},
+                {0, 0, new Event[]{new Event(START)}},
+                {0, +1, new Event[]{new Event(BLUEBERRY)}},
+                {0, +5, new Event[]{new Event(GOLD)}},
+                {0, 0, new Event[]{new Event(ACORN)}}, // счёт всегда >=0
+                {0, +30, new Event[]{new Event(WIN)}},
+                {0, 0, new Event[]{new Event(DIE)}}, // счёт всегда >=0
+                {100, 0, new Event[]{new Event(START)}},
+                {100, +1, new Event[]{new Event(BLUEBERRY)}},
+                {100, +5, new Event[]{new Event(GOLD)}},
+                {100, -1, new Event[]{new Event(ACORN)}},
+                {100, +30, new Event[]{new Event(WIN)}},
+                {100, -10, new Event[]{new Event(DIE)}},
         };
         return Arrays.asList(params);
     }
 
     @Test
     public void eventTest() {
-        for (int i = 0; i < 2; i++) {
-            int before = scores.getScore();
-            scores.event(event);
-            int after = scores.getScore();
-            assertEquals("После события '" + event + "', счёт не корректен!",
-                    before + changeValue, after);
-        }
+        // given
+        int before = scores.getScore();
+
+        // when
+        Arrays.stream(events).forEach(event -> scores.event(event));
+
+        // then
+        int after = scores.getScore();
+        assertEquals("After events " + Arrays.toString(events) + " score should be",
+                before + increase, after);
     }
 }
