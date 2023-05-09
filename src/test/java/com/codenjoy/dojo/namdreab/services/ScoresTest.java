@@ -29,9 +29,7 @@ import com.codenjoy.dojo.services.event.ScoresMap;
 import com.codenjoy.dojo.utils.scorestest.AbstractScoresTest;
 import org.junit.Test;
 
-import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.ACORN_SCORE;
-import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.DIE_PENALTY;
-
+import static com.codenjoy.dojo.namdreab.services.GameSettings.Keys.*;
 
 public class ScoresTest extends AbstractScoresTest {
 
@@ -75,13 +73,84 @@ public class ScoresTest extends AbstractScoresTest {
 
     @Test
     public void shouldNotLessThanZero_ifAcorn() {
-        assertEvents("0:\n" +
+        assertEvents("2:\n" +
+                "ACORN > -1 = 1\n" +
+                "ACORN > -1 = 0\n" +
                 "ACORN > +0 = 0");
     }
 
     @Test
     public void shouldNotLessThanZero_ifDie() {
-        assertEvents("0:\n" +
+        assertEvents("20:\n" +
+                "DIE > -10 = 10\n" +
+                "DIE > -10 = 0\n" +
                 "DIE > +0 = 0");
+    }
+
+    @Test
+    public void shouldCollectScores_whenWin() {
+        // given
+        settings.integer(WIN_SCORE, 50);
+
+        // when then
+        assertEvents("100:\n" +
+                "WIN > +50 = 150\n" +
+                "WIN > +50 = 200");
+    }
+
+    @Test
+    public void shouldCollectScores_whenBlueberry() {
+        // given
+        settings.integer(BLUEBERRY_SCORE, 1);
+
+        // when then
+        assertEvents("100:\n" +
+                "BLUEBERRY > +1 = 101\n" +
+                "BLUEBERRY > +1 = 102");
+    }
+
+    @Test
+    public void shouldCollectScores_whenGold() {
+        // given
+        settings.integer(GOLD_SCORE, 10);
+
+        // when then
+        assertEvents("100:\n" +
+                "GOLD > +10 = 110\n" +
+                "GOLD > +10 = 120");
+    }
+
+    @Test
+    public void shouldCollectScores_whenDie() {
+        // given
+        settings.integer(DIE_PENALTY, -10);
+
+        // when then
+        assertEvents("100:\n" +
+                "DIE > -10 = 90\n" +
+                "DIE > -10 = 80");
+    }
+
+    @Test
+    public void shouldCollectScores_whenAcorn() {
+        // given
+        settings.integer(ACORN_SCORE, -1);
+
+        // when then
+        assertEvents("100:\n" +
+                "ACORN > -1 = 99\n" +
+                "ACORN > -1 = 98");
+    }
+
+    @Test
+    public void shouldCollectScores_whenEat() {
+        // given
+        settings.integer(EAT_SCORE, 10);
+
+        // when then
+        assertEvents("100:\n" +
+                "EAT > +10 = 110\n" +
+                "EAT,1 > +10 = 120\n" +
+                "EAT,2 > +20 = 140");
     }
 }
