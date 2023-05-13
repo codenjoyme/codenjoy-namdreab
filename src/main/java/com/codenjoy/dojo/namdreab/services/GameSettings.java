@@ -41,13 +41,13 @@ public class GameSettings extends SettingsImpl implements AllSettings<GameSettin
         FLY_AGARIC_EFFECT_TIMEOUT,
         DEATH_CAPS_COUNT,
         FLY_AGARICS_COUNT,
-        GOLD_COUNT,
+        STRAWBERRIES_COUNT,
         ACORNS_COUNT,
         BLUEBERRIES_COUNT,
         ACORN_REDUCED,
         WIN_SCORE,
         BLUEBERRY_SCORE,
-        GOLD_SCORE,
+        STRAWBERRY_SCORE,
         DIE_PENALTY,
         ACORN_SCORE,
         EAT_SCORE,
@@ -85,7 +85,7 @@ public class GameSettings extends SettingsImpl implements AllSettings<GameSettin
 
         integer(DEATH_CAPS_COUNT, 2);
         integer(FLY_AGARICS_COUNT, 2);
-        integer(GOLD_COUNT, 5);
+        integer(STRAWBERRIES_COUNT, 5);
         integer(ACORNS_COUNT, 10);
         integer(BLUEBERRIES_COUNT, 30);
 
@@ -93,7 +93,7 @@ public class GameSettings extends SettingsImpl implements AllSettings<GameSettin
 
         integer(WIN_SCORE, 50);
         integer(BLUEBERRY_SCORE, 1);
-        integer(GOLD_SCORE, 10);
+        integer(STRAWBERRY_SCORE, 10);
         integer(DIE_PENALTY, -0);
         integer(ACORN_SCORE, 5);
         integer(EAT_SCORE, 10);

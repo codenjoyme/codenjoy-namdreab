@@ -75,27 +75,27 @@ public class BoardAddObjectsTest extends AbstractGameTest {
                 {new DeathCap(pt(3, 0)), false},
 
                 // нельзя ставить таблетки ярости на чернику, желуди, грибы, золото, стены
-                {new FuryPill(pt(2, 2)), false},
-                {new FuryPill(pt(2, 1)), false},
-                {new FuryPill(pt(3, 3)), false},
-                {new FuryPill(pt(3, 2)), false},
-                {new FuryPill(pt(3, 1)), false},
-                {new FuryPill(pt(3, 0)), false},
+                {new FlyAgaric(pt(2, 2)), false},
+                {new FlyAgaric(pt(2, 1)), false},
+                {new FlyAgaric(pt(3, 3)), false},
+                {new FlyAgaric(pt(3, 2)), false},
+                {new FlyAgaric(pt(3, 1)), false},
+                {new FlyAgaric(pt(3, 0)), false},
 
                 // нельзя ставить золото на чернику, желуди, грибы, золото, стены
-                {new Gold(pt(2, 2)), false},
-                {new Gold(pt(2, 1)), false},
-                {new Gold(pt(3, 3)), false},
-                {new Gold(pt(3, 2)), false},
-                {new Gold(pt(3, 1)), false},
-                {new Gold(pt(3, 0)), false},
+                {new Strawberry(pt(2, 2)), false},
+                {new Strawberry(pt(2, 1)), false},
+                {new Strawberry(pt(3, 3)), false},
+                {new Strawberry(pt(3, 2)), false},
+                {new Strawberry(pt(3, 1)), false},
+                {new Strawberry(pt(3, 0)), false},
 
                 // можно ставить чернику, желуди, грибы и золото в пустое место
                 {new Blueberry(pt(4, 2)), true},
                 {new Acorn(pt(4, 2)), true},
                 {new DeathCap(pt(4, 2)), true},
-                {new FuryPill(pt(4, 2)), true},
-                {new Gold(pt(4, 2)), true},
+                {new FlyAgaric(pt(4, 2)), true},
+                {new Strawberry(pt(4, 2)), true},
         };
         return Arrays.asList(params);
     }
@@ -125,11 +125,11 @@ public class BoardAddObjectsTest extends AbstractGameTest {
             case "DeathCap":
                 objectsAfter = field().deathCaps().size();
                 break;
-            case "FuryPill":
+            case "FlyAgaric":
                 objectsAfter = field().flyAgarics().size();
                 break;
-            case "Gold":
-                objectsAfter = field().gold().size();
+            case "Strawberry":
+                objectsAfter = field().strawberry().size();
                 break;
             default:
                 fail("Отсутствуют действия на объект типа " + objType);

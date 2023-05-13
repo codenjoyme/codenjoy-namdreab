@@ -107,18 +107,18 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     public void generateAll() {
-        generateFuryPills();
+        generateFlyAgarics();
         generateDeathCaps();
-        generateGold();
+        generateStrawberries();
         generateAcorns();
         generateBlueberries();
     }
 
-    private void generateFuryPills() {
+    private void generateFlyAgarics() {
         generate(flyAgarics(), size(),
                 settings, FLY_AGARICS_COUNT,
                 player -> freeRandom(),
-                FuryPill::new);
+                FlyAgaric::new);
     }
 
     private void generateDeathCaps() {
@@ -128,11 +128,11 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                 DeathCap::new);
     }
 
-    private void generateGold() {
-        generate(gold(), size(),
-                settings, GOLD_COUNT,
+    private void generateStrawberries() {
+        generate(strawberry(), size(),
+                settings, STRAWBERRIES_COUNT,
                 player -> freeRandom(),
-                Gold::new);
+                Strawberry::new);
     }
 
     private void generateAcorns() {
@@ -230,9 +230,9 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                     hero.event(new Event(ACORN));
                 }
             }
-            if (gold().contains(head)) {
-                gold().removeAt(head);
-                hero.event(new Event(GOLD));
+            if (strawberry().contains(head)) {
+                strawberry().removeAt(head);
+                hero.event(new Event(STRAWBERRY));
             }
             if (deathCaps().contains(head)) {
                 deathCaps().removeAt(head);
@@ -240,7 +240,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
             }
             if (flyAgarics().contains(head)) {
                 flyAgarics().removeAt(head);
-                hero.event(new Event(FURY));
+                hero.event(new Event(FLY_AGARIC));
             }
         });
     }
@@ -294,7 +294,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                 || starts().contains(pt)
                 || deathCaps().contains(pt)
                 || flyAgarics().contains(pt)
-                || gold().contains(pt));
+                || strawberry().contains(pt));
     }
 
     private boolean freeOfHero(Point pt) {
@@ -325,13 +325,13 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public boolean isFuryPill(Point pt) {
+    public boolean isFlyAgaric(Point pt) {
         return flyAgarics().contains(pt);
     }
 
     @Override
-    public boolean isGold(Point pt) {
-        return gold().contains(pt);
+    public boolean isStrawberry(Point pt) {
+        return strawberry().contains(pt);
     }
 
     @Override
@@ -362,10 +362,10 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
             addAcorn(pt);
         } else if (pt instanceof DeathCap) {
             addDeathCap(pt);
-        } else if (pt instanceof FuryPill) {
-            addFuryPill(pt);
-        } else if (pt instanceof Gold) {
-            addGold(pt);
+        } else if (pt instanceof FlyAgaric) {
+            addFlyAraric(pt);
+        } else if (pt instanceof Strawberry) {
+            addStrawberry(pt);
         } else {
             fail("Невозможно добавить на поле объект типа " + pt.getClass());
         }
@@ -395,16 +395,16 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public void addFuryPill(Point pt) {
+    public void addFlyAraric(Point pt) {
         if (isFree(pt)) {
-            flyAgarics().add(new FuryPill(pt));
+            flyAgarics().add(new FlyAgaric(pt));
         }
     }
 
     @Override
-    public void addGold(Point pt) {
+    public void addStrawberry(Point pt) {
         if (isFree(pt)) {
-            gold().add(new Gold(pt));
+            strawberry().add(new Strawberry(pt));
         }
     }
 
@@ -450,7 +450,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                     addAll(acorns().all());
                     addAll(deathCaps().all());
                     addAll(flyAgarics().all());
-                    addAll(gold().all());
+                    addAll(strawberry().all());
                     addAll(starts().all());
 
                     for (Point pt : this.toArray(new Point[0])) {
@@ -494,10 +494,10 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
             return new DeathCap(pt);
         }
         if (flyAgarics().contains(pt)) {
-            return new FuryPill(pt);
+            return new FlyAgaric(pt);
         }
-        if (gold().contains(pt)) {
-            return new Gold(pt);
+        if (strawberry().contains(pt)) {
+            return new Strawberry(pt);
         }
         if (starts().contains(pt)) {
             return new StartSpot(pt);
@@ -534,8 +534,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public Accessor<FuryPill> flyAgarics() {
-        return field.of(FuryPill.class);
+    public Accessor<FlyAgaric> flyAgarics() {
+        return field.of(FlyAgaric.class);
     }
 
     @Override
@@ -544,7 +544,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public Accessor<Gold> gold() {
-        return field.of(Gold.class);
+    public Accessor<Strawberry> strawberry() {
+        return field.of(Strawberry.class);
     }
 }

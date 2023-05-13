@@ -34,9 +34,9 @@ public class Event extends SingleValueEvent<Event.Type, Integer> {
         BLUEBERRY,
         ACORN,
         EAT,
-        GOLD,
+        STRAWBERRY,
         DEATH_CAP,
-        FURY
+        FLY_AGARIC
     }
 
     public Event(Type type) {

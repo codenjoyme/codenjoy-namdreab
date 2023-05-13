@@ -39,8 +39,8 @@ public class Scores extends ScoresMap<Integer> {
         put(Event.Type.BLUEBERRY,
                 value -> settings.integer(BLUEBERRY_SCORE));
 
-        put(Event.Type.GOLD,
-                value -> settings.integer(GOLD_SCORE));
+        put(Event.Type.STRAWBERRY,
+                value -> settings.integer(STRAWBERRY_SCORE));
 
         put(Event.Type.DIE,
                 value -> settings.integer(DIE_PENALTY));

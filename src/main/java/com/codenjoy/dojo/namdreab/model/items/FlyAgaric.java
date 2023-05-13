@@ -29,14 +29,14 @@ import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.printer.state.State;
 
-public class Gold extends PointImpl implements State<Element, Player> {
+public class FlyAgaric extends PointImpl implements State<Element, Player> {
 
-    public Gold(Point pt) {
+    public FlyAgaric(Point pt) {
         super(pt);
     }
 
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
-        return Element.GOLD;
+        return Element.FLY_AGARIC;
     }
 }

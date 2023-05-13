@@ -29,14 +29,14 @@ import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.printer.state.State;
 
-public class FuryPill extends PointImpl implements State<Element, Player> {
+public class Strawberry extends PointImpl implements State<Element, Player> {
 
-    public FuryPill(Point pt) {
+    public Strawberry(Point pt) {
         super(pt);
     }
 
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
-        return Element.FLY_AGARIC;
+        return Element.STRAWBERRY;
     }
 }

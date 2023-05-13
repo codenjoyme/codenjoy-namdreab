@@ -231,7 +231,7 @@ public class HeroTest {
 
     // если бородач съела пилюлю ярости, 10 ходов она действует
     @Test
-    public void eatFuryPill() {
+    public void eatFlyAgaric() {
         flyAgaricsAtAllPoints(true);
         hero.tick();
         hero.eat();
@@ -254,11 +254,11 @@ public class HeroTest {
     }
 
     private void flyAgaricsAtAllPoints(boolean enable) {
-        when(game.isFuryPill(any(Point.class))).thenReturn(enable);// впереди пилюля ярости
+        when(game.isFlyAgaric(any(Point.class))).thenReturn(enable);// впереди пилюля ярости
     }
 
-    private void goldAtAllPoints(boolean enable) {
-        when(game.isGold(any(Point.class))).thenReturn(enable);// впереди золото
+    private void strawberryAtAllPoints(boolean enable) {
+        when(game.isStrawberry(any(Point.class))).thenReturn(enable);// впереди золото
     }
 
     private void acornsAtAllPoints(boolean enable) {

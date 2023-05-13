@@ -893,7 +893,7 @@ public class MultiplayerTest extends AbstractGameTest {
         tick();
 
         verifyAllEvents(
-                "listener(0) => [FURY]\n" +
+                "listener(0) => [FLY_AGARIC]\n" +
                 "listener(1) => [BLUEBERRY, BLUEBERRY]\n");
 
         // when
@@ -944,7 +944,7 @@ public class MultiplayerTest extends AbstractGameTest {
 
         verifyAllEvents(
                 "listener(0) => [BLUEBERRY]\n" +
-                "listener(1) => [FURY]\n");
+                "listener(1) => [FLY_AGARIC]\n");
 
         hero(1).up();
         tick();
@@ -985,7 +985,7 @@ public class MultiplayerTest extends AbstractGameTest {
         tick();
 
         verifyAllEvents(
-                "listener(0) => [FURY]\n" +
+                "listener(0) => [FLY_AGARIC]\n" +
                 "listener(1) => [BLUEBERRY]\n");
 
         // when
@@ -1538,7 +1538,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼\n", 1);
 
         tick();
-        verifyAllEvents("listener(1) => [FURY]\n");
+        verifyAllEvents("listener(1) => [FLY_AGARIC]\n");
 
         tick();
 
@@ -1621,7 +1621,7 @@ public class MultiplayerTest extends AbstractGameTest {
 
         tick();
         verifyAllEvents(
-                "listener(1) => [FURY]\n");
+                "listener(1) => [FLY_AGARIC]\n");
 
         tick();
 
@@ -1671,7 +1671,7 @@ public class MultiplayerTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldCutTail_whenFury() {
+    public void shouldCutTail_whenFlyAgaric() {
         givenFl("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼      ☼\n" +
@@ -1702,7 +1702,7 @@ public class MultiplayerTest extends AbstractGameTest {
         tick();
 
         verifyAllEvents(
-                "listener(1) => [FURY]\n");
+                "listener(1) => [FLY_AGARIC]\n");
 
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
@@ -1770,7 +1770,7 @@ public class MultiplayerTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldCutLongTail_whenFury() {
+    public void shouldCutLongTail_whenFlyAgaric() {
         givenFl("☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╔══════╗☼\n" +
                 "☼║╔════╕║☼\n" +
@@ -1807,7 +1807,7 @@ public class MultiplayerTest extends AbstractGameTest {
         tick();
 
         verifyAllEvents(
-                "listener(1) => [FURY]\n");
+                "listener(1) => [FLY_AGARIC]\n");
 
         assertF("☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼╔══════╗☼\n" +
@@ -2197,7 +2197,7 @@ public class MultiplayerTest extends AbstractGameTest {
     // быть обработано столкновение, а уж
     // затем съедение объекта выжившим героем (если такой есть).
     @Test
-    public void firstFightThenEatFury() {
+    public void firstFightThenEatFlyAgaric() {
         givenFl("☼☼☼☼☼☼☼☼\n" +
                 "☼┌─┐   ☼\n" +
                 "☼│ ¤   ☼\n" +
@@ -2211,7 +2211,7 @@ public class MultiplayerTest extends AbstractGameTest {
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
-                "listener(1) => [EAT(5), FURY, WIN]\n");
+                "listener(1) => [EAT(5), FLY_AGARIC, WIN]\n");
 
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼┌─ö   ☼\n" +
@@ -2258,7 +2258,7 @@ public class MultiplayerTest extends AbstractGameTest {
     @Test
     // Предыдущий тест в инвертированных ролях. Эти два теста вместе показывают что порядок игроков
     // в списке List<Player> больше не влияет на результат таких столкновений.
-    public void firstFightThenEatFuryInverted() {
+    public void firstFightThenEatFlyAgaricInverted() {
         givenFl("☼☼☼☼☼☼☼☼\n" +
                 "☼╔═╗   ☼\n" +
                 "☼║ ╙   ☼\n" +
@@ -2271,7 +2271,7 @@ public class MultiplayerTest extends AbstractGameTest {
         tick();
 
         verifyAllEvents(
-                "listener(0) => [EAT(5), FURY, WIN]\n" +
+                "listener(0) => [EAT(5), FLY_AGARIC, WIN]\n" +
                 "listener(1) => [DIE]\n");
 
         assertF("☼☼☼☼☼☼☼☼\n" +
@@ -2566,10 +2566,10 @@ public class MultiplayerTest extends AbstractGameTest {
         verifyAllEvents("");
     }
 
-    // Тестируем случай когда один герой с Fury идет на клетку,
+    // Тестируем случай когда один герой с FlyAgaric идет на клетку,
     // где был хвост второго в момент когда второй кушает чернику.
     @Test
-    public void eatTailThatGrows_Fury() {
+    public void eatTailThatGrows_FlyAgaric() {
         givenFl("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
                 "☼  ╓   ☼\n" +
@@ -2584,7 +2584,7 @@ public class MultiplayerTest extends AbstractGameTest {
         tick();
 
         verifyAllEvents(
-                "listener(1) => [FURY]\n");
+                "listener(1) => [FLY_AGARIC]\n");
 
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
@@ -3168,7 +3168,7 @@ public class MultiplayerTest extends AbstractGameTest {
     // с таблеткой ярости я отгрызаю бороды,
     // даже те которые на чернике вырастают
     @Test
-    public void shouldCase12_justFury() {
+    public void shouldCase12_justFlyAgaric() {
         givenFl("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼☼                           ☼\n" +
                 "☼#                           ☼\n" +
@@ -3531,7 +3531,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼\n", 1);
 
         hero(0).eatDeathCap();
-        hero(1).eatFury();
+        hero(1).eatFlyAgaric();
 
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -3553,7 +3553,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼       ☼\n" +
                 "☼☼☼☼☼☼☼☼☼\n", 1);
 
-        hero(0).eatFury();
+        hero(0).eatFlyAgaric();
         hero(1).eatDeathCap();
 
         assertF("☼☼☼☼☼☼☼☼☼\n" +
@@ -4886,7 +4886,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
-                "listener(0) => [FURY]\n" +
+                "listener(0) => [FLY_AGARIC]\n" +
                 "listener(1) => [BLUEBERRY]\n");
 
         tick();
@@ -4998,7 +4998,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
-                "listener(0) => [FURY]\n" +
+                "listener(0) => [FLY_AGARIC]\n" +
                 "listener(1) => [BLUEBERRY, BLUEBERRY]\n");
 
         hero(0).left();

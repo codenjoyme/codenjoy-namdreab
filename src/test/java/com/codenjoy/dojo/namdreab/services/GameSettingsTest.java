@@ -32,16 +32,16 @@ public class GameSettingsTest {
     @Test
     public void shouldGetAllKeys() {
         assertEquals("DEATH_CAP_EFFECT_TIMEOUT  =[Game] Death cap/flying effect timeout\n" +
-                    "FLY_AGARIC_EFFECT_TIMEOUT =[Game] Fury effect timeout\n" +
+                    "FLY_AGARIC_EFFECT_TIMEOUT =[Game] Fly agarics/fury effect timeout\n" +
                     "DEATH_CAPS_COUNT          =[Game] Death caps count\n" +
                     "FLY_AGARICS_COUNT         =[Game] Fly agarics count\n" +
-                    "GOLD_COUNT                =[Game] Gold count\n" +
+                    "STRAWBERRIES_COUNT        =[Game] Strawberries count\n" +
                     "ACORNS_COUNT              =[Game] Acorns count\n" +
                     "BLUEBERRIES_COUNT         =[Game] Blueberries count\n" +
                     "ACORN_REDUCED             =[Game] Acorn reduced value\n" +
                     "WIN_SCORE                 =[Score] Win score\n" +
                     "BLUEBERRY_SCORE           =[Score] Blueberry score\n" +
-                    "GOLD_SCORE                =[Score] Gold score\n" +
+                    "STRAWBERRY_SCORE          =[Score] Strawberry score\n" +
                     "DIE_PENALTY               =[Score] Die penalty\n" +
                     "ACORN_SCORE               =[Score] Acorn score\n" +
                     "EAT_SCORE                 =[Score] Eat enemy score\n" +

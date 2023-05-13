@@ -36,7 +36,7 @@ The parameters will change[(?)](#ask) as the game progresses.
 - Hero that eats a death cap flies over acorns and other heroes for 10 moves.
 - Hero that eats a fly agaric can bite off parts of other heroes and eat acorns without
   negative effects for 10 moves.
-- Hero that eats gold gets bonus points.
+- Hero that eats strawberry gets bonus points.
 
 ### Exceptional cases
 

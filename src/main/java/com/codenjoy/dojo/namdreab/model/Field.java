@@ -38,9 +38,9 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     boolean isDeathCap(Point pt);
 
-    boolean isFuryPill(Point pt);
+    boolean isFlyAgaric(Point pt);
 
-    boolean isGold(Point pt);
+    boolean isStrawberry(Point pt);
 
     void addBlueberry(Point pt);
 
@@ -48,9 +48,9 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     void addDeathCap(Point pt);
 
-    void addFuryPill(Point pt);
+    void addFlyAraric(Point pt);
 
-    void addGold(Point pt);
+    void addStrawberry(Point pt);
 
     Hero enemyEatenWith(Hero h);
 
@@ -62,9 +62,9 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     Accessor<Acorn> acorns();
 
-    Accessor<FuryPill> flyAgarics();
+    Accessor<FlyAgaric> flyAgarics();
 
     Accessor<DeathCap> deathCaps();
 
-    Accessor<Gold> gold();
+    Accessor<Strawberry> strawberry();
 }

@@ -85,7 +85,7 @@ public class Level extends AbstractLevel {
         }
 
         if (ElementUtils.isEvil(headElement)) {
-            hero.eatFury();
+            hero.eatFlyAgaric();
         }
 
         hero.addTail(head);
@@ -174,12 +174,12 @@ public class Level extends AbstractLevel {
         return find(DeathCap::new, DEATH_CAP);
     }
 
-    public List<FuryPill> flyAgarics() {
-        return find(FuryPill::new, FLY_AGARIC);
+    public List<FlyAgaric> flyAgarics() {
+        return find(FlyAgaric::new, FLY_AGARIC);
     }
 
-    public List<Gold> gold() {
-        return find(Gold::new, GOLD);
+    public List<Strawberry> strawberries() {
+        return find(Strawberry::new, STRAWBERRY);
     }
 
     public List<Rock> rocks() {
@@ -198,7 +198,7 @@ public class Level extends AbstractLevel {
         field.addAll(acorns());
         field.addAll(flyAgarics());
         field.addAll(deathCaps());
-        field.addAll(gold());
+        field.addAll(strawberries());
     }
 
 }

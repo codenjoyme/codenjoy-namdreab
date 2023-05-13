@@ -237,8 +237,8 @@ public class Hero extends RoundPlayerHero<Field>
         if (field.isDeathCap(head)) {
             eatDeathCap();
         }
-        if (field.isFuryPill(head)) {
-            eatFury();
+        if (field.isFlyAgaric(head)) {
+            eatFlyAgaric();
         }
         if (field.isBarrier(head)) {
             die();
@@ -254,7 +254,7 @@ public class Hero extends RoundPlayerHero<Field>
                 : 10;
     }
 
-    public void eatFury() {
+    public void eatFlyAgaric() {
         // TODO запусти test shouldCase13 там идет загрузка из текста борды,
         //      еще до создания field когда создаются heroes идет запрос на
         //      settings() и он возвращает null, поэтому тут надо проверять

@@ -172,7 +172,7 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldGoldEvent_whenEatIt() {
+    public void shouldStrawberryEvent_whenEatIt() {
         // given
         givenFl("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -194,7 +194,7 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
-        verifyAllEvents("[GOLD]");
+        verifyAllEvents("[STRAWBERRY]");
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1426,7 +1426,7 @@ public class GameTest extends AbstractGameTest {
 
     // съедая пилюлю ярости, герой ест желуди без ущерба для бороды
     @Test
-    public void shouldEatAcornsWithoutAnyCuts_whenEatFuryPill() {
+    public void shouldEatAcornsWithoutAnyCuts_whenEatFlyAgaric() {
         // given
         givenFl("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -1443,7 +1443,7 @@ public class GameTest extends AbstractGameTest {
         tick();
 
         // then
-        verifyAllEvents("[FURY]");
+        verifyAllEvents("[FLY_AGARIC]");
 
         assertEquals(10, hero().furyCount());
         assertEquals(true, hero().isFury());
@@ -1521,9 +1521,9 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldDropAcornPickedUpAfterEatingFuryPill_whenHeroDoAct() {
+    public void shouldDropAcornPickedUpAfterEatingFlyAgaric_whenHeroDoAct() {
         // given
-        shouldEatAcornsWithoutAnyCuts_whenEatFuryPill();
+        shouldEatAcornsWithoutAnyCuts_whenEatFlyAgaric();
 
         // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +
@@ -1582,9 +1582,9 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldDisableFuryPillEffect_when10TicksHavePassed() {
+    public void shouldDisableFlyAgaricEffect_when10TicksHavePassed() {
         // given
-        shouldEatAcornsWithoutAnyCuts_whenEatFuryPill();
+        shouldEatAcornsWithoutAnyCuts_whenEatFlyAgaric();
 
         assertF("☼☼☼☼☼☼☼☼☼\n" +
                 "☼       ☼\n" +
@@ -1654,9 +1654,9 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldDropAcorn_afterFuryDisabled() {
+    public void shouldDropAcorn_afterFlyAgaricDisabled() {
         // given
-        shouldDisableFuryPillEffect_when10TicksHavePassed();
+        shouldDisableFlyAgaricEffect_when10TicksHavePassed();
 
         // then
         assertF("☼☼☼☼☼☼☼☼☼\n" +

@@ -60,10 +60,10 @@ public class ScoresTest extends AbstractScoresTest {
         assertEvents("100:\n" +
                 "START > +0 = 100\n" +
                 "BLUEBERRY > +1 = 101\n" +
-                "GOLD > +10 = 111\n" +
+                "STRAWBERRY > +10 = 111\n" +
                 "ACORN > -1 = 110\n" +
                 "WIN > +50 = 160\n" +
-                "FURY > +0 = 160\n" +
+                "FLY_AGARIC > +0 = 160\n" +
                 "DEATH_CAP > +0 = 160\n" +
                 "EAT,1 > +10 = 170\n" +
                 "EAT,2 > +20 = 190\n" +
@@ -110,14 +110,14 @@ public class ScoresTest extends AbstractScoresTest {
     }
 
     @Test
-    public void shouldCollectScores_whenGold() {
+    public void shouldCollectScores_whenStrawberry() {
         // given
-        settings.integer(GOLD_SCORE, 10);
+        settings.integer(STRAWBERRY_SCORE, 10);
 
         // when then
         assertEvents("100:\n" +
-                "GOLD > +10 = 110\n" +
-                "GOLD > +10 = 120");
+                "STRAWBERRY > +10 = 110\n" +
+                "STRAWBERRY > +10 = 120");
     }
 
     @Test
