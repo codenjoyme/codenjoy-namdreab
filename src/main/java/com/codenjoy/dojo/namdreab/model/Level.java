@@ -57,14 +57,14 @@ public class Level extends AbstractLevel {
 
     public Hero hero() {
         Point point = find(identity(),
-                HEAD_DOWN,
-                HEAD_UP,
-                HEAD_LEFT,
-                HEAD_RIGHT,
-                HEAD_SLEEP,
-                HEAD_DEAD,
-                HEAD_EVIL,
-                HEAD_FLY).stream()
+                HERO_DOWN,
+                HERO_UP,
+                HERO_LEFT,
+                HERO_RIGHT,
+                HERO_SLEEP,
+                HERO_DEAD,
+                HERO_EVIL,
+                HERO_FLY).stream()
                         .findAny()
                         .orElse(null);
 
@@ -119,22 +119,22 @@ public class Level extends AbstractLevel {
 
     private Direction next(Point point, Direction direction) {
         switch (elementAt(point)) {
-            case BODY_HORIZONTAL:
-            case ENEMY_BODY_HORIZONTAL:
-            case BODY_VERTICAL:
-            case ENEMY_BODY_VERTICAL:
+            case HERO_BEARD_HORIZONTAL:
+            case ENEMY_HERO_BEARD_HORIZONTAL:
+            case HERO_BEARD_VERTICAL:
+            case ENEMY_HERO_BEARD_VERTICAL:
                 return direction;
-            case BODY_LEFT_DOWN:
-            case ENEMY_BODY_LEFT_DOWN:
+            case HERO_BEARD_LEFT_DOWN:
+            case ENEMY_HERO_BEARD_LEFT_DOWN:
                 return direction == RIGHT ? DOWN : LEFT;
-            case BODY_RIGHT_DOWN:
-            case ENEMY_BODY_RIGHT_DOWN:
+            case HERO_BEARD_RIGHT_DOWN:
+            case ENEMY_HERO_BEARD_RIGHT_DOWN:
                 return direction == LEFT ? DOWN : RIGHT;
-            case BODY_LEFT_UP:
-            case ENEMY_BODY_LEFT_UP:
+            case HERO_BEARD_LEFT_UP:
+            case ENEMY_HERO_BEARD_LEFT_UP:
                 return direction == RIGHT ? UP : LEFT;
-            case BODY_RIGHT_UP:
-            case ENEMY_BODY_RIGHT_UP:
+            case HERO_BEARD_RIGHT_UP:
+            case ENEMY_HERO_BEARD_RIGHT_UP:
                 return direction == LEFT ? UP : RIGHT;
             default:
                 return null;
@@ -143,14 +143,14 @@ public class Level extends AbstractLevel {
 
     public Hero enemy() {
         Point point = find(identity(),
-                ENEMY_HEAD_DOWN,
-                ENEMY_HEAD_UP,
-                ENEMY_HEAD_LEFT,
-                ENEMY_HEAD_RIGHT,
-                ENEMY_HEAD_SLEEP,
-                ENEMY_HEAD_DEAD,
-                ENEMY_HEAD_EVIL,
-                ENEMY_HEAD_FLY)
+                ENEMY_HERO_DOWN,
+                ENEMY_HERO_UP,
+                ENEMY_HERO_LEFT,
+                ENEMY_HERO_RIGHT,
+                ENEMY_HERO_SLEEP,
+                ENEMY_HERO_DEAD,
+                ENEMY_HERO_EVIL,
+                ENEMY_HERO_FLY)
                 .stream()
                 .findAny()
                 .orElse(null);

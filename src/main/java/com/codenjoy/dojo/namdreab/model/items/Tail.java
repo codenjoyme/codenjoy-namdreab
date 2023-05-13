@@ -62,31 +62,31 @@ public class Tail extends PointImpl implements State<Element, Player> {
     private Element state() {
         if (isHead()) {
             if (!hero.isAlive()) {
-                return HEAD_DEAD;
+                return HERO_DEAD;
             }
 
             if (!hero.isActive()) {
-                return HEAD_SLEEP;
+                return HERO_SLEEP;
             }
 
             if (hero.isFlying()) {
-                return HEAD_FLY;
+                return HERO_FLY;
             }
 
             if (hero.isFury()) {
-                return HEAD_EVIL;
+                return HERO_EVIL;
             }
 
             return ElementUtils.head(hero.direction());
         }
         if (isTail()) {
             if (!hero.isActive()) {
-                return TAIL_INACTIVE;
+                return HERO_TAIL_INACTIVE;
             }
 
             return ElementUtils.tail(hero.tailDirection());
         }
-        return ElementUtils.body(hero.bodyDirection(this));
+        return ElementUtils.beard(hero.bodyDirection(this));
     }
 
     private Tail higher(List<Object> elements) {

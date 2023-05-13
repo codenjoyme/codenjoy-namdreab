@@ -31,8 +31,8 @@ public class GameSettingsTest {
 
     @Test
     public void shouldGetAllKeys() {
-        assertEquals("DEATH_CAP_EFFECT_TIMEOUT  =[Game] Death cap/flying effect timeout\n" +
-                    "FLY_AGARIC_EFFECT_TIMEOUT =[Game] Fly agarics/fury effect timeout\n" +
+        assertEquals("DEATH_CAP_EFFECT_TIMEOUT  =[Game] Death cap (flying) effect timeout\n" +
+                    "FLY_AGARIC_EFFECT_TIMEOUT =[Game] Fly agarics (fury) effect timeout\n" +
                     "DEATH_CAPS_COUNT          =[Game] Death caps count\n" +
                     "FLY_AGARICS_COUNT         =[Game] Fly agarics count\n" +
                     "STRAWBERRIES_COUNT        =[Game] Strawberries count\n" +

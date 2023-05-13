@@ -67,33 +67,33 @@ public class AISolver implements Solver<Board> {
                 // вероятность не врезаться в противника 9/10
                 if (dice.next(10) != 0)
                     if (board.isAt(nx, ny,
-                            ENEMY_HEAD_DOWN,
-                            ENEMY_HEAD_LEFT,
-                            ENEMY_HEAD_RIGHT,
-                            ENEMY_HEAD_UP,
-                            ENEMY_HEAD_EVIL,
-                            ENEMY_HEAD_FLY,
-                            ENEMY_TAIL_END_DOWN,
-                            ENEMY_TAIL_END_LEFT,
-                            ENEMY_TAIL_END_UP,
-                            ENEMY_TAIL_END_RIGHT,
-                            ENEMY_BODY_HORIZONTAL,
-                            ENEMY_BODY_VERTICAL,
-                            ENEMY_BODY_LEFT_DOWN,
-                            ENEMY_BODY_LEFT_UP,
-                            ENEMY_BODY_RIGHT_DOWN,
-                            ENEMY_BODY_RIGHT_UP))
+                            ENEMY_HERO_DOWN,
+                            ENEMY_HERO_LEFT,
+                            ENEMY_HERO_RIGHT,
+                            ENEMY_HERO_UP,
+                            ENEMY_HERO_EVIL,
+                            ENEMY_HERO_FLY,
+                            ENEMY_HERO_TAIL_DOWN,
+                            ENEMY_HERO_TAIL_LEFT,
+                            ENEMY_HERO_TAIL_UP,
+                            ENEMY_HERO_TAIL_RIGHT,
+                            ENEMY_HERO_BEARD_HORIZONTAL,
+                            ENEMY_HERO_BEARD_VERTICAL,
+                            ENEMY_HERO_BEARD_LEFT_DOWN,
+                            ENEMY_HERO_BEARD_LEFT_UP,
+                            ENEMY_HERO_BEARD_RIGHT_DOWN,
+                            ENEMY_HERO_BEARD_RIGHT_UP))
                         return false;
 
                 //вероятность не есть себя 3/4
                 if (dice.next(3) != 0)
                     if (board.isAt(nx, ny,
-                            BODY_HORIZONTAL,
-                            BODY_VERTICAL,
-                            BODY_LEFT_DOWN,
-                            BODY_LEFT_UP,
-                            BODY_RIGHT_DOWN,
-                            BODY_RIGHT_UP))
+                            HERO_BEARD_HORIZONTAL,
+                            HERO_BEARD_VERTICAL,
+                            HERO_BEARD_LEFT_DOWN,
+                            HERO_BEARD_LEFT_UP,
+                            HERO_BEARD_RIGHT_DOWN,
+                            HERO_BEARD_RIGHT_UP))
                         return false;
 
                 return true;
