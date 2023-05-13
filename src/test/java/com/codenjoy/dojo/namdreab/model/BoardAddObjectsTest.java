@@ -126,7 +126,7 @@ public class BoardAddObjectsTest extends AbstractGameTest {
                 objectsAfter = field().deathCaps().size();
                 break;
             case "FuryPill":
-                objectsAfter = field().furyPills().size();
+                objectsAfter = field().flyAgarics().size();
                 break;
             case "Gold":
                 objectsAfter = field().gold().size();

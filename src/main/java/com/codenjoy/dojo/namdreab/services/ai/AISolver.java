@@ -126,7 +126,7 @@ public class AISolver implements Solver<Board> {
 
     public List<Direction> getDirections(Board board) {
         int size = board.size();
-        List<Point> to = board.get(FURY_PILL, DEATH_CAP, BLUEBERRY, GOLD);
+        List<Point> to = board.get(FLY_AGARIC, DEATH_CAP, BLUEBERRY, GOLD);
         DeikstraFindWay.Possible map = possible(board);
         return way.getShortestWay(size, head, to, map);
     }

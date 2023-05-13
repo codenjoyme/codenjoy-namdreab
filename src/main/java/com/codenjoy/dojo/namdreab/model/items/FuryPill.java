@@ -37,6 +37,6 @@ public class FuryPill extends PointImpl implements State<Element, Player> {
 
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
-        return Element.FURY_PILL;
+        return Element.FLY_AGARIC;
     }
 }

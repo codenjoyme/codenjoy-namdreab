@@ -115,8 +115,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     private void generateFuryPills() {
-        generate(furyPills(), size(),
-                settings, FURY_PILLS_COUNT,
+        generate(flyAgarics(), size(),
+                settings, FLY_AGARICS_COUNT,
                 player -> freeRandom(),
                 FuryPill::new);
     }
@@ -238,8 +238,8 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                 deathCaps().removeAt(head);
                 hero.event(new Event(DEATH_CAP));
             }
-            if (furyPills().contains(head)) {
-                furyPills().removeAt(head);
+            if (flyAgarics().contains(head)) {
+                flyAgarics().removeAt(head);
                 hero.event(new Event(FURY));
             }
         });
@@ -293,7 +293,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                 || rocks().contains(pt)
                 || starts().contains(pt)
                 || deathCaps().contains(pt)
-                || furyPills().contains(pt)
+                || flyAgarics().contains(pt)
                 || gold().contains(pt));
     }
 
@@ -326,7 +326,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
 
     @Override
     public boolean isFuryPill(Point pt) {
-        return furyPills().contains(pt);
+        return flyAgarics().contains(pt);
     }
 
     @Override
@@ -397,7 +397,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     @Override
     public void addFuryPill(Point pt) {
         if (isFree(pt)) {
-            furyPills().add(new FuryPill(pt));
+            flyAgarics().add(new FuryPill(pt));
         }
     }
 
@@ -449,7 +449,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                     addAll(blueberries().all());
                     addAll(acorns().all());
                     addAll(deathCaps().all());
-                    addAll(furyPills().all());
+                    addAll(flyAgarics().all());
                     addAll(gold().all());
                     addAll(starts().all());
 
@@ -493,7 +493,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         if (deathCaps().contains(pt)) {
             return new DeathCap(pt);
         }
-        if (furyPills().contains(pt)) {
+        if (flyAgarics().contains(pt)) {
             return new FuryPill(pt);
         }
         if (gold().contains(pt)) {
@@ -534,7 +534,7 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    public Accessor<FuryPill> furyPills() {
+    public Accessor<FuryPill> flyAgarics() {
         return field.of(FuryPill.class);
     }
 

@@ -38,9 +38,9 @@ public class GameSettings extends SettingsImpl implements AllSettings<GameSettin
     public enum Keys implements PropertiesKey {
 
         DEATH_CAP_EFFECT_TIMEOUT,
-        FURY_PILL_EFFECT_TIMEOUT,
+        FLY_AGARIC_EFFECT_TIMEOUT,
         DEATH_CAPS_COUNT,
-        FURY_PILLS_COUNT,
+        FLY_AGARICS_COUNT,
         GOLD_COUNT,
         ACORNS_COUNT,
         BLUEBERRIES_COUNT,
@@ -81,10 +81,10 @@ public class GameSettings extends SettingsImpl implements AllSettings<GameSettin
         setMinTicksForWin(40);
 
         integer(DEATH_CAP_EFFECT_TIMEOUT, 10);
-        integer(FURY_PILL_EFFECT_TIMEOUT, 10);
+        integer(FLY_AGARIC_EFFECT_TIMEOUT, 10);
 
         integer(DEATH_CAPS_COUNT, 2);
-        integer(FURY_PILLS_COUNT, 2);
+        integer(FLY_AGARICS_COUNT, 2);
         integer(GOLD_COUNT, 5);
         integer(ACORNS_COUNT, 10);
         integer(BLUEBERRIES_COUNT, 30);

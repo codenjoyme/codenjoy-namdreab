@@ -232,10 +232,10 @@ public class HeroTest {
     // если бородач съела пилюлю ярости, 10 ходов она действует
     @Test
     public void eatFuryPill() {
-        furyPillsAtAllPoints(true);
+        flyAgaricsAtAllPoints(true);
         hero.tick();
         hero.eat();
-        furyPillsAtAllPoints(false);
+        flyAgaricsAtAllPoints(false);
         for (int i = 0; i <= 10; i++) {
             assertEquals("Оставшееся количество ходов ярости не соответствует ожидаемому.",
                     10 - i, hero.furyCount());
@@ -253,7 +253,7 @@ public class HeroTest {
         when(game.isDeathCap(any(Point.class))).thenReturn(enable);// впереди бледная поганка
     }
 
-    private void furyPillsAtAllPoints(boolean enable) {
+    private void flyAgaricsAtAllPoints(boolean enable) {
         when(game.isFuryPill(any(Point.class))).thenReturn(enable);// впереди пилюля ярости
     }
 

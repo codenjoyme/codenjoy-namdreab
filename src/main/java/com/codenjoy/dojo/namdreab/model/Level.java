@@ -174,8 +174,8 @@ public class Level extends AbstractLevel {
         return find(DeathCap::new, DEATH_CAP);
     }
 
-    public List<FuryPill> furyPills() {
-        return find(FuryPill::new, FURY_PILL);
+    public List<FuryPill> flyAgarics() {
+        return find(FuryPill::new, FLY_AGARIC);
     }
 
     public List<Gold> gold() {
@@ -196,7 +196,7 @@ public class Level extends AbstractLevel {
         field.addAll(starts());
         field.addAll(blueberries());
         field.addAll(acorns());
-        field.addAll(furyPills());
+        field.addAll(flyAgarics());
         field.addAll(deathCaps());
         field.addAll(gold());
     }

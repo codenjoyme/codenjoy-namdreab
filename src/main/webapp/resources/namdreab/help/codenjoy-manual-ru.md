@@ -144,14 +144,14 @@ C помощью этого regexp можно выкусить строку до
 |<img src="/codenjoy-contest/resources/namdreab/sprite/blueberry.png" style="height:auto;" /> | `BLUEBERRY('○')` | Blueberry. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/acorn.png" style="height:auto;" /> | `ACORN('●')` | Acorn. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/death_cap.png" style="height:auto;" /> | `DEATH_CAP('©')` | Death cap/Angel's wings. | 
-|<img src="/codenjoy-contest/resources/namdreab/sprite/fury_pill.png" style="height:auto;" /> | `FURY_PILL('®')` | Fury pill/Devil's mask. | 
+|<img src="/codenjoy-contest/resources/namdreab/sprite/fly_agaric.png" style="height:auto;" /> | `FLY_AGARIC('®')` | Fly agaric/Devil's mask. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/gold.png" style="height:auto;" /> | `GOLD('$')` | Gold. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/head_down.png" style="height:auto;" /> | `HEAD_DOWN('▼')` | Your hero head pointing down. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/head_left.png" style="height:auto;" /> | `HEAD_LEFT('◄')` | Your hero head pointing left. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/head_right.png" style="height:auto;" /> | `HEAD_RIGHT('►')` | Your hero head pointing right. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/head_up.png" style="height:auto;" /> | `HEAD_UP('▲')` | Your hero head pointing up. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/head_dead.png" style="height:auto;" /> | `HEAD_DEAD('☻')` | Your hero is dead. | 
-|<img src="/codenjoy-contest/resources/namdreab/sprite/head_evil.png" style="height:auto;" /> | `HEAD_EVIL('♥')` | Your hero head under influence Fury pill/Devils mask. | 
+|<img src="/codenjoy-contest/resources/namdreab/sprite/head_evil.png" style="height:auto;" /> | `HEAD_EVIL('♥')` | Your hero head under influence Fly agaric/Devils mask. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/head_fly.png" style="height:auto;" /> | `HEAD_FLY('♠')` | Your hero head under influence Death cap/Angels wings. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/head_sleep.png" style="height:auto;" /> | `HEAD_SLEEP('&')` | Your hero head when hero is inactive. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/body_horizontal.png" style="height:auto;" /> | `BODY_HORIZONTAL('═')` | Body of your hero is directed horizontally. | 
@@ -170,7 +170,7 @@ C помощью этого regexp можно выкусить строку до
 |<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_head_right.png" style="height:auto;" /> | `ENEMY_HEAD_RIGHT('>')` | Enemy hero head pointing right. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_head_up.png" style="height:auto;" /> | `ENEMY_HEAD_UP('˄')` | Enemy hero head pointing up. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_head_dead.png" style="height:auto;" /> | `ENEMY_HEAD_DEAD('☺')` | Enemy hero is dead. | 
-|<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_head_evil.png" style="height:auto;" /> | `ENEMY_HEAD_EVIL('♣')` | Enemy hero head under influence Fury pill/Devils mask. | 
+|<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_head_evil.png" style="height:auto;" /> | `ENEMY_HEAD_EVIL('♣')` | Enemy hero head under influence Fly agaric/Devils mask. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_head_fly.png" style="height:auto;" /> | `ENEMY_HEAD_FLY('♦')` | Enemy hero head under influence Death cap/Angels wings. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_head_sleep.png" style="height:auto;" /> | `ENEMY_HEAD_SLEEP('ø')` | Enemy hero head when hero is inactive. | 
 |<img src="/codenjoy-contest/resources/namdreab/sprite/enemy_body_horizontal.png" style="height:auto;" /> | `ENEMY_BODY_HORIZONTAL('─')` | Body of enemy hero is directed horizontally. | 

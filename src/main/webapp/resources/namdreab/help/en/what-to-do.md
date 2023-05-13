@@ -34,7 +34,7 @@ The parameters will change[(?)](#ask) as the game progresses.
 
 - Hero that eats a blueberry becomes longer by one cell.
 - Hero that eats a death cap flies over acorns and other heroes for 10 moves.
-- Hero that eats a fury pill can bite off parts of other heroes and eat acorns without
+- Hero that eats a fly agaric can bite off parts of other heroes and eat acorns without
   negative effects for 10 moves.
 - Hero that eats gold gets bonus points.
 
@@ -45,5 +45,5 @@ The parameters will change[(?)](#ask) as the game progresses.
   shorter - by the length of the dead one (if that makes it shorter than two cells, it dies as well).
 - The bitten off part of the tail always disappears, and hero is shortened.
 - If two heroes, one of which is under the death cap, collide, nothing happens.
-- If two heroes collide, the under the fury pill always wins.
+- If two heroes collide, the under the fly agaric always wins.
 - If two furious heroes collide, common collision rules are used.

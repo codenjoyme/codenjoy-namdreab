@@ -2251,7 +2251,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼♥     ☼\n" +
                 "☼☼☼☼☼☼☼☼\n", 1);
 
-        assertEquals(0, field().furyPills().size());
+        assertEquals(0, field().flyAgarics().size());
         verifyAllEvents("");
     }
 
@@ -2312,7 +2312,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼♣     ☼\n" +
                 "☼☼☼☼☼☼☼☼\n", 1);
 
-        assertEquals(0, field().furyPills().size());
+        assertEquals(0, field().flyAgarics().size());
         verifyAllEvents("");
     }
 

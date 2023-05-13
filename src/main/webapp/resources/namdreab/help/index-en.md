@@ -25,7 +25,7 @@ The rest of the game is ready for you.
 You have to write a hero bot that will beat other bots by points. All players play on the
 same field. Hero can move to empty cells in four directions but cannot move to the previous cell.
 
-On its path a hero can encounter acorns, gold, fury pills, death caps, blueberries or other
+On its path a hero can encounter acorns, gold, fly agarics, death caps, blueberries or other
 heroes. If hero eats an acorn it became shorter by 4 cells. If its length is less
 than 2, it dies. For gold, blueberries and dead competitors hero gets 
 bonus points[(?)](#ask).
@@ -169,7 +169,7 @@ The parameters will change[(?)](#ask) as the game progresses.
 
 - Hero that eats a blueberry becomes longer by one cell.
 - Hero that eats a death cap flies over acorns and other heroes for 10 moves.
-- Hero that eats a fury pill can bite off parts of other heroes and eat acorns without
+- Hero that eats a fly agaric can bite off parts of other heroes and eat acorns without
   negative effects for 10 moves.
 - Hero that eats gold gets bonus points.
 
@@ -180,7 +180,7 @@ The parameters will change[(?)](#ask) as the game progresses.
   shorter - by the length of the dead one (if that makes it shorter than two cells, it dies as well).
 - The bitten off part of the tail always disappears, and hero is shortened.
 - If two heroes, one of which is under the death cap, collide, nothing happens.
-- If two heroes collide, the under the fury pill always wins.
+- If two heroes collide, the under the fly agaric always wins.
 - If two furious heroes collide, common collision rules are used.
 
 ## <a id="ask"></a> Ask Sensei
@@ -204,7 +204,7 @@ If you are not sure what to do try to implement the following algorithms:
 - Move to a random empty adjacent cell.
 - Move to a free cell in the direction of the nearest blueberry.
 - Move to a blueberry that can be reached faster.
-- Avoid longer enemies and ones under fury pill.
+- Avoid longer enemies and ones under fly agaric.
 - Block the supposed path of the enemy by your tail.
 
 Maximum number of players is defined by the number of respawn points. 

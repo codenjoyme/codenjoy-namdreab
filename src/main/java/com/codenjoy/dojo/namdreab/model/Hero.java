@@ -259,7 +259,7 @@ public class Hero extends RoundPlayerHero<Field>
         //      еще до создания field когда создаются heroes идет запрос на
         //      settings() и он возвращает null, поэтому тут надо проверять
         furyCount += (settings() != null)
-                ? settings().integer(FURY_PILL_EFFECT_TIMEOUT)
+                ? settings().integer(FLY_AGARIC_EFFECT_TIMEOUT)
                 : 10;
     }
 

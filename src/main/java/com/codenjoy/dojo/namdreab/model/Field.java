@@ -62,7 +62,7 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     Accessor<Acorn> acorns();
 
-    Accessor<FuryPill> furyPills();
+    Accessor<FuryPill> flyAgarics();
 
     Accessor<DeathCap> deathCaps();
 
