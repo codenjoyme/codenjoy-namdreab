@@ -9340,7 +9340,7 @@
 205: 2:
 205: 2:Scores: 73
 205: 2:Answer: UP
-205: 2:Fire Event: EAT[4]
+205: 2:Fire Event: EAT(4)
 205: 2:Fire Event: DEATH_CAP
 205: 1:Fire Event: BLUEBERRY
 ------------------------------------------
@@ -41936,7 +41936,7 @@
 922: 2:
 922: 2:Scores: 206
 922: 2:Answer: UP, ACT
-922: 2:Fire Event: EAT[5]
+922: 2:Fire Event: EAT(5)
 922: 2:Fire Event: DEATH_CAP
 ------------------------------------------
 923: 1:☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼

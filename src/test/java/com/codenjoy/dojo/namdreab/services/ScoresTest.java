@@ -65,7 +65,7 @@ public class ScoresTest extends AbstractScoresTest {
                 "WIN > +50 = 160\n" +
                 "FURY > +0 = 160\n" +
                 "DEATH_CAP > +0 = 160\n" +
-                "EAT > +10 = 170\n" +
+                "EAT,1 > +10 = 170\n" +
                 "EAT,2 > +20 = 190\n" +
                 "EAT,5 > +50 = 240\n" +
                 "DIE > -10 = 230");
@@ -149,7 +149,7 @@ public class ScoresTest extends AbstractScoresTest {
 
         // when then
         assertEvents("100:\n" +
-                "EAT > +10 = 110\n" +
+                "EAT,1 > +10 = 110\n" +
                 "EAT,1 > +10 = 120\n" +
                 "EAT,2 > +20 = 140");
     }

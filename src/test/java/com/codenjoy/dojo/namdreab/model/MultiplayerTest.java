@@ -248,7 +248,7 @@ public class MultiplayerTest extends AbstractGameTest {
         // then
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
-                "listener(1) => [EAT[2], WIN]\n");
+                "listener(1) => [EAT(2), WIN]\n");
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -488,7 +488,7 @@ public class MultiplayerTest extends AbstractGameTest {
 
         // then
         verifyAllEvents(
-                "listener(0) => [EAT[3], WIN]\n" +
+                "listener(0) => [EAT(3), WIN]\n" +
                 "listener(1) => [DIE]\n");
 
         assertF("☼☼☼☼☼☼☼☼\n" +
@@ -645,7 +645,7 @@ public class MultiplayerTest extends AbstractGameTest {
         // then
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
-                "listener(1) => [EAT[3], WIN]\n");
+                "listener(1) => [EAT(3), WIN]\n");
 
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
@@ -903,7 +903,7 @@ public class MultiplayerTest extends AbstractGameTest {
 
         // then
         verifyAllEvents(
-                "listener(0) => [EAT[4], WIN]\n" +
+                "listener(0) => [EAT(4), WIN]\n" +
                 "listener(1) => [DIE]\n");
 
         assertF("☼☼☼☼☼☼☼\n" +
@@ -957,7 +957,7 @@ public class MultiplayerTest extends AbstractGameTest {
 
         // then
         verifyAllEvents(
-                "listener(1) => [EAT[2]]\n");
+                "listener(1) => [EAT(2)]\n");
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -995,7 +995,7 @@ public class MultiplayerTest extends AbstractGameTest {
 
         // then
         verifyAllEvents(
-                "listener(0) => [EAT[1]]\n");
+                "listener(0) => [EAT(1)]\n");
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -1544,7 +1544,7 @@ public class MultiplayerTest extends AbstractGameTest {
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
-                "listener(1) => [EAT[3], WIN]\n");
+                "listener(1) => [EAT(3), WIN]\n");
 
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
@@ -1627,7 +1627,7 @@ public class MultiplayerTest extends AbstractGameTest {
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
-                "listener(1) => [EAT[3], WIN]\n");
+                "listener(1) => [EAT(3), WIN]\n");
 
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
@@ -1726,7 +1726,7 @@ public class MultiplayerTest extends AbstractGameTest {
         tick();
 
         verifyAllEvents(
-                "listener(1) => [EAT[1]]\n");
+                "listener(1) => [EAT(1)]\n");
 
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
@@ -1835,7 +1835,7 @@ public class MultiplayerTest extends AbstractGameTest {
         tick();
 
         verifyAllEvents(
-                "listener(1) => [EAT[27]]\n");
+                "listener(1) => [EAT(27)]\n");
 
         assertF("☼☼☼☼☼☼☼☼☼☼\n" +
                 "☼        ☼\n" +
@@ -1971,7 +1971,7 @@ public class MultiplayerTest extends AbstractGameTest {
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
-                "listener(1) => [EAT[4], WIN]\n");
+                "listener(1) => [EAT(4), WIN]\n");
 
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼┌─ö   ☼\n" +
@@ -2030,7 +2030,7 @@ public class MultiplayerTest extends AbstractGameTest {
         tick();
 
         verifyAllEvents(
-                "listener(0) => [EAT[4], WIN]\n" +
+                "listener(0) => [EAT(4), WIN]\n" +
                 "listener(1) => [DIE]\n");
 
         assertF("☼☼☼☼☼☼☼☼\n" +
@@ -2090,7 +2090,7 @@ public class MultiplayerTest extends AbstractGameTest {
         tick();
 
         verifyAllEvents(
-                "listener(0) => [EAT[4], WIN]\n" +
+                "listener(0) => [EAT(4), WIN]\n" +
                 "listener(1) => [DIE]\n");
 
         assertF("☼☼☼☼☼☼☼☼\n" +
@@ -2150,7 +2150,7 @@ public class MultiplayerTest extends AbstractGameTest {
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
-                "listener(1) => [EAT[4], WIN]\n");
+                "listener(1) => [EAT(4), WIN]\n");
 
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼┌─ö   ☼\n" +
@@ -2211,7 +2211,7 @@ public class MultiplayerTest extends AbstractGameTest {
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
-                "listener(1) => [EAT[5], FURY, WIN]\n");
+                "listener(1) => [EAT(5), FURY, WIN]\n");
 
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼┌─ö   ☼\n" +
@@ -2271,7 +2271,7 @@ public class MultiplayerTest extends AbstractGameTest {
         tick();
 
         verifyAllEvents(
-                "listener(0) => [EAT[5], FURY, WIN]\n" +
+                "listener(0) => [EAT(5), FURY, WIN]\n" +
                 "listener(1) => [DIE]\n");
 
         assertF("☼☼☼☼☼☼☼☼\n" +
@@ -2334,7 +2334,7 @@ public class MultiplayerTest extends AbstractGameTest {
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
-                "listener(1) => [EAT[5], BLUEBERRY, WIN]\n");
+                "listener(1) => [EAT(5), BLUEBERRY, WIN]\n");
 
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼┌─┐   ☼\n" +
@@ -2394,7 +2394,7 @@ public class MultiplayerTest extends AbstractGameTest {
         tick();
 
         verifyAllEvents(
-                "listener(0) => [EAT[5], BLUEBERRY, WIN]\n" +
+                "listener(0) => [EAT(5), BLUEBERRY, WIN]\n" +
                 "listener(1) => [DIE]\n");
 
         assertF("☼☼☼☼☼☼☼☼\n" +
@@ -2457,7 +2457,7 @@ public class MultiplayerTest extends AbstractGameTest {
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
-                "listener(1) => [EAT[2], ACORN, WIN]\n");
+                "listener(1) => [EAT(2), ACORN, WIN]\n");
 
         // несмотря на то что на сервере столкновение обрабатывается до съедения желудя,
         // съедение желудя приводит к мгновенной утрате длинны (на 3),
@@ -2521,7 +2521,7 @@ public class MultiplayerTest extends AbstractGameTest {
         tick();
 
         verifyAllEvents(
-                "listener(0) => [EAT[2], ACORN, WIN]\n" +
+                "listener(0) => [EAT(2), ACORN, WIN]\n" +
                 "listener(1) => [DIE]\n");
 
         assertF("☼☼☼☼☼☼☼☼\n" +
@@ -2608,7 +2608,7 @@ public class MultiplayerTest extends AbstractGameTest {
 
         verifyAllEvents(
                 "listener(0) => [BLUEBERRY]\n" +
-                "listener(1) => [EAT[1]]\n");
+                "listener(1) => [EAT(1)]\n");
 
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼      ☼\n" +
@@ -2667,7 +2667,7 @@ public class MultiplayerTest extends AbstractGameTest {
         tick();
 
         verifyAllEvents(
-                "listener(0) => [BLUEBERRY, EAT[2], WIN]\n" +
+                "listener(0) => [BLUEBERRY, EAT(2), WIN]\n" +
                 "listener(1) => [DIE]\n");
 
         assertF("☼☼☼☼☼☼☼☼\n" +
@@ -2744,7 +2744,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
-                "listener(0) => [EAT[5], WIN]\n" +
+                "listener(0) => [EAT(5), WIN]\n" +
                 "listener(1) => [DIE]\n");
 
         tick();
@@ -2856,7 +2856,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
-                "listener(0) => [EAT[5], WIN]\n" +
+                "listener(0) => [EAT(5), WIN]\n" +
                 "listener(1) => [DIE]\n");
 
         tick();
@@ -2918,7 +2918,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
-                "listener(0) => [EAT[5], WIN]\n" +
+                "listener(0) => [EAT(5), WIN]\n" +
                 "listener(1) => [DIE]\n");
 
         tick();
@@ -2967,7 +2967,7 @@ public class MultiplayerTest extends AbstractGameTest {
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
-                "listener(1) => [EAT[4]]\n");
+                "listener(1) => [EAT(4)]\n");
 
         assertF("☼☼☼☼☼☼☼☼\n" +
                 "☼┌─ö   ☼\n" +
@@ -3238,7 +3238,7 @@ public class MultiplayerTest extends AbstractGameTest {
         tick();
 
         verifyAllEvents(
-                "listener(0) => [EAT[2], EAT[1]]\n" +
+                "listener(0) => [EAT(2), EAT(1)]\n" +
                 "listener(1) => [BLUEBERRY]\n");
 
         assertF("☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n" +
@@ -3494,7 +3494,7 @@ public class MultiplayerTest extends AbstractGameTest {
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
-                "listener(1) => [EAT[10], WIN]\n");
+                "listener(1) => [EAT(10), WIN]\n");
 
     }
 
@@ -3724,7 +3724,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
         verifyAllEvents(
-                "listener(1) => [EAT[1]]\n");
+                "listener(1) => [EAT(1)]\n");
     }
 
     @Test
@@ -3759,7 +3759,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
-                "listener(0) => [EAT[2], WIN]\n" +
+                "listener(0) => [EAT(2), WIN]\n" +
                 "listener(1) => [DIE]\n");
     }
 
@@ -3796,7 +3796,7 @@ public class MultiplayerTest extends AbstractGameTest {
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
-                "listener(1) => [EAT[2], WIN]\n");
+                "listener(1) => [EAT(2), WIN]\n");
     }
 
     @Test
@@ -3981,7 +3981,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
-                "listener(0) => [EAT[2], WIN]\n" +
+                "listener(0) => [EAT(2), WIN]\n" +
                 "listener(1) => [DIE]\n");
     }
 
@@ -4018,7 +4018,7 @@ public class MultiplayerTest extends AbstractGameTest {
 
         verifyAllEvents(
                 "listener(0) => [DIE]\n" +
-                "listener(1) => [EAT[2], WIN]\n");
+                "listener(1) => [EAT(2), WIN]\n");
     }
 
     @Test
@@ -4848,7 +4848,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼\n", 0);
 
         verifyAllEvents(
-                "listener(0) => [EAT[30]]\n");
+                "listener(0) => [EAT(30)]\n");
     }
 
     // была бага, когда откусывали от героя два раза, то она второй раз не давалась
@@ -4910,7 +4910,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
-                "listener(0) => [EAT[3], EAT[1]]\n" +
+                "listener(0) => [EAT(3), EAT(1)]\n" +
                 "listener(1) => [BLUEBERRY]\n");
 
         hero(1).up();
@@ -5044,7 +5044,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
-                "listener(0) => [EAT[2]]\n");
+                "listener(0) => [EAT(2)]\n");
     }
 
     @Test
@@ -5087,7 +5087,7 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼☼☼☼☼☼☼☼☼☼\n", 1);
 
         verifyAllEvents(
-                "listener(0) => [EAT[6]]\n");
+                "listener(0) => [EAT(6)]\n");
 
         tick();
 

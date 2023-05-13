@@ -23,14 +23,9 @@ package com.codenjoy.dojo.namdreab.services;
  */
 
 
-import com.codenjoy.dojo.services.event.EventObject;
+import com.codenjoy.dojo.services.event.SingleValueEvent;
 
-import java.util.Objects;
-
-public class Event implements EventObject<Event.Type, Integer> {
-
-    private Type type;
-    private int value;
+public class Event extends SingleValueEvent<Event.Type, Integer> {
 
     public enum Type {
         START,
@@ -45,43 +40,10 @@ public class Event implements EventObject<Event.Type, Integer> {
     }
 
     public Event(Type type) {
-        this(type, 1);
+        super(type);
     }
 
     public Event(Type type, int value) {
-        this.type = type;
-        this.value = value;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return _equals(o);
-    }
-
-    @Override
-    public int hashCode() {
-        return _hashCode();
-    }
-
-    @Override
-    public Type type() {
-        return type;
-    }
-
-    @Override
-    public Integer value() {
-        return value;
-    }
-
-    @Override
-    public String toString() {
-        if (isEat()) {
-            return String.format("%s[%s]", type, value);
-        }
-        return type.name();
-    }
-
-    private boolean isEat() {
-        return type == Type.EAT;
+       super(type, value);
     }
 }
