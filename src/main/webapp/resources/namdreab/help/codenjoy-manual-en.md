@@ -28,8 +28,8 @@ You have to write a hero bot that will beat other bots by points. All players pl
 same field. Hero can move to empty cells in four directions but cannot move to the previous cell.
 
 On its path a hero can encounter acorns, gold, fly agarics, death caps, blueberries or other
-heroes. If hero eats an acorn it become shorter by 4 cells. If its length is less
-than 2, it dies. For gold, blueberries and dead competitors hero gets 
+heroes. If hero eats an acorn it becomes shorter by 4 cells. If its length is less
+than 2, it dies. For gold, blueberry and dead competitors hero gets 
 bonus points[(?)](#ask).
 For its own death and eaten acorns hero gets demerit points[(?)](#ask).
 The points are summed up.
