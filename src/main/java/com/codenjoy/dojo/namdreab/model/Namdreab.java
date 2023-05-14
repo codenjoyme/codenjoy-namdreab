@@ -83,27 +83,18 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     }
 
     @Override
-    protected void cleanStuff() {
-        heroesClear();
+    protected void onAdd(Player player) {
+        player.newHero(this);
     }
 
     @Override
-    public void tickField() {
-        heroesMove();
-        heroesFight();
-        heroesEat();
-        // после еды у змеек отрастают хвосты, поэтому столкновения нужно повторить,
-        // чтобы обработать ситуацию "кусь за растущий хвост", иначе eatTailThatGrows тесты не пройдут
-        heroesFight();
-
-        generateAll();
+    protected void onRemove(Player player) {
+        // do nothing
     }
 
-    private void heroesClear() {
-        players.stream()
-                .map(Player::getHero)
-                .filter(hero -> hero.isActive() && !hero.isAlive())
-                .forEach(Hero::clear);
+    @Override
+    protected List<Player> players() {
+        return players;
     }
 
     public void generateAll() {
@@ -153,9 +144,33 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
         return Generator.freeRandom(size(), dice, this::isFree);
     }
 
+
+    public int size() {
+        return field.size();
+    }
+
     @Override
-    protected List<Player> players() {
-        return players;
+    protected void cleanStuff() {
+        heroesClear();
+    }
+
+    @Override
+    public void tickField() {
+        heroesMove();
+        heroesFight();
+        heroesEat();
+        // после еды у змеек отрастают хвосты, поэтому столкновения нужно повторить,
+        // чтобы обработать ситуацию "кусь за растущий хвост", иначе eatTailThatGrows тесты не пройдут
+        heroesFight();
+
+        generateAll();
+    }
+
+    private void heroesClear() {
+        players.stream()
+                .map(Player::getHero)
+                .filter(hero -> hero.isActive() && !hero.isAlive())
+                .forEach(Hero::clear);
     }
 
     private void heroesMove() {
@@ -248,10 +263,6 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     private Stream<Hero> notFlyingHeroes() {
         return aliveActiveHeroes()
                 .filter(hero -> !hero.isFlying());
-    }
-
-    public int size() {
-        return field.size();
     }
 
     @Override
@@ -414,21 +425,6 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
                 .collect(toList());
     }
 
-    @Override
-    protected void onAdd(Player player) {
-        player.newHero(this);
-    }
-
-    @Override
-    protected void onRemove(Player player) {
-        // do nothing
-    }
-
-    @Override
-    public GameSettings settings() {
-        return settings;
-    }
-
     public BoardReader<Player> reader() {
         return new BoardReader<>() {
             private int size = Namdreab.this.size();
@@ -440,25 +436,26 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
 
             @Override
             public void addAll(Player player, Consumer<Iterable<? extends Point>> processor) {
-                processor.accept(new LinkedHashSet<>(){{
-                    drawHeroes(not(Hero::isAlive),  hero -> Arrays.asList(hero.head()));
-                    drawHeroes(Hero::isFlying,      Hero::reversedBody);
-                    drawHeroes(not(Hero::isFlying), Hero::reversedBody);
+                processor.accept(new LinkedHashSet<>(){
+                    {
+                        drawHeroes(not(Hero::isAlive),  hero -> Arrays.asList(hero.head()));
+                        drawHeroes(Hero::isFlying,      Hero::reversedBody);
+                        drawHeroes(not(Hero::isFlying), Hero::reversedBody);
 
-                    addAll(rocks().all());
-                    addAll(blueberries().all());
-                    addAll(acorns().all());
-                    addAll(deathCaps().all());
-                    addAll(flyAgarics().all());
-                    addAll(strawberry().all());
-                    addAll(starts().all());
+                        addAll(rocks().all());
+                        addAll(blueberries().all());
+                        addAll(acorns().all());
+                        addAll(deathCaps().all());
+                        addAll(flyAgarics().all());
+                        addAll(strawberry().all());
+                        addAll(starts().all());
 
-                    for (Point pt : this.toArray(new Point[0])) {
-                        if (pt.isOutOf(Namdreab.this.size())) {
-                            remove(pt);
+                        for (Point pt : this.toArray(new Point[0])) {
+                            if (pt.isOutOf(Namdreab.this.size())) {
+                                remove(pt);
+                            }
                         }
                     }
-                }
 
                     private void drawHeroes(Predicate<Hero> filter,
                                     Function<Hero, List<? extends Point>> getElements)
@@ -477,6 +474,11 @@ public class Namdreab extends RoundField<Player, Hero> implements Field {
     public List<Player> load(String board, Function<Hero, Player> player) {
         level = new Level(board);
         return WhatsNextUtils.load(this, level.heroes(), player);
+    }
+
+    @Override
+    public GameSettings settings() {
+        return settings;
     }
 
     private void fail(String message) {
