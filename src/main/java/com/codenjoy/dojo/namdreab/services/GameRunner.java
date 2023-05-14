@@ -58,6 +58,7 @@ public class GameRunner extends AbstractGameType<GameSettings> {
         return new ScoresImpl<>(Integer.parseInt(score.toString()), settings.calculator());
     }
 
+    @Override
     public GameField createGame(int levelNumber, GameSettings settings) {
         Level level = settings.level(levelNumber, getDice(), Level::new);
         return new Namdreab(getDice(), level, settings);

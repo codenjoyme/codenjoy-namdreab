@@ -299,7 +299,7 @@ public class Hero extends RoundPlayerHero<Field>
             die();
             return was; // TODO я не нашел случая когда это может случиться
         } else {
-            return  was - size();
+            return was - size();
         }
     }
 
