@@ -49,6 +49,7 @@ public class Level extends AbstractLevel {
         super(map);
     }
 
+    @Override
     public List<Hero> heroes() {
         return Arrays.stream(new Hero[] { hero(), enemy() })
                 .filter(Objects::nonNull)
