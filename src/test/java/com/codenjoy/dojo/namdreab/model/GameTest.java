@@ -23,9 +23,18 @@ package com.codenjoy.dojo.namdreab.model;
  */
 
 
+import com.codenjoy.dojo.namdreab.services.GameSettings;
 import org.junit.Test;
 
+import static com.codenjoy.dojo.services.round.RoundSettings.Keys.ROUNDS_ENABLED;
+
 public class GameTest extends AbstractGameTest {
+
+    @Override
+    protected GameSettings setupSettings(GameSettings settings) {
+        return super.setupSettings(settings)
+                .bool(ROUNDS_ENABLED, false);
+    }
 
     // карта со своим героем
     @Test

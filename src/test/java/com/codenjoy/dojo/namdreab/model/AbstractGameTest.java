@@ -24,19 +24,17 @@ package com.codenjoy.dojo.namdreab.model;
 
 import com.codenjoy.dojo.namdreab.TestGameSettings;
 import com.codenjoy.dojo.namdreab.services.Event;
+import com.codenjoy.dojo.namdreab.services.GameRunner;
 import com.codenjoy.dojo.namdreab.services.GameSettings;
-import com.codenjoy.dojo.services.Dice;
-import com.codenjoy.dojo.services.EventListener;
-import com.codenjoy.dojo.services.multiplayer.TriFunction;
-import com.codenjoy.dojo.utils.gametest.AbstractBaseGameTest;
+import com.codenjoy.dojo.services.GameType;
+import com.codenjoy.dojo.utils.gametest.NewAbstractBaseGameTest;
 import org.junit.After;
 import org.junit.Before;
 
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public abstract class AbstractGameTest
-        extends AbstractBaseGameTest<Player, Namdreab, GameSettings, Level, Hero> {
+        extends NewAbstractBaseGameTest<Player, Namdreab, GameSettings, Level, Hero> {
 
     @Before
     public void setup() {
@@ -49,8 +47,13 @@ public abstract class AbstractGameTest
     }
 
     @Override
-    protected GameSettings setupSettings() {
-        return new TestGameSettings();
+    protected GameType gameType() {
+        return new GameRunner();
+    }
+
+    @Override
+    protected GameSettings setupSettings(GameSettings settings) {
+        return TestGameSettings.update(settings);
     }
 
     @Override
@@ -59,18 +62,16 @@ public abstract class AbstractGameTest
     }
 
     @Override
-    protected BiFunction<EventListener, GameSettings, Player> createPlayer() {
-        return Player::new;
-    }
-
-    @Override
-    protected TriFunction<Dice, Level, GameSettings, Namdreab> createField() {
-        return Namdreab::new;
-    }
-
-    @Override
     protected Class<?> eventClass() {
         return Event.class;
+    }
+
+    @Override
+    protected boolean manualHero() {
+        // очень много тестов со сложным рисунком героев
+        // это отдаляет игру от того, что будет на production,
+        // но сделано для удобства тестирования
+        return true;
     }
 
     @Override
@@ -80,13 +81,5 @@ public abstract class AbstractGameTest
                 hero.setActive(true);
             }
         });
-    }
-
-    // other methods
-
-    protected void givenPlayer() {
-        givenPlayer(null);
-        game().newGame();
-        hero().setActive(true);
     }
 }

@@ -29,18 +29,23 @@ import static com.codenjoy.dojo.services.round.RoundSettings.Keys.*;
 
 public class TestGameSettings extends GameSettings {
 
+    public TestGameSettings() {
+        update(this);
+    }
+
     /**
      * Here you can override the settings for all tests.
      */
-    public TestGameSettings() {
-        bool(ROUNDS_ENABLED, true);
-        integer(ROUNDS_PER_MATCH, 5);
-        integer(ROUNDS_MIN_TICKS_FOR_WIN, 1);
-        integer(ROUNDS_TIME_BEFORE_START, 0);
-        integer(ROUNDS_TIME, 300);
-        integer(ROUNDS_TIME_FOR_WINNER, 1);
-        integer(DEATH_CAP_EFFECT_TIMEOUT, 10);
-        integer(FLY_AGARIC_EFFECT_TIMEOUT, 10);
-        integer(ACORN_REDUCED, 3);
+    public static GameSettings update(GameSettings settings) {
+        return settings
+                .bool(ROUNDS_ENABLED, true)
+                .integer(ROUNDS_PER_MATCH, 5)
+                .integer(ROUNDS_MIN_TICKS_FOR_WIN, 1)
+                .integer(ROUNDS_TIME_BEFORE_START, 0)
+                .integer(ROUNDS_TIME, 300)
+                .integer(ROUNDS_TIME_FOR_WINNER, 1)
+                .integer(DEATH_CAP_EFFECT_TIMEOUT, 10)
+                .integer(FLY_AGARIC_EFFECT_TIMEOUT, 10)
+                .integer(ACORN_REDUCED, 3);
     }
 }
