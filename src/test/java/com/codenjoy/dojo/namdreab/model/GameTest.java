@@ -273,8 +273,11 @@ public class GameTest extends AbstractGameTest {
         // then
         verifyAllEvents("[DIE]");
 
-        assertEquals(false, hero().isAlive());
-        assertEquals(true, hero().isActive());
+        assertHeroStatus(
+                "active:\n" +
+                "hero(0)=true\n" +
+                "alive\n" +
+                "hero(0)=false");
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -296,8 +299,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertEquals(false, hero().isAlive());
-        assertEquals(true, hero().isActive());
+        assertHeroStatus(
+                "active:\n" +
+                "hero(0)=true\n" +
+                "alive\n" +
+                "hero(0)=false");
     }
 
     @Test
@@ -325,8 +331,11 @@ public class GameTest extends AbstractGameTest {
         // then
         verifyAllEvents("[ACORN]");
 
-        assertEquals(true, hero().isAlive());
-        assertEquals(true, hero().isActive());
+        assertHeroStatus(
+                "active:\n" +
+                "hero(0)=true\n" +
+                "alive\n" +
+                "hero(0)=true");
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼╔═╕  ☼\n" +
@@ -348,8 +357,11 @@ public class GameTest extends AbstractGameTest {
                 "☼  ▼  ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertEquals(true, hero().isAlive());
-        assertEquals(true, hero().isActive());
+        assertHeroStatus(
+                "active:\n" +
+                "hero(0)=true\n" +
+                "alive\n" +
+                "hero(0)=true");
     }
 
     // тест продолжения движения без дополнительных указаний
@@ -795,8 +807,11 @@ public class GameTest extends AbstractGameTest {
         // then
         verifyAllEvents("[DIE]");
 
-        assertEquals(false, hero().isAlive());
-        assertEquals(true, hero().isActive());
+        assertHeroStatus(
+                "active:\n" +
+                "hero(0)=true\n" +
+                "alive\n" +
+                "hero(0)=false");
 
         assertF("☼☼☼☼☼☼☼\n" +
                 "☼     ☼\n" +
@@ -818,8 +833,11 @@ public class GameTest extends AbstractGameTest {
                 "☼     ☼\n" +
                 "☼☼☼☼☼☼☼\n");
 
-        assertEquals(false, hero().isAlive());
-        assertEquals(true, hero().isActive());
+        assertHeroStatus(
+                "active:\n" +
+                "hero(0)=true\n" +
+                "alive\n" +
+                "hero(0)=false");
     }
 
     // пока герой не активен, его направление движения не меняется
