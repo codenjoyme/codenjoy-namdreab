@@ -75,11 +75,10 @@ public abstract class AbstractGameTest
     }
 
     @Override
-    protected void afterCreateField() {
-        heroes().forEach(hero -> {
-            if (hero != null) {
-                hero.setActive(true);
-            }
-        });
+    protected void afterCreatePlayer(Player player) {
+        Hero hero = player.getHero();
+        if (hero != null) {
+            hero.setActive(true);
+        }
     }
 }
