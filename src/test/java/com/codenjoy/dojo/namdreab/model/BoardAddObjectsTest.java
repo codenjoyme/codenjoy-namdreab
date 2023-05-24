@@ -38,17 +38,15 @@ import static org.junit.Assert.fail;
 @RunWith(Parameterized.class)
 public class BoardAddObjectsTest extends AbstractGameTest {
 
-    private Point addition;
-    boolean add;
+    @Parameterized.Parameter(0)
+    public Point addition;
 
-    public BoardAddObjectsTest(Point addition, boolean add) {
-        this.addition = addition;
-        this.add = add;
-    }
+    @Parameterized.Parameter(1)
+    public boolean add;
 
-    @Parameterized.Parameters
-    public static Collection<Object[]> data() {
-        Object[][] params = new Object[][]{
+    @Parameterized.Parameters(name = "{index}: {0} -> {1}")
+    public static Object[][] data() {
+        return new Object[][]{
                 // нельзя ставить чернику на чернику, желуди, грибы, золото, стены
                 {new Blueberry(pt(2, 2)), false},
                 {new Blueberry(pt(2, 1)), false},
@@ -97,7 +95,6 @@ public class BoardAddObjectsTest extends AbstractGameTest {
                 {new FlyAgaric(pt(4, 2)), true},
                 {new Strawberry(pt(4, 2)), true},
         };
-        return Arrays.asList(params);
     }
 
     @Test
