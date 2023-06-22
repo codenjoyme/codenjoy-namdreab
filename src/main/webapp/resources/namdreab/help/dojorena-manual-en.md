@@ -4,9 +4,13 @@
 
 ## Intro
 
-The game server for familiarization and practice you can always find here: [Namdreab Free-For-All server.](https://dojorena.io/games/20).
+The game server for familiarization and practice you can always find here:
+[Namdreab Free-For-All server.](https://dojorena.io/games/20).
 
-This is the open source game. To realize your game, correct errors in the current version and make the other corrections, you should [fork the project](https://github.com/codenjoyme/codenjoy) at first. There is the description in the Readme.md file in the repository root. It is specified in the description what to do next.
+This is the open source game. To realize your game, correct errors in the current version and 
+make the other corrections, you should [fork the project](https://github.com/codenjoyme/codenjoy) at first.
+There is the description in the Readme.md file in the repository root. 
+It is specified in the description what to do next.
 
 Game project (for writing your bot) can be found [here](https://github.com/codenjoyme/codenjoy-clients.git)
 
@@ -16,23 +20,23 @@ Keep in mind: when writing your bot you should stick to its movement logic.
 The rest of the game is ready for you.
 
 You have to write a hero bot that will beat other bots by points. All players play on the
-same field. Hero can move to empty cells in four directions but cannot move to the previous cell.
+same field. The hero can move to empty cells in four directions but cannot move to the previous cell.
 
-On its path a hero can encounter acorns, strawberry, fly agarics, death caps, blueberries or other
-heroes. If hero eats an acorn it becomes shorter by 4 cells. If its length is less
-than 2, it dies. For strawberry, blueberry and dead competitors hero gets 
+On its path, a hero can encounter acorns, strawberries, fly agarics, death caps, blueberries or other
+heroes. If a hero eats an acorn it becomes shorter by 4 cells. If its length is less
+than 2, it dies. For strawberry, blueberry and dead competitors hero gets
 bonus points[(?)](#ask).
 For its own death and eaten acorns hero gets demerit points[(?)](#ask).
 The points are summed up.
 
-The player with most points when time expires wins. A dead hero immediately
+The player with the most points when the time expires wins. A dead hero immediately
 vanishes and reappears on one of the respawn cells, waiting for the next
 round (start event).
 
 ## Game Author
 
 If you have any questions feel free to contact me:
-Author **Корсиков Илья**,
+Author **Korsikov Ilya**,
 email [kors.ilya@gmail.com](mailto:kors.ilya@gmail.com),
 skype [kk.ilya](skype:kk.ilya).
 
@@ -160,19 +164,19 @@ This is what you see on UI:
 ## What to do
 
 The game is turn-based: Each second, the server sends the updated state of the
-field to the client and waits for response. Within the next second the player
-must give hero a command. If no command is given, hero moves inertially
+field to the client and waits for a response. Within the next second the player
+must give the hero a command. If no command is given, the hero moves inertially
 in its current direction until stopped by a rock.
 
 ## Commands
 
-* `UP`, `DOWN`, `LEFT`, `RIGHT` - they move hero one cell in the
+* `UP`, `DOWN`, `LEFT`, `RIGHT` - they move the hero one cell in the
   corresponding direction.
-* `ACT` - drop an acorn (if hero has previously eaten at
-  least one). The acorn is left at the end of hero's tail. With the help 
-  of acorns players can set obstacles and block enemies.
-* Movement and `ACT` commands can be combined, separating them by comma. 
-  During one game cycle hero will drop an acorn and move, 
+* `ACT` - drop an acorn (if a hero has previously eaten at
+  least one). The acorn is left at the end of the hero's tail. With the help
+  of acorns, players can set obstacles and block enemies.
+* Movement and `ACT` commands can be combined, separating them by a comma.
+  During one game cycle hero will drop an acorn and move,
   e.g. `LEFT,ACT` or `ACT,LEFT`.
 
 ## Points
@@ -195,17 +199,36 @@ The parameters will change[(?)](#ask) as the game progresses.
 - Hero that eats a death cap flies over acorns and other heroes for 10 moves.
 - Hero that eats a fly agaric can bite off parts of other heroes and eat acorns without
   negative effects for 10 moves.
-- Hero that eats strawberry gets bonus points.
+- Hero that eats strawberries gets bonus points.
 
 ### Exceptional cases
 
 - Heros can bite off their own tails, becoming shorter without any negative effects.
 - If two heroes collide head-on, the shortest hero dies. The surviving hero becomes
   shorter - by the length of the dead one (if that makes it shorter than two cells, it dies as well).
-- The bitten off part of the tail always disappears, and hero is shortened.
+- The bitten-off part of the tail always disappears, and the hero is shortened.
 - If two heroes, one of which is under the death cap, collide, nothing happens.
-- If two heroes collide, the under the fly agaric always wins.
+- If two heroes collide, the under-the-fly agaric always wins.
 - If two furious heroes collide, common collision rules are used.
+
+| Settings name | Action |
+|---------------|--------|
+| DEATH_CAPS_COUNT | [Game] Death caps count |
+| ACORN_REDUCED | [Game] Acorn reduced value |
+| DEATH_CAP_EFFECT_TIMEOUT | [Game] Death cap (flying) effect timeout |
+| ACORN_SCORE | [Score] Acorn score |
+| FLY_AGARIC_EFFECT_TIMEOUT | [Game] Fly agarics (fury) effect timeout |
+| BLUEBERRIES_COUNT | [Game] Blueberries count |
+| BLUEBERRY_SCORE | [Score] Blueberry score |
+| EAT_SCORE | [Score] Eat enemy score |
+| STRAWBERRIES_COUNT | [Game] Strawberries count |
+| ACORNS_COUNT | [Game] Acorns count |
+| WIN_SCORE | [Score] Win score |
+| STRAWBERRY_SCORE | [Score] Strawberry score |
+| DIE_PENALTY | [Score] Die penalty |
+| FLY_AGARICS_COUNT | [Game] Fly agarics count |
+| SCORE_COUNTING_TYPE | [Score] Counting score mode |
+
 
 ## FAQ
 
