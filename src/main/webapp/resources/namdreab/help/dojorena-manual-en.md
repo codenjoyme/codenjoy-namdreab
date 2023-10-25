@@ -179,10 +179,6 @@ in its current direction until stopped by a rock.
   During one game cycle hero will drop an acorn and move,
   e.g. `LEFT,ACT` or `ACT,LEFT`.
 
-## Points
-
-The parameters will change[(?)](#ask) as the game progresses.
-
 ## Cases
 
 ### Negative impact
