@@ -211,6 +211,11 @@ The parameters will change[(?)](#ask) as the game progresses.
 - If two heroes collide, the under-the-fly agaric always wins.
 - If two furious heroes collide, common collision rules are used.
 
+## Settings
+
+The parameters will change[(?)](#ask) as the game progresses.
+The default values are shown in the table below:
+
 | Settings name | Action |
 |---------------|--------|
 | DEATH_CAPS_COUNT | [Game] Death caps count |
